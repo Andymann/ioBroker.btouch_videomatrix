@@ -38,9 +38,7 @@ class BtouchVideomatrix extends utils.Adapter {
 		// this.config:
 		this.log.info('config option1: ' + this.config.optHost);
 		this.log.info('config option2: ' + this.config.optPort);
-		this.log.info('config Seriell: ' + this.config.connSeriell);
-		this.log.info('config NetzwerkSeriell: ' + this.config.connNetzwerkSeriell);
-
+		this.log.info('config Connection: ' + this.config.optConnection);
 
 		/*
 		For every state in the system there has to be also an object of type state

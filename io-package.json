@@ -68,8 +68,8 @@
     "option2": "42",
     "optHost": "bTouch3",
     "optPort": "1024",
-    "connSeriell": true,
-    "connNetzwerkSeriell": false
+    "optConnection"
+    
   },
   "objects": [],
   "instanceObjects": []
