@@ -68,7 +68,7 @@
     "option2": "42",
     "optHost": "bTouch3",
     "optPort": "1024",
-    "optConnection": ""
+    "optConnection": "USB Seriell"
   },
   "objects": [],
   "instanceObjects": []
