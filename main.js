@@ -40,6 +40,10 @@ class BtouchVideomatrix extends utils.Adapter {
 		this.log.info('config option2: ' + this.config.optPort);
 		this.log.info('config Connection: ' + this.config.optConnection);
 
+		if (typeof this.config.optConnection == 'undefined') {
+			this.log.info('Connection = USB SERIELL');
+		}
+
 		/*
 		For every state in the system there has to be also an object of type state
 		Here a simple template for a boolean variable named "testVariable"
