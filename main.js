@@ -41,7 +41,7 @@ class BtouchVideomatrix extends utils.Adapter {
 		this.log.info('config Connection: ' + this.config.optConnection);
 
 		if (typeof this.config.optConnection == 'undefined') {
-			this.log.info('Connection = USB SERIELL');
+			this.log.info('Connection undefined. Schaetze, = USB SERIELL');
 		}
 
 		/*

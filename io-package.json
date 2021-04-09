@@ -1,6 +1,6 @@
 {
   "common": {
-    "name": "btouch_videomatrix",
+    "name": "BTouch_videomatrix",
     "version": "0.0.1",
     "news": {
       "0.0.1": {
@@ -16,40 +16,40 @@
         "zh-cn": "首次出版"
       }
     },
-    "title": "bTouch VideoMatrix",
+    "title": "BTouch VideoMatrix",
     "titleLang": {
-      "en": "bTouch VideoMatrix",
-      "de": "bTouch VideoMatrix",
-      "ru": "bTouch VideoMatrix",
-      "pt": "bTouch VideoMatrix",
+      "en": "BTouch VideoMatrix",
+      "de": "BTouch VideoMatrix",
+      "ru": "BTouch VideoMatrix",
+      "pt": "BTouch VideoMatrix",
       "nl": "bRaak VideoMatrix aan",
-      "fr": "bTouch VideoMatrix",
-      "it": "bToccare VideoMatrix",
-      "es": "bTouch VideoMatrix",
+      "fr": "BTouch VideoMatrix",
+      "it": "BTouch VideoMatrix",
+      "es": "BTouch VideoMatrix",
       "pl": "b Dotknij pozycji VideoMatrix",
-      "zh-cn": "bTouch VideoMatrix"
+      "zh-cn": "BTouch VideoMatrix"
     },
     "desc": {
-      "en": "bTouch VideoMatrix",
-      "de": "bTouch VideoMatrix",
-      "ru": "bTouch VideoMatrix",
-      "pt": "bTouch VideoMatrix",
+      "en": "BTouch VideoMatrix",
+      "de": "BTouch VideoMatrix",
+      "ru": "BTouch VideoMatrix",
+      "pt": "BTouch VideoMatrix",
       "nl": "bRaak VideoMatrix aan",
-      "fr": "bTouch VideoMatrix",
+      "fr": "BTouch VideoMatrix",
       "it": "bToccare VideoMatrix",
-      "es": "bTouch VideoMatrix",
+      "es": "BTouch VideoMatrix",
       "pl": "b Dotknij pozycji VideoMatrix",
-      "zh-cn": "bTouch VideoMatrix"
+      "zh-cn": "BTouch VideoMatrix"
     },
     "authors": ["Andy Fischer <info@Andyland.info>"],
     "keywords": ["ioBroker", "template", "Smart Home", "home automation"],
     "license": "MIT",
     "platform": "Javascript/Node.js",
     "main": "main.js",
-    "icon": "btouch_videomatrix.png",
+    "icon": "BTouch_videomatrix.png",
     "enabled": true,
-    "extIcon": "https://raw.githubusercontent.com/Andymann/ioBroker.btouch_videomatrix/master/admin/btouch_videomatrix.png",
-    "readme": "https://github.com/Andymann/ioBroker.btouch_videomatrix/blob/master/README.md",
+    "extIcon": "https://raw.githubusercontent.com/Andymann/ioBroker.BTouch_videomatrix/master/admin/BTouch_videomatrix.png",
+    "readme": "https://github.com/Andymann/ioBroker.BTouch_videomatrix/blob/master/README.md",
     "loglevel": "info",
     "mode": "daemon",
     "type": "multimedia",
@@ -66,7 +66,7 @@
   "native": {
     "option1": true,
     "option2": "42",
-    "optHost": "bTouch3",
+    "optHost": "BTouch3",
     "optPort": "1024",
     "optConnection": "USB Seriell"
   },
