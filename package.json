@@ -1,7 +1,7 @@
 {
   "name": "iobroker.btouch_videomatrix",
-  "version": "0.0.1",
-  "description": "bTouch VideoMatrix",
+  "version": "0.0.2",
+  "description": "BTouch VideoMatrix",
   "author": {
     "name": "Andy Fischer",
     "email": "info@Andyland.info"
