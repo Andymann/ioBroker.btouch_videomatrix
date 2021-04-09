@@ -1,45 +1,22 @@
 {
   "common": {
     "name": "BTouch_videomatrix",
-    "version": "0.0.1",
+    "version": "0.0.2",
     "news": {
       "0.0.1": {
-        "en": "initial release",
-        "de": "Erstveröffentlichung",
-        "ru": "Начальная версия",
-        "pt": "lançamento inicial",
-        "nl": "Eerste uitgave",
-        "fr": "Première version",
-        "it": "Versione iniziale",
-        "es": "Versión inicial",
-        "pl": "Pierwsze wydanie",
-        "zh-cn": "首次出版"
+        "de": "Erstveröffentlichung"
+      },
+	  "0.0.2": {
+        "de": "Aus bTouch wird BTouch"
       }
+
     },
     "title": "BTouch VideoMatrix",
     "titleLang": {
-      "en": "BTouch VideoMatrix",
-      "de": "BTouch VideoMatrix",
-      "ru": "BTouch VideoMatrix",
-      "pt": "BTouch VideoMatrix",
-      "nl": "bRaak VideoMatrix aan",
-      "fr": "BTouch VideoMatrix",
-      "it": "BTouch VideoMatrix",
-      "es": "BTouch VideoMatrix",
-      "pl": "b Dotknij pozycji VideoMatrix",
-      "zh-cn": "BTouch VideoMatrix"
+      "de": "BTouch VideoMatrix"
     },
     "desc": {
-      "en": "BTouch VideoMatrix",
-      "de": "BTouch VideoMatrix",
-      "ru": "BTouch VideoMatrix",
-      "pt": "BTouch VideoMatrix",
-      "nl": "bRaak VideoMatrix aan",
-      "fr": "BTouch VideoMatrix",
-      "it": "bToccare VideoMatrix",
-      "es": "BTouch VideoMatrix",
-      "pl": "b Dotknij pozycji VideoMatrix",
-      "zh-cn": "BTouch VideoMatrix"
+      "de": "BTouch VideoMatrix"
     },
     "authors": ["Andy Fischer <info@Andyland.info>"],
     "keywords": ["ioBroker", "template", "Smart Home", "home automation"],
