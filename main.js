@@ -10,6 +10,7 @@ const utils = require('@iobroker/adapter-core');
 
 const net = require('net');
 const serialport = require('serialport');
+const Readline = require('@serialport/parser-readline')
 const ByteLength = require('@serialport/parser-byte-length');
 const TIMEOUT = 5000;
 // Load your modules here, e.g.:
@@ -132,7 +133,7 @@ class BtouchVideomatrix extends utils.Adapter {
 
 			matrix = new serialport(this.sSerialPortName, options);
 			//parser = matrix.pipe(new ByteLength({ length: 1 }));
-			parser = serialport.parsers.readline("\n")
+			parser = serialport.pipe(new Readline({ delimiter: '\n' }))
 			if (pingInterval) {
 				clearInterval(pingInterval);
 			}
