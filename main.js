@@ -112,13 +112,13 @@ class BtouchVideomatrix extends utils.Adapter {
 	}
 
 	disconnectMatrix() {
-		if (mode == MODE_SERIAL) {
+		if (parentThis.mode == MODE_SERIAL) {
 			this.log.info('disConnectMatrix() Serial');
 			if (matrix.isOpen) {
 				matrix.close();
 				matrix.destroy();
 			}
-		} else if (mode == MODE_NETWORK) {
+		} else if (parentThis.mode == MODE_NETWORK) {
 			this.log.info('disConnectMatrix() Network');
 		}
 		matrix.destroy();
@@ -129,7 +129,7 @@ class BtouchVideomatrix extends utils.Adapter {
 		let parser;
 		arrCMD = [];
 
-		if (this.mode == MODE_SERIAL) {
+		if (parentThis.mode == MODE_SERIAL) {
 			this.log.info('connectMatrix(): Serial Port Mode ' + this.sSerialPortName);
 			const options = {
 				baudRate: 9600,
@@ -161,7 +161,7 @@ class BtouchVideomatrix extends utils.Adapter {
 				parentThis.pingMatrix();
 			}, 2000);
 
-		} else if (this.mode == MODE_NETWORK) {
+		} else if (parentThis.mode == MODE_NETWORK) {
 			this.log.info('connectMatrix():' + this.config.host + ':' + this.config.port);
 			matrix = new net.Socket();
 			/*
@@ -242,8 +242,8 @@ class BtouchVideomatrix extends utils.Adapter {
 
 		parser.on('data', function (chunk) {
 			parentThis.log.info('parser.onData():' + chunk);
-			//parentThis.log.info('matrix.onData(): ' + parentThis.toHexString(chunk) );
 			if (parentThis.mode == MODE_SERIAL) {
+				//----Hier kommt schon die komplette Response an
 				parentThis.processIncoming(chunk);
 			}
 			//parentThis.processIncoming(chunk);
@@ -287,6 +287,7 @@ class BtouchVideomatrix extends utils.Adapter {
 
 	// Verarbeitung eingehender Daten
 	processIncoming(chunk) {
+
 		//parentThis.log.info('processIncoming(): *' + toHexString(chunk) + '*');
 		in_msg += chunk;
 		bHasIncomingData = true; // IrgendETWAS ist angekommen
