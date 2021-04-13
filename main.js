@@ -19,7 +19,7 @@ const MODE_NONE = 0x00;
 const MODE_SERIAL = 0x01;
 const MODE_NETWORK = 0x02;
 
-const CMDPING = '/*Type;\r\n';
+const CMDPING = '/*Type;';
 const CMDWAITQUEUE_1000 = 1000;
 let mode = MODE_NONE;
 let parentThis;
@@ -334,6 +334,7 @@ class BtouchVideomatrix extends utils.Adapter {
 					const tmp = arrCMD.shift();
 					this.log.debug('processCMD: next CMD=' + tmp);
 					matrix.write(tmp);
+					matrix.write('\n');
 					bHasIncomingData = false;
 
 					if (query) {
