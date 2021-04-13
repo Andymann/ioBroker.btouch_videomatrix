@@ -373,6 +373,7 @@ class BtouchVideomatrix extends utils.Adapter {
 			if (parentThis.mode == MODE_SERIAL) {
 				//----Wegen des Parsers enthaelt <chunk> die komplette Response
 				parentThis.parseMSG(chunk);
+				in_msg = chunk;
 				bWaitingForResponse = false;
 				bConnection = true;
 			} else if (parentThis.mode == MODE_NETWORK) {
