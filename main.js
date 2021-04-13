@@ -11,6 +11,7 @@ const utils = require('@iobroker/adapter-core');
 const net = require('net');
 const serialport = require('serialport');
 const ByteLength = require('@serialport/parser-byte-length');
+const TIMEOUT = 5000;
 // Load your modules here, e.g.:
 // const fs = require("fs");
 const MODE_NONE = 0x00;
@@ -130,6 +131,11 @@ class BtouchVideomatrix extends utils.Adapter {
 
 			matrix = new serialport(this.sSerialPortName, options);
 			parser = matrix.pipe(new ByteLength({ length: 1 }));
+			if (pingInterval) {
+				clearInterval(pingInterval);
+			}
+
+
 			/*
 			if (bConnection == false) {
 				parentThis.log.debug('connectMatrix() Serial. bConnection==false, sending CMDPING:' + CMDPING);
@@ -138,14 +144,12 @@ class BtouchVideomatrix extends utils.Adapter {
 			} else {
 				parentThis.log.debug('_connect() Serial. bConnection==true. Nichts tun');
 			}
-			if (pingInterval) {
-				clearInterval(pingInterval);
-			}
 			*/
+
 			//----Alle x Sekunden ein PING
 			pingInterval = setInterval(function () {
 				parentThis.pingMatrix();
-			}, 1000);
+			}, 2000);
 
 		} else if (this.mode == MODE_NETWORK) {
 			this.log.info('connectMatrix():' + this.config.host + ':' + this.config.port);
@@ -268,9 +272,54 @@ class BtouchVideomatrix extends utils.Adapter {
 		}
 	}
 
+	// Verarbeitung eingehender Daten
+	processIncoming(chunk) {
+		//parentThis.log.info('processIncoming(): ' + toHexString(chunk));
+		in_msg += chunk;
+		bHasIncomingData = true; // IrgendETWAS ist angekommen
 
+		if (bWaitingForResponse == true) {
+			if (in_msg.length >= 16) {
+				parentThis.log.info('_processIncoming(); slightly processed:' + in_msg);
+				bWaitingForResponse = false;
+			}
+			/*
+			if (in_msg.length >= 20 && in_msg.includes('5aa5')) {
+				const iStartPos = in_msg.indexOf('5aa5');
+				if (in_msg.toLowerCase().substring(iStartPos + 16, iStartPos + 18) == '0a') {
+					const tmpMSG = in_msg.toLowerCase().substring(iStartPos, iStartPos + 20); //Checksum
+					in_msg = in_msg.slice(20); //Die ersten 20 Zeichen abschneiden
+					//parentThis.log.info('_processIncoming(); filtered:' + tmpMSG);
+					parentThis.parseMSG(tmpMSG);
+					//bWaitingForResponse = false;
+				} else if (in_msg.toLowerCase().substring(iStartPos + 4, iStartPos + 6) == '11') {
+					//----5aa511c2c00000c2c00000c2c00000c2c0...
+					//----In der Regel als Antwort auf einen PING
+					//parentThis.log.debug('LevelMeter incoming');
+					bWaitingForResponse = false;
+				} else if (in_msg.toLowerCase().substring(iStartPos + 4, iStartPos + 6) == '12') {
+					//----5aa512c2c00000c2c00000c...
+					//----In der Regel als Antwort auf einen PING
+					//parentThis.log.debug('Sprectrum incoming');
+					bWaitingForResponse = false;
+				} else {
+					//----Irgendwie vergniesgnaddelt. Das ist offenbar egal, weil die Daten erneut gesendet werden
+					//parentThis.log.info('AudioMatrix: matrix.on data: Fehlerhafte oder inkomplette Daten empfangen:' + in_msg);
+				}
+			}
+			*/
+		} else {
+			//----Durch die PING-Mechanik kommt hier recht viel an, da muessen wir spaeter drauf schauen.
+			//parentThis.log.info('AudioMatrix: matrix.on data(): incomming aber bWaitingForResponse==FALSE; in_msg:' + in_msg);
+		}
 
-	//wird alle 100ms aufgerufen
+		if (in_msg.length > 120) {
+			//----Just in case
+			in_msg = '';
+		}
+	}
+
+	//wird alle 100ms aufgerufen. Die CMD-Queue wird abgearbeitet und Befehle gehen raus.
 	processCMD() {
 		//this.log.debug('processCMD()');
 		if (bWaitQueue == false) {
@@ -281,7 +330,26 @@ class BtouchVideomatrix extends utils.Adapter {
 
 					const tmp = arrCMD.shift();
 					this.log.debug('processCMD: next CMD=' + tmp);
-					bWaitingForResponse = false;
+					matrix.write(tmp);
+					bHasIncomingData = false;
+
+					if (query) {
+						clearTimeout(query);
+					}
+					query = setTimeout(function () {
+						//----5 Sekunden keine Antwort und das Teil ist offline
+						if (bHasIncomingData == false) {
+							//----Nach x Milisekunden ist noch gar nichts angekommen....
+							parentThis.log.error('processCMD(): KEINE EINKOMMENDEN DATEN NACH ' + TIMEOUT.toString() + ' Milisekunden. OFFLINE?');
+							bConnection = false;
+							parentThis.disconnectMatrix();
+							parentThis.initMatrix();
+						} else {
+							parentThis.log.info('processCMD(): Irgendetwas kam an... es lebt.');
+						}
+					}, TIMEOUT);
+
+
 					/*
 					if (tmp.length == 10) {
 						//----Normaler Befehl
