@@ -452,7 +452,7 @@ class BtouchVideomatrix extends utils.Adapter {
 		if (sMSG.toLowerCase().includes('hdmi')) {
 			let iXpos = sMSG.indexOf('X');
 			if (iXpos > -1) {
-				sTmp = sMSG.substring(iXpos + 1);
+				let sTmp = sMSG.substring(iXpos + 1);
 				parentThis.log.debug('MAXCHANNELS:' + sTmp);
 				parentThis.MAXCHANNELS = parseInt(sTmp, 10)
 
