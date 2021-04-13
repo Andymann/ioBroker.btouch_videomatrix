@@ -159,7 +159,7 @@ class BtouchVideomatrix extends utils.Adapter {
 			//----Alle x Sekunden ein PING
 			pingInterval = setInterval(function () {
 				parentThis.pingMatrix();
-			}, 2000);
+			}, 3000);
 
 		} else if (parentThis.mode == MODE_NETWORK) {
 			this.log.info('connectMatrix():' + this.config.host + ':' + this.config.port);
@@ -241,7 +241,7 @@ class BtouchVideomatrix extends utils.Adapter {
 
 
 		parser.on('data', function (chunk) {
-			parentThis.log.info('parser.onData():' + chunk);
+			parentThis.log.debug('parser.onData():' + chunk);
 			if (parentThis.mode == MODE_SERIAL) {
 				//----Hier kommt schon die komplette Response an
 				parentThis.processIncoming(chunk);
@@ -254,7 +254,7 @@ class BtouchVideomatrix extends utils.Adapter {
 		if (this.mode == MODE_SERIAL) {
 			if (bWaitQueue == false) {
 				if (arrCMD.length == 0) {
-					this.log.debug('pingMatrix() seriell');
+					parentThis.log.debug('pingMatrix() seriell');
 					arrCMD.push(CMDPING);
 					iMissedPingCounter = 0;
 				}
@@ -419,8 +419,10 @@ class BtouchVideomatrix extends utils.Adapter {
 				*/
 			}
 		} else {
-			// einkommende Daten ohne, dass auf eine Repsonse gewartet wird, ist bei der Videomatrix eher schwierig
-			//parentThis.log.info('AudioMatrix: matrix.on data(): incomming aber bWaitingForResponse==FALSE; in_msg:' + in_msg);
+			// einkommende Daten ohne, dass auf eine Ressonse gewartet wird entstehen, 
+			// wenn an der Oberfläche etwas geändert wird
+			// --- z.B. parser.onData():/1V3.
+			parentThis.log.info(': processIncoming(): bWaitingForResponse==FALSE; in_msg:' + in_msg);
 		}
 
 		if (in_msg.length > 120) {
