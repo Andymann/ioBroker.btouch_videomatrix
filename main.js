@@ -132,7 +132,7 @@ class BtouchVideomatrix extends utils.Adapter {
 			parser = matrix.pipe(new ByteLength({ length: 1 }));
 			/*
 			if (bConnection == false) {
-				parentThis.log.debug('connectMatrix() Serial. bConnection==false, sending CMDCONNECT:' + toHexString(cmdConnect));
+				parentThis.log.debug('connectMatrix() Serial. bConnection==false, sending CMDPING:' + CMDPING);
 				arrCMD.push(cmdConnect);
 				arrCMD.push(cmdWaitQueue_1000);
 			} else {
@@ -141,12 +141,12 @@ class BtouchVideomatrix extends utils.Adapter {
 			if (pingInterval) {
 				clearInterval(pingInterval);
 			}
-
-			//----Alle 1,5 Sekunden ein PING
+			*/
+			//----Alle x Sekunden ein PING
 			pingInterval = setInterval(function () {
 				parentThis.pingMatrix();
-			}, 750);
-			*/
+			}, 1000);
+
 		} else if (this.mode == MODE_NETWORK) {
 			this.log.info('connectMatrix():' + this.config.host + ':' + this.config.port);
 			matrix = new net.Socket();
@@ -234,35 +234,100 @@ class BtouchVideomatrix extends utils.Adapter {
 	}
 
 	pingMatrix() {
-		if ((bConnection == true)/*&&(bWaitingForResponse==false)*/ && (bWaitQueue == false)) {
-			if (arrCMD.length == 0) {
-				//this.log.debug('pingMatrix()');
-				arrCMD.push(cmdConnect);
-				iMissedPingCounter = 0;
-				if (bFirstPing) {
-					//----Ab jetzt nicht mehr
-					bFirstPing = false;
+		if (this.mode == MODE_SERIAL) {
+			if (bWaitQueue == false) {
+				if (arrCMD.length == 0) {
+					this.log.debug('pingMatrix() seriell');
+					arrCMD.push(CMDPING);
+					iMissedPingCounter = 0;
 				}
 			}
-		} else {
-			//----No Connection
-			//this.log.info('pingMatrix(): No Connection.');
-			iMissedPingCounter++;
+		} else if (this.mode == MODE_NETWORK) {
+			if ((bConnection == true)/*&&(bWaitingForResponse==false)*/ && (bWaitQueue == false)) {
+				if (arrCMD.length == 0) {
+					this.log.debug('pingMatrix() Network');
+					arrCMD.push(CMDPING);
+					iMissedPingCounter = 0;
+					if (bFirstPing) {
+						//----Ab jetzt nicht mehr
+						bFirstPing = false;
+					}
+				}
+			} else {
+				//----No Connection
+				//this.log.info('pingMatrix(): No Connection.');
+				iMissedPingCounter++;
 
-			if (iMissedPingCounter > 10) {	//7,5 seconds
-				this.log.info('pingMatrix(): 10 mal No Connection. Forciere Reconnect');
-				parentThis.disconnectMatrix();
-				parentThis.initMatrix();
+				if (iMissedPingCounter > 10) {	//7,5 seconds
+					this.log.info('pingMatrix(): 10 mal No Connection. Forciere Reconnect');
+					parentThis.disconnectMatrix();
+					parentThis.initMatrix();
+				}
+
 			}
-
 		}
 	}
 
 
 
-
+	//wird alle 100ms aufgerufen
 	processCMD() {
+		//this.log.debug('processCMD()');
+		if (bWaitQueue == false) {
+			if (bWaitingForResponse == false) {
+				if (arrCMD.length > 0) {
+					//this.log.debug('processCMD: bWaitingForResponse==FALSE, arrCMD.length=' + arrCMD.length.toString());
+					bWaitingForResponse = true;
 
+					const tmp = arrCMD.shift();
+					this.log.debug('processCMD: next CMD=' + tmp);
+					bWaitingForResponse = false;
+					/*
+					if (tmp.length == 10) {
+						//----Normaler Befehl
+						//this.log.debug('processCMD: next CMD=' + toHexString(tmp) + ' arrCMD.length rest=' + arrCMD.length.toString());
+						matrix.write(tmp);
+						bHasIncomingData = false;
+						//lastCMD = tmp;
+						//iMaxTryCounter = MAXTRIES;
+						if (query) {
+							clearTimeout(query);
+						}
+						query = setTimeout(function () {
+							//----5 Sekunden keine Antwort und das Teil ist offline
+							if (bHasIncomingData == false) {
+								//----Nach x Milisekunden ist noch gar nichts angekommen....
+								parentThis.log.error('processCMD(): KEINE EINKOMMENDEN DATEN NACH ' + TIMEOUT.toString() + ' Milisekunden. OFFLINE?');
+								bConnection = false;
+								parentThis.disconnectMatrix();
+								parentThis.initMatrix();
+							} else {
+								parentThis.log.info('processCMD(): Irgendetwas kam an... es lebt.');
+							}
+						}, TIMEOUT);
+
+					} else if (tmp.length == 2) {
+						const iWait = tmp[0] * 256 + tmp[1];
+						bWaitQueue = true;
+						this.log.debug('processCMD.waitQueue: ' + iWait.toString());
+						setTimeout(function () { bWaitQueue = false; parentThis.log.info('processCMD.waitQueue DONE'); }, iWait);
+					} else {
+						//----Nix          
+					}
+					*/
+				} else {
+					//this.log.debug('processCMD: bWaitingForResponse==FALSE, arrCMD ist leer. Kein Problem');
+				}
+			} else {
+				//this.log.debug('AudioMatrix: processCMD: bWaitingForResponse==TRUE. Nichts machen');
+			}
+		} else {
+			//this.log.debug('processCMD: bWaitQueue==TRUE, warten');
+		}
+
+		//----Anzeige der Quelength auf der Oberflaeche
+		//        this.setStateAsync('queuelength', { val: arrCMD.length, ack: true });
+		//
 
 	}
 
