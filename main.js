@@ -293,10 +293,9 @@ class BtouchVideomatrix extends utils.Adapter {
 			if (bWaitingForResponse == false) {
 				if (arrCMD.length > 0) {
 					//this.log.debug('processCMD: bWaitingForResponse==FALSE, arrCMD.length=' + arrCMD.length.toString());
-					this.log.debug('processCMD: next CMD=' + tmp);
-
 					bWaitingForResponse = true;
 					const tmp = arrCMD.shift();
+					this.log.debug('processCMD: next CMD=' + tmp);
 					bHasIncomingData = false;
 					matrix.write(tmp);
 					matrix.write('\n');
