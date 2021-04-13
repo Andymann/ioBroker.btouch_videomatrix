@@ -188,7 +188,7 @@ class BtouchVideomatrix extends utils.Adapter {
 
 		matrix.on('data', function (chunk) {
 			parentThis.log.info('matrix.onData():' + chunk + ' ' + toHexString(chunk));
-			if (mode == MODE_SERIAL) {
+			if (this.mode == MODE_SERIAL) {
 				this.processIncoming(chunk);
 			} else if (mode == MODE_NETWORK) {
 				this.processIncoming(chunk);
