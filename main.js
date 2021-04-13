@@ -13,6 +13,7 @@ const serialport = require('serialport');
 const Readline = require('@serialport/parser-readline')
 const ByteLength = require('@serialport/parser-byte-length');
 const TIMEOUT = 5000;
+let MAXCHANNELS = 0;
 // Load your modules here, e.g.:
 // const fs = require("fs");
 const MODE_NONE = 0x00;
@@ -82,10 +83,32 @@ class BtouchVideomatrix extends utils.Adapter {
 
 	//----Call fron onReady. Creating everything that can later be changed via GUI
 	async createStates() {
-		//this._createState_Routing();
-		//this._createState_ExclusiveRouting();
-		//this._createState_Labels();
-		//this._createState_Save();
+
+		//----Laenge von arrCMD; der Command-Queue
+		await this.setObjectAsync('queuelength', {
+			type: 'state',
+			common: {
+				name: 'Length of Command-Queue',
+				type: 'number',
+				role: 'level',
+				read: true,
+				write: false
+			},
+			native: {},
+		});
+
+		await this.setObjectAsync('queryState', {
+			type: 'state',
+			common: {
+				name: 'True: Hardware is being queried after Connection. False: Done',
+				type: 'boolean',
+				role: 'indicator',
+				read: true,
+				write: false,
+			},
+			native: {},
+		});
+
 	}
 
 
@@ -309,6 +332,7 @@ class BtouchVideomatrix extends utils.Adapter {
 							//----Nach x Milisekunden ist noch gar nichts angekommen....
 							parentThis.log.error('processCMD(): KEINE EINKOMMENDEN DATEN NACH ' + TIMEOUT.toString() + ' Milisekunden. OFFLINE?');
 							bConnection = false;
+							this.setState('info.connection', bConnection, true); //Green led in 'Instances'
 							parentThis.disconnectMatrix();
 							parentThis.initMatrix();
 						} else {
@@ -369,86 +393,78 @@ class BtouchVideomatrix extends utils.Adapter {
 	// Verarbeitung eingehender Daten
 	processIncoming(chunk) {
 		bHasIncomingData = true; // IrgendETWAS ist angekommen
-		if (bWaitingForResponse == true) {
-			if (parentThis.mode == MODE_SERIAL) {
-				//----Wegen des Parsers enthaelt <chunk> die komplette Response
+
+		if (parentThis.mode == MODE_SERIAL) {
+			//----Wegen des Parsers enthaelt <chunk> die komplette Response
+			if (bWaitingForResponse == true) {
 				parentThis.parseMSG(chunk);
-				//in_msg = chunk;
+				bWaitingForResponse = false;
+				bConnection = true;
+				this.setState('info.connection', bConnection, true); //Green led in 'Instances'
+				in_msg = '';
+			} else {
+				// einkommende Daten ohne, dass auf eine Response gewartet wird entstehen, 
+				// wenn an der Oberfläche etwas geändert wird. bsp: '/1V3.'
+				parentThis.log.info(': processIncoming() Serial: bWaitingForResponse==FALSE; in_msg:' + chunk);
+			}
+		} else if (parentThis.mode == MODE_NETWORK) {
+			parentThis.log.info('processIncoming() Mode_Network: TBD');
+			in_msg += chunk;
+			//....if in_msg == complete....
+			if (bWaitingForResponse == true) {
+				parentThis.parseMSG(chunk);
 				bWaitingForResponse = false;
 				bConnection = true;
 				in_msg = '';
-			} else if (parentThis.mode == MODE_NETWORK) {
-				parentThis.log.info('processIncoming() Mode_Network: TBD');
-				in_msg += chunk;
-				bWaitingForResponse = false;
-				/*
-				if (toHexString(in_msg).endsWith('0d0a')) {
-					parentThis.log.info('REPSONSE!!!  YEAH!!');
-					in_msg = '';
-					bWaitingForResponse = false;
-				}
-	
-				if (in_msg.length >= 15) {
-					parentThis.log.info('_processIncoming(); slightly processed:' + in_msg);
-					parentThis.log.info(toHexString(in_msg));
-					//in_msg = '';
-					bWaitingForResponse = false;
-				}
-				
-				if (in_msg.length >= 20 && in_msg.includes('5aa5')) {
-					const iStartPos = in_msg.indexOf('5aa5');
-					if (in_msg.toLowerCase().substring(iStartPos + 16, iStartPos + 18) == '0a') {
-						const tmpMSG = in_msg.toLowerCase().substring(iStartPos, iStartPos + 20); //Checksum
-						in_msg = in_msg.slice(20); //Die ersten 20 Zeichen abschneiden
-						//parentThis.log.info('_processIncoming(); filtered:' + tmpMSG);
-						parentThis.parseMSG(tmpMSG);
-						//bWaitingForResponse = false;
-					} else if (in_msg.toLowerCase().substring(iStartPos + 4, iStartPos + 6) == '11') {
-						//----5aa511c2c00000c2c00000c2c00000c2c0...
-						//----In der Regel als Antwort auf einen PING
-						//parentThis.log.debug('LevelMeter incoming');
-						bWaitingForResponse = false;
-					} else if (in_msg.toLowerCase().substring(iStartPos + 4, iStartPos + 6) == '12') {
-						//----5aa512c2c00000c2c00000c...
-						//----In der Regel als Antwort auf einen PING
-						//parentThis.log.debug('Sprectrum incoming');
-						bWaitingForResponse = false;
-					} else {
-						//----Irgendwie vergniesgnaddelt. Das ist offenbar egal, weil die Daten erneut gesendet werden
-						//parentThis.log.info('AudioMatrix: matrix.on data: Fehlerhafte oder inkomplette Daten empfangen:' + in_msg);
-					}
-				}
-				*/
+			} else {
+				parentThis.log.info(': processIncoming() Network: bWaitingForResponse==FALSE; in_msg:' + in_msg);
 			}
-		} else {
-			// einkommende Daten ohne, dass auf eine Ressonse gewartet wird entstehen, 
-			// wenn an der Oberfläche etwas geändert wird
-			// --- z.B. parser.onData():/1V3.
-			if (parentThis.mode == MODE_SERIAL) {
-				parentThis.log.info(': processIncoming() Serial: bWaitingForResponse==FALSE; in_msg:' + chunk);
-			} else if (parentThis.mode == MODE_NETWORK) {
-
-			}
-
 		}
+		/*
+		if (toHexString(in_msg).endsWith('0d0a')) {
+			parentThis.log.info('REPSONSE!!!  YEAH!!');
+			in_msg = '';
+			bWaitingForResponse = false;
+		}
+	
+		if (in_msg.length >= 15) {
+			parentThis.log.info('_processIncoming(); slightly processed:' + in_msg);
+			parentThis.log.info(toHexString(in_msg));
+			//in_msg = '';
+			bWaitingForResponse = false;
+		}
+		*/
 
 		if (in_msg.length > 120) {
 			//----Just in case
 			in_msg = '';
 		}
+
+		//----Anzeige der Quelength auf der Oberflaeche
+		this.setStateAsync('queuelength', { val: arrCMD.length, ack: true });
 	}
 
 	//----Data coming from hardware
 	parseMSG(sMSG) {
 		parentThis.log.info('parseMSG():' + sMSG);
+		//this.setState('info.connection', true, true); //Green led in 'Instances'	
+		// z.b: HDMI36X36
+		if (sMSG.toLowerCase().includes('hdmi')) {
+			iXpos = sMSG.indexOf('X');
+			if (iXpos > -1) {
+				sTmp = sMSG.substring(iXpos + 1);
+				parentThis.log.debug('MAXCHANNELS:' + sTmp);
+				parentThis.MAXCHANNELS = parseInt(sTmp, 10)
 
+			}
 
+		}
 
 		/*
 		if (sMSG === toHexString(cmdBasicResponse)) {
 			//this.log.info('parseMSG(): Basic Response.');
 			bConnection = true;
-
+	
 		} else if (sMSG === toHexString(cmdTransmissionDone)) {
 			this.log.info('parseMSG(): Transmission Done.');
 			this.processExclusiveRoutingStates();
@@ -501,7 +517,7 @@ class BtouchVideomatrix extends utils.Adapter {
 					const bOnOff = (iValue > 0) ? true : false;
 					this.log.info('_parseMSG(): received OUTPUT Value for MUTE. Output(Index):' + (iVal - 7).toString() + ' Val:' + bOnOff.toString());
 					this.setStateAsync('mute_' + (iVal - 7 + 1).toString(), { val: bOnOff, ack: true });
-
+	
 				} else if (iCmd == 2) {
 					//----Gain
 					//this.log.info('_parseMSG(): received OUTPUT Value for GAIN:' + sMSG.substring(8, 16));
@@ -566,6 +582,8 @@ class BtouchVideomatrix extends utils.Adapter {
 			native: {},
 		});
 
+		this.createStates();
+
 		// in this template all states changes inside the adapters namespace are subscribed
 		this.subscribeStates('*');
 
@@ -576,18 +594,18 @@ class BtouchVideomatrix extends utils.Adapter {
 		/*
 		// the variable testVariable is set to true as command (ack=false)
 		await this.setStateAsync('testVariable', true);
-	
+		
 		// same thing, but the value is flagged "ack"
 		// ack should be always set to true if the value is received from or acknowledged from the target system
 		await this.setStateAsync('testVariable', { val: true, ack: true });
-	
+		
 		// same thing, but the state is deleted after 30s (getState will return null afterwards)
 		await this.setStateAsync('testVariable', { val: true, ack: true, expire: 30 });
-	
+		
 		// examples for the checkPassword/checkGroup functions
 		let result = await this.checkPasswordAsync('admin', 'iobroker');
 		this.log.info('check user admin pw iobroker: ' + result);
-	
+		
 		result = await this.checkGroupAsync('admin', 'admin');
 		this.log.info('check group user admin group admin: ' + result);
 		*/
