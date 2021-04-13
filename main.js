@@ -52,6 +52,13 @@ let bQueryDone;
 let bQueryInProgress;
 let arrQuery = [];
 
+
+function toHexString(byteArray) {
+	return Array.from(byteArray, function (byte) {
+		return ('0' + (byte & 0xff).toString(16)).slice(-2);
+	}).join('');
+}
+
 class BtouchVideomatrix extends utils.Adapter {
 
 	/**
@@ -180,7 +187,7 @@ class BtouchVideomatrix extends utils.Adapter {
 
 
 		matrix.on('data', function (chunk) {
-			parentThis.log.info('matrix.onData():' + chunk);
+			parentThis.log.info('matrix.onData():' + chunk + ' ' + toHexString(chunk));
 			if (mode == MODE_SERIAL) {
 				parentThis.processIncoming(chunk);
 			} else if (mode == MODE_NETWORK) {
