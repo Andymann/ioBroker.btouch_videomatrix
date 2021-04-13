@@ -301,7 +301,7 @@ class BtouchVideomatrix extends utils.Adapter {
 
 			if (in_msg.length >= 15) {
 				parentThis.log.info('_processIncoming(); slightly processed:' + in_msg);
-				in_msg = '';
+				//in_msg = '';
 				bWaitingForResponse = false;
 			}
 			/*
