@@ -260,6 +260,7 @@ class BtouchVideomatrix extends utils.Adapter {
 				}
 			}
 		} else if (this.mode == MODE_NETWORK) {
+			// ---   ALL TO BE DONE
 			if ((bConnection == true)/*&&(bWaitingForResponse==false)*/ && (bWaitQueue == false)) {
 				if (arrCMD.length == 0) {
 					this.log.debug('pingMatrix() Network');
@@ -285,62 +286,6 @@ class BtouchVideomatrix extends utils.Adapter {
 		}
 	}
 
-	// Verarbeitung eingehender Daten
-	processIncoming(chunk) {
-
-		//parentThis.log.info('processIncoming(): *' + toHexString(chunk) + '*');
-		in_msg += chunk;
-		bHasIncomingData = true; // IrgendETWAS ist angekommen
-
-		if (bWaitingForResponse == true) {
-			if (toHexString(in_msg).endsWith('0d0a')) {
-				parentThis.log.info('REPSONSE!!!  YEAH!!');
-				in_msg = '';
-				bWaitingForResponse = false;
-			}
-
-			if (in_msg.length >= 15) {
-				parentThis.log.info('_processIncoming(); slightly processed:' + in_msg);
-				parentThis.log.info(toHexString(in_msg));
-				//in_msg = '';
-				bWaitingForResponse = false;
-			}
-			/*
-			if (in_msg.length >= 20 && in_msg.includes('5aa5')) {
-				const iStartPos = in_msg.indexOf('5aa5');
-				if (in_msg.toLowerCase().substring(iStartPos + 16, iStartPos + 18) == '0a') {
-					const tmpMSG = in_msg.toLowerCase().substring(iStartPos, iStartPos + 20); //Checksum
-					in_msg = in_msg.slice(20); //Die ersten 20 Zeichen abschneiden
-					//parentThis.log.info('_processIncoming(); filtered:' + tmpMSG);
-					parentThis.parseMSG(tmpMSG);
-					//bWaitingForResponse = false;
-				} else if (in_msg.toLowerCase().substring(iStartPos + 4, iStartPos + 6) == '11') {
-					//----5aa511c2c00000c2c00000c2c00000c2c0...
-					//----In der Regel als Antwort auf einen PING
-					//parentThis.log.debug('LevelMeter incoming');
-					bWaitingForResponse = false;
-				} else if (in_msg.toLowerCase().substring(iStartPos + 4, iStartPos + 6) == '12') {
-					//----5aa512c2c00000c2c00000c...
-					//----In der Regel als Antwort auf einen PING
-					//parentThis.log.debug('Sprectrum incoming');
-					bWaitingForResponse = false;
-				} else {
-					//----Irgendwie vergniesgnaddelt. Das ist offenbar egal, weil die Daten erneut gesendet werden
-					//parentThis.log.info('AudioMatrix: matrix.on data: Fehlerhafte oder inkomplette Daten empfangen:' + in_msg);
-				}
-			}
-			*/
-		} else {
-			//----Durch die PING-Mechanik kommt hier recht viel an, da muessen wir spaeter drauf schauen.
-			//parentThis.log.info('AudioMatrix: matrix.on data(): incomming aber bWaitingForResponse==FALSE; in_msg:' + in_msg);
-		}
-
-		if (in_msg.length > 120) {
-			//----Just in case
-			in_msg = '';
-		}
-	}
-
 	//wird alle 100ms aufgerufen. Die CMD-Queue wird abgearbeitet und Befehle gehen raus.
 	processCMD() {
 		//this.log.debug('processCMD()');
@@ -348,13 +293,13 @@ class BtouchVideomatrix extends utils.Adapter {
 			if (bWaitingForResponse == false) {
 				if (arrCMD.length > 0) {
 					//this.log.debug('processCMD: bWaitingForResponse==FALSE, arrCMD.length=' + arrCMD.length.toString());
-					bWaitingForResponse = true;
-
-					const tmp = arrCMD.shift();
 					this.log.debug('processCMD: next CMD=' + tmp);
+
+					bWaitingForResponse = true;
+					const tmp = arrCMD.shift();
+					bHasIncomingData = false;
 					matrix.write(tmp);
 					matrix.write('\n');
-					bHasIncomingData = false;
 
 					if (query) {
 						clearTimeout(query);
@@ -421,6 +366,151 @@ class BtouchVideomatrix extends utils.Adapter {
 		//
 
 	}
+
+	// Verarbeitung eingehender Daten
+	processIncoming(chunk) {
+		bHasIncomingData = true; // IrgendETWAS ist angekommen
+		if (bWaitingForResponse == true) {
+			if (parentThis.mode == MODE_SERIAL) {
+				//----Wegen des Parsers enthaelt <chunk> die komplette Response
+				parentThis.parseMSG(chunk);
+				bWaitingForResponse = false;
+				bConnection = true;
+			} else if (parentThis.mode == MODE_NETWORK) {
+				parentThis.log.info('processIncoming() Mode_Network: TBD');
+				in_msg += chunk;
+				bWaitingForResponse = false;
+				/*
+				if (toHexString(in_msg).endsWith('0d0a')) {
+					parentThis.log.info('REPSONSE!!!  YEAH!!');
+					in_msg = '';
+					bWaitingForResponse = false;
+				}
+	
+				if (in_msg.length >= 15) {
+					parentThis.log.info('_processIncoming(); slightly processed:' + in_msg);
+					parentThis.log.info(toHexString(in_msg));
+					//in_msg = '';
+					bWaitingForResponse = false;
+				}
+				
+				if (in_msg.length >= 20 && in_msg.includes('5aa5')) {
+					const iStartPos = in_msg.indexOf('5aa5');
+					if (in_msg.toLowerCase().substring(iStartPos + 16, iStartPos + 18) == '0a') {
+						const tmpMSG = in_msg.toLowerCase().substring(iStartPos, iStartPos + 20); //Checksum
+						in_msg = in_msg.slice(20); //Die ersten 20 Zeichen abschneiden
+						//parentThis.log.info('_processIncoming(); filtered:' + tmpMSG);
+						parentThis.parseMSG(tmpMSG);
+						//bWaitingForResponse = false;
+					} else if (in_msg.toLowerCase().substring(iStartPos + 4, iStartPos + 6) == '11') {
+						//----5aa511c2c00000c2c00000c2c00000c2c0...
+						//----In der Regel als Antwort auf einen PING
+						//parentThis.log.debug('LevelMeter incoming');
+						bWaitingForResponse = false;
+					} else if (in_msg.toLowerCase().substring(iStartPos + 4, iStartPos + 6) == '12') {
+						//----5aa512c2c00000c2c00000c...
+						//----In der Regel als Antwort auf einen PING
+						//parentThis.log.debug('Sprectrum incoming');
+						bWaitingForResponse = false;
+					} else {
+						//----Irgendwie vergniesgnaddelt. Das ist offenbar egal, weil die Daten erneut gesendet werden
+						//parentThis.log.info('AudioMatrix: matrix.on data: Fehlerhafte oder inkomplette Daten empfangen:' + in_msg);
+					}
+				}
+				*/
+			}
+		} else {
+			// einkommende Daten ohne, dass auf eine Repsonse gewartet wird, ist bei der Videomatrix eher schwierig
+			//parentThis.log.info('AudioMatrix: matrix.on data(): incomming aber bWaitingForResponse==FALSE; in_msg:' + in_msg);
+		}
+
+		if (in_msg.length > 120) {
+			//----Just in case
+			in_msg = '';
+		}
+	}
+
+	//----Data coming from hardware
+	parseMSG(sMSG) {
+		parentThis.log.info('parseMSG():' + sMSG);
+
+
+
+		/*
+		if (sMSG === toHexString(cmdBasicResponse)) {
+			//this.log.info('parseMSG(): Basic Response.');
+			bConnection = true;
+
+		} else if (sMSG === toHexString(cmdTransmissionDone)) {
+			this.log.info('parseMSG(): Transmission Done.');
+			this.processExclusiveRoutingStates();
+			this.setState('info.connection', true, true); //Green led in 'Instances'			
+			bWaitingForResponse = false;
+		} else if (sMSG.startsWith('5aa50700')) {
+			//this.log.info('_parseMSG(): received main volume from Matrix.');
+			const sHex = sMSG.substring(8, 16);
+			let iVal = HexToFloat32(sHex);
+			iVal = simpleMap(0, 100, iVal);
+			//this.log.info('_parseMSG(): received main volume from Matrix. Processed Value:' + iVal.toString());
+			this.setStateAsync('mainVolume', { val: iVal, ack: true });
+		} else {
+			const sHex = sMSG.substring(4, 6);
+			const iVal = parseInt(sHex, 16);
+			if (iVal >= 1 && iVal <= 6) {
+				//----Input....
+				//this.log.info('_parseMSG(): received INPUT Value');
+				const sCmd = sMSG.substring(6, 8);
+				const iCmd = parseInt(sCmd, 16);
+				if (iCmd == 2) {
+					//----Gain
+					//this.log.info('_parseMSG(): received INPUT Value for GAIN:' + sMSG.substring(8, 16));
+					const sValue = sMSG.substring(8, 16);
+					let iValue = HexToFloat32(sValue);
+					//this.log.info('_parseMSG(): received inputGain from Matrix. Original Value:' + sValue.toString());
+					iValue = map(iValue, -40, 0, 0, 100); //this.simpleMap(0, 100, iVal);
+					//this.log.info('_parseMSG(): received gain for input ' + (iVal).toString() + ' from Hardware. Processed Value:' + iValue.toString());
+					this.setStateAsync('inputGain_' + (iVal).toString(), { val: iValue, ack: true });
+				} else if ((iCmd >= 51) && (iCmd <= 58)) {
+					//this.log.info('_parseMSG(): received routing info. IN:' + (iVal).toString()  + ' OUT:' + (iCmd-50).toString());
+					const sValue = sMSG.substring(8, 16);
+					const iValue = HexToFloat32(sValue);
+					const bValue = iValue == 0 ? false : true;
+					this.log.info('_parseMSG(): received routing info. IN:' + (iVal).toString() + ' OUT:' + (iCmd - 50).toString() + '. State:' + bValue.toString());
+					let sID = (0 + (iVal - 1) * 8 + (iCmd - 50 - 1)).toString();
+					while (sID.length < 2) sID = '0' + sID;
+					this.setStateAsync('routingNode_ID_' + sID + '_IN_' + (iVal).toString() + '_OUT_' + (iCmd - 50).toString(), { val: bValue, ack: true });
+					arrRouting[((iVal - 1) * 8 + (iCmd - 50 - 1))] = bValue;
+				}
+			} else if (iVal >= 7 && iVal <= 14) {
+				//----Output....
+				//this.log.info('_parseMSG(): received OUTPUT Value');
+				const sCmd = sMSG.substring(6, 8);
+				const iCmd = parseInt(sCmd, 16);
+				if (iCmd == 1) {
+					//----Mute
+					const sValue = sMSG.substring(8, 16);
+					const iValue = HexToFloat32(sValue);
+					const bOnOff = (iValue > 0) ? true : false;
+					this.log.info('_parseMSG(): received OUTPUT Value for MUTE. Output(Index):' + (iVal - 7).toString() + ' Val:' + bOnOff.toString());
+					this.setStateAsync('mute_' + (iVal - 7 + 1).toString(), { val: bOnOff, ack: true });
+
+				} else if (iCmd == 2) {
+					//----Gain
+					//this.log.info('_parseMSG(): received OUTPUT Value for GAIN:' + sMSG.substring(8, 16));
+					const sValue = sMSG.substring(8, 16);
+					let iValue = HexToFloat32(sValue);
+					//this.log.info('_parseMSG(): received outputGain from Matrix. Original Value:' + sValue.toString());
+					iValue = map(iValue, -40, 0, 0, 100); //this.simpleMap(0, 100, iVal);
+					//this.log.info('_parseMSG(): received gain for output ' + (iVal - 7).toString() + ' from Hardware. Processed Value:' + iValue.toString());
+					this.setStateAsync('outputGain_' + (iVal - 7 + 1).toString(), { val: iValue, ack: true });
+					this.setStateAsync('outputGainDisplay_' + (iVal - 7 + 1).toString(), { val: Math.round(iValue), ack: true });
+				}
+			}
+		}
+		*/
+	}
+
+
 
 	//==============================================================================================================
 	/**
