@@ -187,7 +187,7 @@ class BtouchVideomatrix extends utils.Adapter {
 
 
 		matrix.on('data', function (chunk) {
-			parentThis.log.info('matrix.onData():' + chunk + ' ' + toHexString(chunk));
+			//parentThis.log.info('matrix.onData():' + chunk + ' ' + toHexString(chunk));
 			if (parentThis.mode == MODE_SERIAL) {
 				parentThis.processIncoming(chunk);
 			} else if (parentThis.mode == MODE_NETWORK) {
@@ -292,13 +292,15 @@ class BtouchVideomatrix extends utils.Adapter {
 		bHasIncomingData = true; // IrgendETWAS ist angekommen
 
 		if (bWaitingForResponse == true) {
-			if (toHexString(in_msg).endsWith('\r\n')) {
+			if (toHexString(in_msg).endsWith('0d0a')) {
 				parentThis.log.info('REPSONSE!!!  YEAH!!');
+				in_msg = '';
 				bWaitingForResponse = false;
 			}
 
 			if (in_msg.length >= 15) {
 				parentThis.log.info('_processIncoming(); slightly processed:' + in_msg);
+				in_msg = '';
 				bWaitingForResponse = false;
 			}
 			/*
