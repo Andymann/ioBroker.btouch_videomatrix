@@ -285,7 +285,7 @@ class BtouchVideomatrix extends utils.Adapter {
 		bHasIncomingData = true; // IrgendETWAS ist angekommen
 
 		if (bWaitingForResponse == true) {
-			if (in_msg.length >= 16) {
+			if (in_msg.length >= 15) {
 				parentThis.log.info('_processIncoming(); slightly processed:' + in_msg);
 				bWaitingForResponse = false;
 			}
