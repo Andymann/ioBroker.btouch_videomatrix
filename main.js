@@ -120,7 +120,7 @@ class BtouchVideomatrix extends utils.Adapter {
 		arrCMD = [];
 
 		if (this.mode == MODE_SERIAL) {
-			this.log.info('connectMatrix(): Serial Port Mode');
+			this.log.info('connectMatrix(): Serial Port Mode ' + this.sSerialPortName);
 			const options = {
 				baudRate: 9600,
 				dataBits: 8,
@@ -287,9 +287,9 @@ class BtouchVideomatrix extends utils.Adapter {
 			this.mode = MODE_NONE;
 		}
 
-		if (mode == MODE_SERIAL) {
-			this.log.info(" Seriell:" + this.sSerialPortName);
-		} else if (mode == MODE_NETWORK) {
+		if (this.mode == MODE_SERIAL) {
+			this.log.info("Modus Seriell:" + this.sSerialPortName);
+		} else if (this.mode == MODE_NETWORK) {
 			this.log.info("Modus Netzwerk");
 		}
 
