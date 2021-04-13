@@ -292,7 +292,7 @@ class BtouchVideomatrix extends utils.Adapter {
 		bHasIncomingData = true; // IrgendETWAS ist angekommen
 
 		if (bWaitingForResponse == true) {
-			if (in_msg.endsWith('\r\n')) {
+			if (toHexString(in_msg).endsWith('\r\n')) {
 				parentThis.log.info('REPSONSE!!!  YEAH!!');
 				bWaitingForResponse = false;
 			}
