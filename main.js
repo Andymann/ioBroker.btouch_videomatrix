@@ -450,7 +450,7 @@ class BtouchVideomatrix extends utils.Adapter {
 		//this.setState('info.connection', true, true); //Green led in 'Instances'	
 		// z.b: HDMI36X36
 		if (sMSG.toLowerCase().includes('hdmi')) {
-			iXpos = sMSG.indexOf('X');
+			let iXpos = sMSG.indexOf('X');
 			if (iXpos > -1) {
 				sTmp = sMSG.substring(iXpos + 1);
 				parentThis.log.debug('MAXCHANNELS:' + sTmp);
