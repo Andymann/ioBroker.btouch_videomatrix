@@ -373,9 +373,10 @@ class BtouchVideomatrix extends utils.Adapter {
 			if (parentThis.mode == MODE_SERIAL) {
 				//----Wegen des Parsers enthaelt <chunk> die komplette Response
 				parentThis.parseMSG(chunk);
-				in_msg = chunk;
+				//in_msg = chunk;
 				bWaitingForResponse = false;
 				bConnection = true;
+				in_msg = '';
 			} else if (parentThis.mode == MODE_NETWORK) {
 				parentThis.log.info('processIncoming() Mode_Network: TBD');
 				in_msg += chunk;
@@ -423,7 +424,12 @@ class BtouchVideomatrix extends utils.Adapter {
 			// einkommende Daten ohne, dass auf eine Ressonse gewartet wird entstehen, 
 			// wenn an der Oberfläche etwas geändert wird
 			// --- z.B. parser.onData():/1V3.
-			parentThis.log.info(': processIncoming(): bWaitingForResponse==FALSE; in_msg:' + in_msg);
+			if (parentThis.mode == MODE_SERIAL) {
+				parentThis.log.info(': processIncoming() Serial: bWaitingForResponse==FALSE; in_msg:' + chunk);
+			} else if (parentThis.mode == MODE_NETWORK) {
+
+			}
+
 		}
 
 		if (in_msg.length > 120) {
