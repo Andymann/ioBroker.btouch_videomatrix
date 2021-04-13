@@ -289,7 +289,6 @@ class BtouchVideomatrix extends utils.Adapter {
 	processIncoming(chunk) {
 		//parentThis.log.info('processIncoming(): *' + toHexString(chunk) + '*');
 		in_msg += chunk;
-		parentThis.log.info('processIncoming(): *' + toHexString(in_msg) + '*');
 		bHasIncomingData = true; // IrgendETWAS ist angekommen
 
 		if (bWaitingForResponse == true) {
@@ -301,6 +300,7 @@ class BtouchVideomatrix extends utils.Adapter {
 
 			if (in_msg.length >= 15) {
 				parentThis.log.info('_processIncoming(); slightly processed:' + in_msg);
+				parentThis.log.info(toHexString(in_msg));
 				//in_msg = '';
 				bWaitingForResponse = false;
 			}
