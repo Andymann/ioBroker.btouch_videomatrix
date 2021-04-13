@@ -18,7 +18,7 @@ const MODE_NONE = 0x00;
 const MODE_SERIAL = 0x01;
 const MODE_NETWORK = 0x02;
 
-const CMDPING = '/*Type;';
+const CMDPING = '/*Type;\r\n';
 const CMDWAITQUEUE_1000 = 1000;
 let mode = MODE_NONE;
 let parentThis;
@@ -108,6 +108,7 @@ class BtouchVideomatrix extends utils.Adapter {
 			this.log.info('disConnectMatrix() Serial');
 			if (matrix.isOpen) {
 				matrix.close();
+				matrix.destroy();
 			}
 		} else if (mode == MODE_NETWORK) {
 			this.log.info('disConnectMatrix() Network');
