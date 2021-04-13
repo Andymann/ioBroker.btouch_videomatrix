@@ -8,8 +8,47 @@
 // you need to create an adapter
 const utils = require('@iobroker/adapter-core');
 
+const net = require('net');
+const serialport = require('serialport');
+const ByteLength = require('@serialport/parser-byte-length');
 // Load your modules here, e.g.:
 // const fs = require("fs");
+const MODE_NONE = 0x00;
+const MODE_SERIAL = 0x01;
+const MODE_NETWORK = 0x02;
+
+const CMDPING = '/*Type;';
+const CMDWAITQUEUE_1000 = 1000;
+let mode = MODE_NONE;
+let parentThis;
+
+
+let matrix = null;
+let bConnection = false;
+let bWaitQueue = false;
+let bHasIncomingData = false;
+let bFirstPing = true;
+let iMissedPingCounter = 0;
+let arrCMD = [];
+let cmdInterval;
+let sSerialPortName;
+
+
+
+//-------
+let query = null;
+let in_msg = '';
+//let iMaxTryCounter = 0;
+//let iMaxTimeoutCounter = 0;
+//var lastCMD;
+
+let arrStateQuery_Routing = [];
+let bQueryComplete_Routing;
+
+let bWaitingForResponse = false;
+let bQueryDone;
+let bQueryInProgress;
+let arrQuery = [];
 
 class BtouchVideomatrix extends utils.Adapter {
 
@@ -26,8 +65,208 @@ class BtouchVideomatrix extends utils.Adapter {
 		this.on('stateChange', this.onStateChange.bind(this));
 		// this.on('message', this.onMessage.bind(this));
 		this.on('unload', this.onUnload.bind(this));
+
+		parentThis = this;
 	}
 
+
+
+	//----Call fron onReady. Creating everything that can later be changed via GUI
+	async createStates() {
+		//this._createState_Routing();
+		//this._createState_ExclusiveRouting();
+		//this._createState_Labels();
+		//this._createState_Save();
+	}
+
+
+	initMatrix() {
+		this.log.info('initMatrix().');
+
+		arrCMD = [];
+		mode = MODE_NONE;
+		bWaitingForResponse = false;
+		bConnection = false;
+		bWaitQueue = false;
+		bHasIncomingData = false;
+		bFirstPing = true;
+		iMissedPingCounter = 0;
+
+
+		//----CMD-Queue einrichten   
+		clearInterval(cmdInterval);
+		cmdInterval = setInterval(function () {
+			parentThis.processCMD();
+		}, 100);
+
+		this.connectMatrix();
+	}
+
+	disconnectMatrix() {
+		if (mode == MODE_SERIAL) {
+			this.log.info('disConnectMatrix() Serial');
+			if (matrix.isOpen) {
+				matrix.close();
+			}
+		} else if (mode == MODE_NETWORK) {
+			this.log.info('disConnectMatrix() Network');
+		}
+		matrix.destroy();
+	}
+
+	connectMatrix(cb) {
+		this.log.info('connectMatrix()');
+		let parser;
+		arrCMD = [];
+
+		if (this.mode == MODE_SERIAL) {
+			this.log.info('connectMatrix(): Serial Port Mode');
+			const options = {
+				baudRate: 9600,
+				dataBits: 8,
+				stopBits: 1,
+				parity: 'none'
+			};
+
+			matrix = new serialport(this.sSerialPortName, options);
+			parser = matrix.pipe(new ByteLength({ length: 1 }));
+			/*
+			if (bConnection == false) {
+				parentThis.log.debug('connectMatrix() Serial. bConnection==false, sending CMDCONNECT:' + toHexString(cmdConnect));
+				arrCMD.push(cmdConnect);
+				arrCMD.push(cmdWaitQueue_1000);
+			} else {
+				parentThis.log.debug('_connect() Serial. bConnection==true. Nichts tun');
+			}
+			if (pingInterval) {
+				clearInterval(pingInterval);
+			}
+
+			//----Alle 1,5 Sekunden ein PING
+			pingInterval = setInterval(function () {
+				parentThis.pingMatrix();
+			}, 750);
+			*/
+		} else if (this.mode == MODE_NETWORK) {
+			this.log.info('connectMatrix():' + this.config.host + ':' + this.config.port);
+			matrix = new net.Socket();
+			/*
+			matrix.connect(this.config.port, this.config.host, function () {
+				if (bConnection == false) {
+					parentThis.log.debug('connectMatrix() Network. bConnection==false, sending CMDCONNECT:' + toHexString(cmdConnect));
+					arrCMD.push(cmdConnect);
+					arrCMD.push(cmdWaitQueue_1000);
+				} else {
+					parentThis.log.debug('_connect() Network. bConnection==true. Nichts tun');
+				}
+				if (pingInterval) {
+					clearInterval(pingInterval);
+				}
+
+				//----Alle 0,75 Sekunden ein PING
+				pingInterval = setInterval(function () {
+					parentThis.pingMatrix();
+				}, 750);
+			});
+			*/
+		}
+
+
+		matrix.on('data', function (chunk) {
+			if (mode == MODE_NETWORK) {
+				parentThis.processIncoming(chunk);
+			}
+			//parentThis.log.info('matrix.onData()');
+			//parentThis.log.info('matrix.onData(): ' + parentThis.toHexString(chunk) );
+
+		});
+
+		matrix.on('timeout', function (e) {
+			//if (e.code == 'ENOTFOUND' || e.code == 'ECONNREFUSED' || e.code == 'ETIMEDOUT') {
+			//            matrix.destroy();
+			//}
+			parentThis.log.error('AudioMatrix TIMEOUT. TBD');
+			//parentThis.connection=false;
+			//parentThis.setConnState(false, true);
+			//            parentThis.reconnect();
+		});
+
+		matrix.on('error', function (e) {
+			if (e.code == 'ENOTFOUND' || e.code == 'ECONNREFUSED' || e.code == 'ETIMEDOUT') {
+				//matrix.destroy();
+				//parentThis.initMatrix();
+				if (e.code == 'ECONNREFUSED') {
+					parentThis.log.error('Keine Verbindung. Ist der Adapter online?');
+					arrCMD.push(cmdWaitQueue_1000);
+
+				}
+			}
+			parentThis.log.error(e);
+			//            parentThis.reconnect();
+		});
+
+		matrix.on('close', function (e) {
+			//if (bConnection) {
+			parentThis.log.error('AudioMatrix closed. TBD');
+			//}
+			//parentThis.reconnect();
+		});
+
+		matrix.on('disconnect', function (e) {
+			parentThis.log.error('AudioMatrix disconnected. TBD');
+			//            parentThis.reconnect();
+		});
+
+		matrix.on('end', function (e) {
+			parentThis.log.error('AudioMatrix ended');
+			//parentThis.setState('info.connection', false, true);
+		});
+
+
+		parser.on('data', function (chunk) {
+			//parentThis.log.info('matrix.onData()');
+			//parentThis.log.info('matrix.onData(): ' + parentThis.toHexString(chunk) );
+			if (mode == MODE_SERIAL) {
+				parentThis.processIncoming(chunk);
+			}
+			//parentThis.processIncoming(chunk);
+		});
+	}
+
+	pingMatrix() {
+		if ((bConnection == true)/*&&(bWaitingForResponse==false)*/ && (bWaitQueue == false)) {
+			if (arrCMD.length == 0) {
+				//this.log.debug('pingMatrix()');
+				arrCMD.push(cmdConnect);
+				iMissedPingCounter = 0;
+				if (bFirstPing) {
+					//----Ab jetzt nicht mehr
+					bFirstPing = false;
+				}
+			}
+		} else {
+			//----No Connection
+			//this.log.info('pingMatrix(): No Connection.');
+			iMissedPingCounter++;
+
+			if (iMissedPingCounter > 10) {	//7,5 seconds
+				this.log.info('pingMatrix(): 10 mal No Connection. Forciere Reconnect');
+				parentThis.disconnectMatrix();
+				parentThis.initMatrix();
+			}
+
+		}
+	}
+
+
+
+
+	processCMD() {
+
+
+	}
+
+	//==============================================================================================================
 	/**
 	 * Is called when databases are connected and adapter received configuration.
 	 */
@@ -35,14 +274,26 @@ class BtouchVideomatrix extends utils.Adapter {
 		// Initialize your adapter here
 
 		// The adapters config (in the instance object everything under the attribute "native") is accessible via
-		// this.config:
-		this.log.info('config option1: ' + this.config.optHost);
-		this.log.info('config option2: ' + this.config.optPort);
-		this.log.info('config Connection: ' + this.config.optConnection);
+		//this.log.info('config optHost: ' + this.config.optHost);
+		//this.log.info('config optPort: ' + this.config.optPort);
+		//this.log.info('config Connection: ' + this.config.optConnection);
 
-		if (typeof this.config.optConnection == 'undefined') {
-			this.log.info('Connection undefined. Schaetze, = USB SERIELL');
+		if (this.config.optConnection == 'connSerial') {
+			this.sSerialPortName = this.config.serialPort.trim();
+			this.mode = MODE_SERIAL;
+		} else if (this.config.optConnection == 'connNetwork') {
+			this.mode = MODE_NETWORK;
+		} else {
+			this.mode = MODE_NONE;
 		}
+
+		if (mode == MODE_SERIAL) {
+			this.log.info(" Seriell:" + this.sSerialPortName);
+		} else if (mode == MODE_NETWORK) {
+			this.log.info("Modus Netzwerk");
+		}
+
+		this.createStates();
 
 		/*
 		For every state in the system there has to be also an object of type state
@@ -68,22 +319,26 @@ class BtouchVideomatrix extends utils.Adapter {
 		setState examples
 		you will notice that each setState will cause the stateChange event to fire (because of above subscribeStates cmd)
 		*/
+		/*
 		// the variable testVariable is set to true as command (ack=false)
 		await this.setStateAsync('testVariable', true);
-
+	
 		// same thing, but the value is flagged "ack"
 		// ack should be always set to true if the value is received from or acknowledged from the target system
 		await this.setStateAsync('testVariable', { val: true, ack: true });
-
+	
 		// same thing, but the state is deleted after 30s (getState will return null afterwards)
 		await this.setStateAsync('testVariable', { val: true, ack: true, expire: 30 });
-
+	
 		// examples for the checkPassword/checkGroup functions
 		let result = await this.checkPasswordAsync('admin', 'iobroker');
 		this.log.info('check user admin pw iobroker: ' + result);
-
+	
 		result = await this.checkGroupAsync('admin', 'admin');
 		this.log.info('check group user admin group admin: ' + result);
+		*/
+
+		this.initMatrix();
 	}
 
 	/**

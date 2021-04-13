@@ -1,26 +1,38 @@
 {
-  "name": "iobroker.btouch_videomatrix",
-  "version": "0.0.2",
-  "description": "BTouch VideoMatrix",
+  "_from": "github:Andymann/ioBroker.btouch_videomatrix#2f6d89acdb9af047a165ba222a5f96076c4f9810",
+  "_id": "iobroker.btouch_videomatrix@0.0.2",
+  "_inBundle": false,
+  "_integrity": "",
+  "_location": "/iobroker.btouch_videomatrix",
+  "_phantomChildren": {},
+  "_requested": {
+    "type": "git",
+    "raw": "Andymann/ioBroker.btouch_videomatrix#2f6d89acdb9af047a165ba222a5f96076c4f9810",
+    "rawSpec": "Andymann/ioBroker.btouch_videomatrix#2f6d89acdb9af047a165ba222a5f96076c4f9810",
+    "saveSpec": "github:Andymann/ioBroker.btouch_videomatrix#2f6d89acdb9af047a165ba222a5f96076c4f9810",
+    "fetchSpec": null,
+    "gitCommittish": "2f6d89acdb9af047a165ba222a5f96076c4f9810"
+  },
+  "_requiredBy": [
+    "#USER",
+    "/"
+  ],
+  "_resolved": "github:Andymann/ioBroker.btouch_videomatrix#2f6d89acdb9af047a165ba222a5f96076c4f9810",
+  "_spec": "Andymann/ioBroker.btouch_videomatrix#2f6d89acdb9af047a165ba222a5f96076c4f9810",
+  "_where": "/opt/iobroker",
   "author": {
     "name": "Andy Fischer",
     "email": "info@Andyland.info"
   },
-  "homepage": "https://github.com/Andymann/ioBroker.btouch_videomatrix",
-  "license": "MIT",
-  "keywords": [
-    "ioBroker",
-    "template",
-    "Smart Home",
-    "home automation"
-  ],
-  "repository": {
-    "type": "git",
-    "url": "https://github.com/Andymann/ioBroker.btouch_videomatrix"
+  "bugs": {
+    "url": "https://github.com/Andymann/ioBroker.btouch_videomatrix/issues"
   },
+  "bundleDependencies": false,
   "dependencies": {
     "@iobroker/adapter-core": "^2.4.0"
   },
+  "deprecated": false,
+  "description": "BTouch VideoMatrix",
   "devDependencies": {
     "@iobroker/testing": "^2.2.0",
     "@types/chai": "^4.2.11",
@@ -41,17 +53,27 @@
     "sinon": "^9.0.2",
     "sinon-chai": "^3.5.0"
   },
+  "homepage": "https://github.com/Andymann/ioBroker.btouch_videomatrix",
+  "keywords": [
+    "ioBroker",
+    "template",
+    "Smart Home",
+    "home automation"
+  ],
+  "license": "MIT",
   "main": "main.js",
+  "name": "iobroker.btouch_videomatrix",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Andymann/ioBroker.btouch_videomatrix.git"
+  },
   "scripts": {
+    "lint": "eslint",
+    "test": "npm run test:js && npm run test:package",
+    "test:integration": "mocha test/integration --exit",
     "test:js": "mocha --opts test/mocha.custom.opts",
     "test:package": "mocha test/package --exit",
-    "test:unit": "mocha test/unit --exit",
-    "test:integration": "mocha test/integration --exit",
-    "test": "npm run test:js && npm run test:package",
-    "lint": "eslint"
+    "test:unit": "mocha test/unit --exit"
   },
-  "bugs": {
-    "url": "https://github.com/Andymann/ioBroker.btouch_videomatrix/issues"
-  },
-  "readmeFilename": "README.md"
+  "version": "0.0.2"
 }

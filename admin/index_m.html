@@ -64,31 +64,89 @@
         </div>
       </div>
 
+
+	  <!-- Testing kram-->
+	
+	  	<label>
+			<input type="radio" name="optConnection" id="connSerial" checked> <span class="translate">Serial Connection</span>
+		</label><br>
+		<input type="text" id="serialPort" class="value"/><span class="translate"> e.g.</span> <code>/dev/ttyUSB0</code><br>
+		<br>
+
+
+		<label>
+			<input type="radio" name="optConnection" id="connNetwork"> <span class="translate">Network Connection</span>
+		</label><br>     
+		<label>Host</label><input type="text" class="value" id="optHost"/>
+		<label>Port</label><input type="text" class="value" id="optPort" /><br>                    
+	  
+	<!--
+	  <div class="row">
+		<label>
+			<input type="radio" id="RadioSerial" name="optConnection" value="connSerial">
+			Seriell
+		</label>
+		<input type="text" id="serialPort" class="value" />
+		  <label class="translate" for="port">Serial port</label>
+		  <span class="translate">e.g.</span> <code>/dev/ttyUSB0</code><br>
+		  <br>
+		<input type="radio" id="RadioNetwork" name="optConnection" value="connNetwork">
+		<label for="RadioNetwork">Netzwerk</label><br>
+		<label>Host</label>
+			<input type="text" class="value" id="optHost" />
+			<label>Port</label>
+			<input type="text" class="value" id="optPort" /><br>
+		
+	  </div>
+	-->
       <!-- Put your content here -->
-      <div class="input-field col s6">
-        <select class="value" id="optConnection">
-          <option value="USB Seriell">USB Seriell</option>
-          <option value="Netzwerk auf Seriell">Netzwerk auf Seriell</option>
-        </select>
-        <!--<label class="translate" for="autoUpdate">Auto update:</label>-->
+	  <!--
+	  <div class="row">
+		<div class="input-field col s6">
+			<label>Verbindungsart</label>
+			<select class="value" id="optConnection">
+			  <option value="connSerial">Seriell</option>
+			  <option value="connNetwork">Netzwerk</option>
+			</select>
+		  </div>
+		<div class="input-field col s12 m6 l4">
+		  <input type="text" id="serialPort" class="value" />
+		  <label class="translate" for="port">Serial port</label>
+		  <span class="translate">e.g.</span> <code>/dev/ttyUSB0</code>
+		</div>
+		<div class="col s12 m6 l4 input-field">
+			<label>Host</label>
+			<input type="text" class="value" id="optHost" />
+		  </div>
+  
+		  <div class="col s12 m6 l4 input-field">
+			<label>Port</label>
+			<input type="text" class="value" id="optPort" />
+		  </div>
+	  </div>
+	-->
+	  <!--
+      
+
+	  <div class="input-field col s12 m6 l4">
+        <input type="text" id="serialPort" class="value" />
+        <label class="translate" for="port">Serial port</label>
+        <span class="translate">e.g.</span> <code>/dev/ttyUSB0</code>
       </div>
-      <!-- For example columns with settings: -->
 
       <div class="row">
+
         <div class="col s6 input-field">
-          <!--<label for="option1" class="translate">option1</label>-->
-          <!--<input type="checkbox" class="value" id="option1" />-->
           <label>Host</label>
           <input type="text" class="value" id="optHost" />
         </div>
 
         <div class="col s6 input-field">
-          <!--<label for="option2" class="translate">option2</label>-->
-          <!--<input type="text" class="value" id="option2" />-->
           <label>Port</label>
           <input type="text" class="value" id="optPort" />
         </div>
       </div>
+	-->
     </div>
   </body>
 </html>

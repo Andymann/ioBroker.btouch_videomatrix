@@ -6,10 +6,9 @@
       "0.0.1": {
         "de": "Erstveröffentlichung"
       },
-	  "0.0.2": {
+      "0.0.2": {
         "de": "Aus bTouch wird BTouch"
       }
-
     },
     "title": "BTouch VideoMatrix",
     "titleLang": {
@@ -18,8 +17,15 @@
     "desc": {
       "de": "BTouch VideoMatrix"
     },
-    "authors": ["Andy Fischer <info@Andyland.info>"],
-    "keywords": ["ioBroker", "template", "Smart Home", "home automation"],
+    "authors": [
+      "Andy Fischer <info@Andyland.info>"
+    ],
+    "keywords": [
+      "ioBroker",
+      "template",
+      "Smart Home",
+      "home automation"
+    ],
     "license": "MIT",
     "platform": "Javascript/Node.js",
     "main": "main.js",
@@ -38,14 +44,16 @@
       {
         "js-controller": ">=1.4.2"
       }
-    ]
+    ],
+    "installedFrom": "file:///Users/andyfischer/Documents/iobroker_data/node_modules/iobroker.btouch_videomatrix"
   },
   "native": {
     "option1": true,
     "option2": "42",
     "optHost": "BTouch3",
     "optPort": "1024",
-    "optConnection": "USB Seriell"
+    "optConnection": "connSerial",
+    "serialPort": "/dev/ttyUSB0"
   },
   "objects": [],
   "instanceObjects": []
