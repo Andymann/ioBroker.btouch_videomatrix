@@ -32,7 +32,7 @@ let iMissedPingCounter = 0;
 let arrCMD = [];
 let cmdInterval;
 let sSerialPortName;
-
+let pingInterval;
 
 
 //-------
