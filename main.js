@@ -287,7 +287,7 @@ class BtouchVideomatrix extends utils.Adapter {
 
 	// Verarbeitung eingehender Daten
 	processIncoming(chunk) {
-		//parentThis.log.info('processIncoming(): ' + toHexString(chunk));
+		parentThis.log.info('processIncoming(): *' + toHexString(chunk) + '*');
 		in_msg += chunk;
 		bHasIncomingData = true; // IrgendETWAS ist angekommen
 
