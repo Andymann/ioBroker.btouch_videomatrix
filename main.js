@@ -321,9 +321,9 @@ class BtouchVideomatrix extends utils.Adapter {
 		parentThis.mode_query = MODE_QUERY_STARTED;
 		parentThis.arrStateQuery_Routing = [];
 		//parentThis.arrQuery = [];
-		for (var i = 0; i < MAXCHANNELS; i++) {
+		for (let i = 0; i < parentThis.MAXCHANNELS; i++) {
 			//arrQuery.push("Status" + (i + 1).toString() + ".");
-			arrCMD.push("Status" + (i + 1).toString() + ".");
+			parentThis.arrCMD.push("Status" + (i + 1).toString() + ".");
 			parentThis.arrStateQuery_Routing.push(false);
 		}
 
