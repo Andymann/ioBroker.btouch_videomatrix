@@ -476,7 +476,6 @@ class BtouchVideomatrix extends utils.Adapter {
 			//----Response z.B. /1V3.
 			let iTrenner = sMSG.toLowerCase().indexOf('v');
 			let sEingang = sMSG.substring(1, iTrenner);
-
 			let sAusgang = sMSG.substring(iTrenner + 1, sMSG.indexOf('.'));
 			if (parentThis.bWaitingForResponse == true) {
 				this.log.info('parseMsg(): SET Routing Answer: IN:' + sEingang + '; OUT:' + sAusgang + ';');
@@ -485,11 +484,28 @@ class BtouchVideomatrix extends utils.Adapter {
 				this.setStateAsync('input_' + (sEingang).toString().padStart(2, '0') + '_out_' + (sAusgang).toString().padStart(2, '0'), { val: true, ack: true });
 			}
 
+			this.log.info('fixExclusiveRoutingStates():');
+			for (let i = 0; i < parentThis.MAXCHANNELS; i++) {
+				if (i + 1 != parseInt(sEingang)) {
+					this.log.debug('fixExclusiveRoutingStates(): Setzte Eingang ' + (i + 1).toString() + ' fuer Ausgang ' + sAusgang + ' auf FALSE');
+					this.setStateAsync('input_' + (i + 1).toString().padStart(2, '0') + '_out_' + (sAusgang).toString().padStart(2, '0'), { val: false, ack: true });
+				}
+			}
+
 		} else {
 			this.log.info('VideoMatrix: parseMsg() Response unhandled:' + sMSG);
 		}
+	}
 
-
+	// Ein Ausgang kann nur einen definierten Eingang besitzen
+	fixExclusiveRoutingStates(pEingang, pAusgang) {
+		this.log.info('fixExclusiveRoutingStates():');
+		for (let i = 0; i < parentThis.MAXCHANNELS; i++) {
+			if (i + 1 != parseInt(pEingang)) {
+				this.log.debug('fixExclusiveRoutingStates(): Setzte Eingang ' + (i + 1).toString() + ' fuer Ausgang ' + pAusgang + ' auf FALSE');
+				this.setStateAsync('input_' + (i + 1).toString().padStart(2, '0') + '_out_' + (pAusgang).toString().padStart(2, '0'), { val: false, ack: true });
+			}
+		}
 	}
 
 	//----Ein State wurde veraendert. wir verarbeiten hier nur ack==FALSE
