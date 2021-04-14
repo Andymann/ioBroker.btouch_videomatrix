@@ -317,7 +317,7 @@ class BtouchVideomatrix extends utils.Adapter {
 
 	//----Fragt die Werte vom Geraet ab.
 	queryMatrix() {
-		//this.log.debug('VideoMatrix: queryMatrix(). arrCMD.length vorher=' + arrCMD.length.toString());                      
+		this.log.debug('VideoMatrix: queryMatrix(). arrCMD.length vorher=' + arrCMD.length.toString());
 		parentThis.mode_query = MODE_QUERY_STARTED;
 		parentThis.arrStateQuery_Routing = [];
 		//parentThis.arrQuery = [];
