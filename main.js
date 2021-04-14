@@ -115,7 +115,7 @@ class BtouchVideomatrix extends utils.Adapter {
 		// Kombinatinen von Ein- und Ausgang als bool
 		for (var i = 0; i < MAXCHANNELS; i++) {
 			for (var j = 0; j < MAXCHANNELS; j++) {
-				await this.setObjectAsync('SelectBool.input_' + (i + 1).toString().padStart(2, '0') + '_out_' + (j + 1).toString().padStart(2, '0'), {
+				await this.setObjectAsync('SelectSingle.input_' + (i + 1).toString().padStart(2, '0') + '_out_' + (j + 1).toString().padStart(2, '0'), {
 					type: 'state',
 					common: {
 						name: 'Connect Input to Output as boolean',
