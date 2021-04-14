@@ -460,6 +460,14 @@ class BtouchVideomatrix extends utils.Adapter {
 		// z.b: HDMI36X36
 		if (sMSG.toLowerCase().includes('hdmi')) {
 			//....something something.
+		} else if (sMSG.toLowerCase().endsWith('close.')) {
+			// Ausgang wird ausgeschaltet
+			// z.B.: '/3 Close.'
+			let iStart = sMSG.indexOf('/') + 1;
+			let tmpOUT = sMSG.substring(iStart, sMSG.indexOf(' '));
+			parentThis.log.info('parseMSG(): OFF' + tmpOUT);
+
+
 		} else if (sMSG.toLowerCase().startsWith('/v:')) {
 			//----Ein Ergebnis der Query
 			let iStart = sMSG.indexOf(':') + 1;
