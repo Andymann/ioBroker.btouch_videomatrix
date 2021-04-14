@@ -482,6 +482,7 @@ class BtouchVideomatrix extends utils.Adapter {
 				this.log.info('parseMsg(): SET Routing Answer: IN:' + sEingang + '; OUT:' + sAusgang + ';');
 			} else {
 				this.log.info('parseMsg(): Aenderung an der Hardware: IN:' + sEingang + '; OUT:' + sAusgang + ';');
+				this.setStateAsync('input_' + (sEingang).toString().padStart(2, '0') + '_out_' + (sAusgang).toString().padStart(2, '0'), { val: true, ack: true });
 			}
 
 		} else {
