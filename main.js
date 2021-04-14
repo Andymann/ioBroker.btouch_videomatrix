@@ -13,16 +13,22 @@ const serialport = require('serialport');
 const Readline = require('@serialport/parser-readline')
 const ByteLength = require('@serialport/parser-byte-length');
 const TIMEOUT = 5000;
-let MAXCHANNELS = 0;
-// Load your modules here, e.g.:
-// const fs = require("fs");
+
 const MODE_NONE = 0x00;
 const MODE_SERIAL = 0x01;
 const MODE_NETWORK = 0x02;
 
+const MODE_QUERY_NONE = 0x00;
+const MODE_QUERY_STARTED = 0x01;
+const MODE_QUERY_FINISHED = 0x02;
+
+let MAXCHANNELS = 0;
+
 const CMDPING = '/*Type;';
 const CMDWAITQUEUE_1000 = 1000;
+
 let mode = MODE_NONE;
+let mode_query = MODE_QUERY_NONE;
 let parentThis;
 
 
@@ -49,9 +55,8 @@ let arrStateQuery_Routing = [];
 let bQueryComplete_Routing;
 
 let bWaitingForResponse = false;
-let bQueryDone;
-let bQueryInProgress;
-let arrQuery = [];
+l//et arrQuery = [];
+let arrStateQuery_Routing = [];
 
 
 function toHexString(byteArray) {
@@ -75,7 +80,6 @@ class BtouchVideomatrix extends utils.Adapter {
 		this.on('stateChange', this.onStateChange.bind(this));
 		// this.on('message', this.onMessage.bind(this));
 		this.on('unload', this.onUnload.bind(this));
-
 		parentThis = this;
 	}
 
@@ -133,6 +137,7 @@ class BtouchVideomatrix extends utils.Adapter {
 
 		arrCMD = [];
 		mode = MODE_NONE;
+		mode_query = MODE_QUERY_NONE;
 		bWaitingForResponse = false;
 		bConnection = false;
 		bWaitQueue = false;
@@ -182,17 +187,6 @@ class BtouchVideomatrix extends utils.Adapter {
 				clearInterval(pingInterval);
 			}
 
-
-			/*
-			if (bConnection == false) {
-				parentThis.log.debug('connectMatrix() Serial. bConnection==false, sending CMDPING:' + CMDPING);
-				arrCMD.push(cmdConnect);
-				arrCMD.push(cmdWaitQueue_1000);
-			} else {
-				parentThis.log.debug('_connect() Serial. bConnection==true. Nichts tun');
-			}
-			*/
-
 			//----Alle x Sekunden ein PING
 			pingInterval = setInterval(function () {
 				parentThis.pingMatrix();
@@ -230,9 +224,6 @@ class BtouchVideomatrix extends utils.Adapter {
 			} else if (parentThis.mode == MODE_NETWORK) {
 				parentThis.processIncoming(chunk);
 			}
-			//
-			//parentThis.log.info('matrix.onData(): ' + parentThis.toHexString(chunk) );
-
 		});
 
 		matrix.on('timeout', function (e) {
@@ -252,7 +243,6 @@ class BtouchVideomatrix extends utils.Adapter {
 				if (e.code == 'ECONNREFUSED') {
 					parentThis.log.error('Keine Verbindung. Ist der Adapter online?');
 					arrCMD.push(cmdWaitQueue_1000);
-
 				}
 			}
 			parentThis.log.error(e);
@@ -285,6 +275,9 @@ class BtouchVideomatrix extends utils.Adapter {
 			}
 			//parentThis.processIncoming(chunk);
 		});
+
+		//----Den Zustand der Hardware abfragen
+		parentThis.queryMatrix();
 	}
 
 	pingMatrix() {
@@ -323,6 +316,55 @@ class BtouchVideomatrix extends utils.Adapter {
 		}
 	}
 
+	//----Fragt die Werte vom Geraet ab.
+	queryMatrix() {
+		//this.log.debug('VideoMatrix: queryMatrix(). arrCMD.length vorher=' + arrCMD.length.toString());                      
+		parentThis.mode_query = MODE_QUERY_STARTED;
+		parentThis.arrStateQuery_Routing = [];
+		//parentThis.arrQuery = [];
+		for (var i = 0; i < MAXCHANNELS; i++) {
+			//arrQuery.push("Status" + (i + 1).toString() + ".");
+			arrCMD.push("Status" + (i + 1).toString() + ".");
+			parentThis.arrStateQuery_Routing.push(false);
+		}
+
+		this.setState('queryState', true, true);
+		/*
+		arrQuery.forEach(function (item, index, array) {
+			//parentThis.log.info('VideoMatrix: queryMatrix(). pushing:' + item);
+			arrCMD.push(item);
+		});
+		*/
+		//this.log.debug('VideoMatrix: queryMatrix(). arrCMD.length hinterher=' + arrCMD.length.toString());
+		//iMaxTryCounter = 3;
+	}
+
+	//----stellt fest, ob das Abfragen der Werte von der Hardware vollstaendig ist.
+	checkQueryDone() {
+		if (parentThis.mode_query == MODE_QUERY_STARTED) {
+			let bTMP_Routing_done = true;
+			var sRouting = 'Routing:';
+			parentThis.arrStateQuery_Routing.forEach(function (item, index, array) {
+				bTMP_Routing_done = bTMP_Routing_done && item;
+				sRouting += item.toString() + ' ';
+			});
+			//bQueryComplete_Routing = bTMP_Routing;
+			if (bTMP_Routing_done == true) {
+				parentThis.mode_query = MODE_QUERY_FINISHED;
+			}
+			this.log.debug('checkQueryDone(): Routing:' + bQueryComplete_Routing);
+			this.log.debug('checkQueryDone(): Routing:' + sRouting);
+		} else if (parentThis.mode_query == MODE_QUERY_NONE) {
+			this.log.debug('checkQueryDone(): mode_query ist NONE');
+		} else if (parentThis.mode_query == MODE_QUERY_FINISHED) {
+			this.log.debug('checkQueryDone(): Abfrage auf Routing bereits komplett.');
+		}
+
+
+		//this.setState('info.connection', bQueryDone, true);
+		this.setState('queryState', false, true);
+	}
+
 	//wird alle 100ms aufgerufen. Die CMD-Queue wird abgearbeitet und Befehle gehen raus.
 	processCMD() {
 		//this.log.debug('processCMD()');
@@ -353,41 +395,6 @@ class BtouchVideomatrix extends utils.Adapter {
 							parentThis.log.info('processCMD(): Irgendetwas kam an... es lebt.');
 						}
 					}, TIMEOUT);
-
-
-					/*
-					if (tmp.length == 10) {
-						//----Normaler Befehl
-						//this.log.debug('processCMD: next CMD=' + toHexString(tmp) + ' arrCMD.length rest=' + arrCMD.length.toString());
-						matrix.write(tmp);
-						bHasIncomingData = false;
-						//lastCMD = tmp;
-						//iMaxTryCounter = MAXTRIES;
-						if (query) {
-							clearTimeout(query);
-						}
-						query = setTimeout(function () {
-							//----5 Sekunden keine Antwort und das Teil ist offline
-							if (bHasIncomingData == false) {
-								//----Nach x Milisekunden ist noch gar nichts angekommen....
-								parentThis.log.error('processCMD(): KEINE EINKOMMENDEN DATEN NACH ' + TIMEOUT.toString() + ' Milisekunden. OFFLINE?');
-								bConnection = false;
-								parentThis.disconnectMatrix();
-								parentThis.initMatrix();
-							} else {
-								parentThis.log.info('processCMD(): Irgendetwas kam an... es lebt.');
-							}
-						}, TIMEOUT);
-
-					} else if (tmp.length == 2) {
-						const iWait = tmp[0] * 256 + tmp[1];
-						bWaitQueue = true;
-						this.log.debug('processCMD.waitQueue: ' + iWait.toString());
-						setTimeout(function () { bWaitQueue = false; parentThis.log.info('processCMD.waitQueue DONE'); }, iWait);
-					} else {
-						//----Nix          
-					}
-					*/
 				} else {
 					//this.log.debug('processCMD: bWaitingForResponse==FALSE, arrCMD ist leer. Kein Problem');
 				}
@@ -420,6 +427,7 @@ class BtouchVideomatrix extends utils.Adapter {
 				// einkommende Daten ohne, dass auf eine Response gewartet wird entstehen, 
 				// wenn an der Oberfläche etwas geändert wird. bsp: '/1V3.'
 				parentThis.log.info(': processIncoming() Serial: bWaitingForResponse==FALSE; in_msg:' + chunk);
+				parentThis.parseMSG(chunk);
 			}
 		} else if (parentThis.mode == MODE_NETWORK) {
 			parentThis.log.info('processIncoming() Mode_Network: TBD');
@@ -434,20 +442,6 @@ class BtouchVideomatrix extends utils.Adapter {
 				parentThis.log.info(': processIncoming() Network: bWaitingForResponse==FALSE; in_msg:' + in_msg);
 			}
 		}
-		/*
-		if (toHexString(in_msg).endsWith('0d0a')) {
-			parentThis.log.info('REPSONSE!!!  YEAH!!');
-			in_msg = '';
-			bWaitingForResponse = false;
-		}
-	
-		if (in_msg.length >= 15) {
-			parentThis.log.info('_processIncoming(); slightly processed:' + in_msg);
-			parentThis.log.info(toHexString(in_msg));
-			//in_msg = '';
-			bWaitingForResponse = false;
-		}
-		*/
 
 		if (in_msg.length > 120) {
 			//----Just in case
@@ -459,134 +453,55 @@ class BtouchVideomatrix extends utils.Adapter {
 	}
 
 	//----Data coming from hardware
+	//----bWaitingForResponse==TRUE: reaktion auf Gui-Command
+	//----bWaitingForResponse==FALSE: Routing an der Hardware wurde geaendert
 	parseMSG(sMSG) {
 		parentThis.log.info('parseMSG():' + sMSG);
 		//this.setState('info.connection', true, true); //Green led in 'Instances'	
 		// z.b: HDMI36X36
 		if (sMSG.toLowerCase().includes('hdmi')) {
-			/*
-			let iXpos = sMSG.indexOf('X');
-			if (iXpos > -1) {
-				let sTmp = sMSG.substring(iXpos + 1);
-				parentThis.log.debug('MAXCHANNELS:' + sTmp);
-				parentThis.MAXCHANNELS = parseInt(sTmp, 10)
+			//....something something.
+		} else if (sMSG.toLowerCase().startsWith('/v:')) {
+			//----Ein Ergebnis der Query
+			let iStart = sMSG.indexOf(':') + 1;
+			let tmpIN = sMSG.substring(iStart, msg.indexOf(' '));
+			let tmpOUT = sMSG.substring(msg.lastIndexOf(' ') + 1).trim();
+			//this.log.info('parseMsg(): Routing Query Answer: IN:' + tmpIN + '; OUT:' + tmpOUT + ';');
 
+			this.setStateAsync('input_' + (tmpIN).toString().padStart(2, '0') + '_out_' + (tmpOUT).toString().padStart(2, '0'), { val: true, ack: true });
+			parentThis.arrStateQuery_Routing[parseInt(tmpOUT) - 1] = true;
+			parentThis.checkQueryDone();
+
+		} else if (msg.toLowerCase().startsWith('/')) {
+			//----Repsonse auf gesetztes Routing, Obacht bei der Reihenfolge.
+			//----Response z.B. /1V3.
+			let iTrenner = sMSG.toLowerCase().indexOf('v');
+			let sEingang = sMSG.substring(1, iTrenner);
+
+			let sAusgang = sMSG.substring(iTrenner + 1, sMSG.indexOf('.'));
+			if (parentThis.bWaitingForResponse == true) {
+				this.log.info('parseMsg(): SET Routing Answer: IN:' + sEingang + '; OUT:' + sAusgang + ';');
+			} else {
+				this.log.info('parseMsg(): Aenderung an der Hardware: IN:' + sEingang + '; OUT:' + sAusgang + ';');
 			}
-			*/
-		}
 
-		/*
-		if (sMSG === toHexString(cmdBasicResponse)) {
-			//this.log.info('parseMSG(): Basic Response.');
-			bConnection = true;
-	
-		} else if (sMSG === toHexString(cmdTransmissionDone)) {
-			this.log.info('parseMSG(): Transmission Done.');
-			this.processExclusiveRoutingStates();
-			this.setState('info.connection', true, true); //Green led in 'Instances'			
-			bWaitingForResponse = false;
-		} else if (sMSG.startsWith('5aa50700')) {
-			//this.log.info('_parseMSG(): received main volume from Matrix.');
-			const sHex = sMSG.substring(8, 16);
-			let iVal = HexToFloat32(sHex);
-			iVal = simpleMap(0, 100, iVal);
-			//this.log.info('_parseMSG(): received main volume from Matrix. Processed Value:' + iVal.toString());
-			this.setStateAsync('mainVolume', { val: iVal, ack: true });
 		} else {
-			const sHex = sMSG.substring(4, 6);
-			const iVal = parseInt(sHex, 16);
-			if (iVal >= 1 && iVal <= 6) {
-				//----Input....
-				//this.log.info('_parseMSG(): received INPUT Value');
-				const sCmd = sMSG.substring(6, 8);
-				const iCmd = parseInt(sCmd, 16);
-				if (iCmd == 2) {
-					//----Gain
-					//this.log.info('_parseMSG(): received INPUT Value for GAIN:' + sMSG.substring(8, 16));
-					const sValue = sMSG.substring(8, 16);
-					let iValue = HexToFloat32(sValue);
-					//this.log.info('_parseMSG(): received inputGain from Matrix. Original Value:' + sValue.toString());
-					iValue = map(iValue, -40, 0, 0, 100); //this.simpleMap(0, 100, iVal);
-					//this.log.info('_parseMSG(): received gain for input ' + (iVal).toString() + ' from Hardware. Processed Value:' + iValue.toString());
-					this.setStateAsync('inputGain_' + (iVal).toString(), { val: iValue, ack: true });
-				} else if ((iCmd >= 51) && (iCmd <= 58)) {
-					//this.log.info('_parseMSG(): received routing info. IN:' + (iVal).toString()  + ' OUT:' + (iCmd-50).toString());
-					const sValue = sMSG.substring(8, 16);
-					const iValue = HexToFloat32(sValue);
-					const bValue = iValue == 0 ? false : true;
-					this.log.info('_parseMSG(): received routing info. IN:' + (iVal).toString() + ' OUT:' + (iCmd - 50).toString() + '. State:' + bValue.toString());
-					let sID = (0 + (iVal - 1) * 8 + (iCmd - 50 - 1)).toString();
-					while (sID.length < 2) sID = '0' + sID;
-					this.setStateAsync('routingNode_ID_' + sID + '_IN_' + (iVal).toString() + '_OUT_' + (iCmd - 50).toString(), { val: bValue, ack: true });
-					arrRouting[((iVal - 1) * 8 + (iCmd - 50 - 1))] = bValue;
-				}
-			} else if (iVal >= 7 && iVal <= 14) {
-				//----Output....
-				//this.log.info('_parseMSG(): received OUTPUT Value');
-				const sCmd = sMSG.substring(6, 8);
-				const iCmd = parseInt(sCmd, 16);
-				if (iCmd == 1) {
-					//----Mute
-					const sValue = sMSG.substring(8, 16);
-					const iValue = HexToFloat32(sValue);
-					const bOnOff = (iValue > 0) ? true : false;
-					this.log.info('_parseMSG(): received OUTPUT Value for MUTE. Output(Index):' + (iVal - 7).toString() + ' Val:' + bOnOff.toString());
-					this.setStateAsync('mute_' + (iVal - 7 + 1).toString(), { val: bOnOff, ack: true });
-	
-				} else if (iCmd == 2) {
-					//----Gain
-					//this.log.info('_parseMSG(): received OUTPUT Value for GAIN:' + sMSG.substring(8, 16));
-					const sValue = sMSG.substring(8, 16);
-					let iValue = HexToFloat32(sValue);
-					//this.log.info('_parseMSG(): received outputGain from Matrix. Original Value:' + sValue.toString());
-					iValue = map(iValue, -40, 0, 0, 100); //this.simpleMap(0, 100, iVal);
-					//this.log.info('_parseMSG(): received gain for output ' + (iVal - 7).toString() + ' from Hardware. Processed Value:' + iValue.toString());
-					this.setStateAsync('outputGain_' + (iVal - 7 + 1).toString(), { val: iValue, ack: true });
-					this.setStateAsync('outputGainDisplay_' + (iVal - 7 + 1).toString(), { val: Math.round(iValue), ack: true });
-				}
-			}
+			this.log.info('VideoMatrix: parseMsg() Response unhandled:' + sMSG);
 		}
-		*/
+
+
 	}
 
-	//----Ein State wurde veraendert
-
-	//DAS MUSS NOCH GEMACHT WERDEN
+	//----Ein State wurde veraendert. wir verarbeiten hier nur ack==FALSE
+	//----d.h.: Aenderungen, die ueber die GUI kommen.
+	//----Wenn das Routing an der Hardware geaendert wird, kommt die info via parseMSG herein.
 	matrixChanged(id, val, ack) {
 		//parentThis.log.info('matrixChanged() id:' + id);	//z.B. input_01_out_02
-		/*
-		if (connection && val && !val.ack) {
-			//this.log.info('matrixChanged: tabu=TRUE' );
-			//tabu = true;
-		}
-		*/
-		//if (ack == false) { //Change via GUI
-		/*
-		if (id.toString().includes('.outputroutestate_')) {
-			let sAusgang = (id.toLowerCase().substring(id.lastIndexOf('_') + 1));
-			let sEingang = val.toString();
-			this.log.debug('VideoMatrix: matrixChanged: Eingang ' + sEingang + ' Ausgang ' + sAusgang);
-			var cmdRoute = sEingang + 'V' + sAusgang + '.';
-			//this.send(cmdRoute, 5);
-			arrCMD.push(cmdRoute);
-			this.processCMD();
-
-		} else if (id.toString().includes('.inputroutestate_')) {
-			let sEingang = (id.toLowerCase().substring(id.lastIndexOf('_') + 1));
-			let sAusgang = val.toString();
-
-
-			this.log.debug('VideoMatrix: matrixChanged: Eingang ' + sEingang + ' Ausgang ' + sAusgang);
-			let cmdRoute = sEingang + 'V' + sAusgang + '.';
-			//this.send(cmdRoute, 5);
-			arrCMD.push(cmdRoute);
-			this.processCMD();
-
-		} else */
 		if (id.toString().includes('.input_')) {
 			let sEingang = id.substring(id.indexOf('input_') + 6, id.indexOf('_out'));
 			let sAusgang = id.substring(id.indexOf('_out_') + 5);
-			if (ack == false) {
+
+			if (ack == false) {	//Aenderung per GUI
 				parentThis.log.info('matrixChanged(): Neues Routing: IN:' + sEingang + ', OUT:' + sAusgang + '.Wert:' + val.toString() + '.Ende');
 				let cmdRoute;
 				if (val == true) {
@@ -598,22 +513,24 @@ class BtouchVideomatrix extends utils.Adapter {
 					//this.setStateAsync('input_' + (pIN).toString().padStart(2, '0') + '_out_' + (pOUT).toString().padStart(2, '0'), { val: false, ack: true });
 				}
 
-				if (ack == false) {	//Aenderung per GUI
-					parentThis.log.debug('matrixChanged() via GUI. cmd=' + cmdRoute);
-					arrCMD.push(cmdRoute);
-					//this.log.info('Neues Routing: IN: Ein Ausgang kann nur einen definierten Eingang besitzen');
-					for (let i = 0; i < parentThis.MAXCHANNELS; i++) {
-						if (i + 1 != parseInt(sEingang)) {
-							//this.log.debug('matrixChanged(): Neues Routing: IN: Ein Ausgang kann nur einen definierten Eingang besitzen. Setzte Eingang ' + (i + 1).toString() + ' fuer Ausgang ' + sAusgang + ' auf FALSE');
-							this.setStateAsync('input_' + (i + 1).toString().padStart(2, '0') + '_out_' + (sAusgang).toString().padStart(2, '0'), { val: false, ack: true });
-						}
-					}
-				} else {
-					parentThis.log.debug('matrixChanged() via HARDWARE');
-				}
+
+				parentThis.log.debug('matrixChanged() via GUI. cmd=' + cmdRoute);
+				arrCMD.push(cmdRoute);
+			} else {
+				parentThis.log.debug('matrixChanged() via HARDWARE');
 			}
+
 		}
 
+		/*
+			//this.log.info('Neues Routing: IN: Ein Ausgang kann nur einen definierten Eingang besitzen');
+			for (let i = 0; i < parentThis.MAXCHANNELS; i++) {
+				if (i + 1 != parseInt(sEingang)) {
+					//this.log.debug('matrixChanged(): Neues Routing: IN: Ein Ausgang kann nur einen definierten Eingang besitzen. Setzte Eingang ' + (i + 1).toString() + ' fuer Ausgang ' + sAusgang + ' auf FALSE');
+					this.setStateAsync('input_' + (i + 1).toString().padStart(2, '0') + '_out_' + (sAusgang).toString().padStart(2, '0'), { val: false, ack: true });
+				}
+			}
+			*/
 	}
 	//}//----ack==FALSE                         
 
@@ -658,7 +575,7 @@ class BtouchVideomatrix extends utils.Adapter {
 			this.log.info("Modus Netzwerk");
 		}
 
-		this.createStates();
+		//this.createStates();
 
 		/*
 		For every state in the system there has to be also an object of type state
