@@ -13,7 +13,7 @@ const serialport = require('serialport');
 const Readline = require('@serialport/parser-readline')
 const ByteLength = require('@serialport/parser-byte-length');
 const TIMEOUT = 5000;
-let MAXCHANNELS = 36;
+let MAXCHANNELS = 0;
 // Load your modules here, e.g.:
 // const fs = require("fs");
 const MODE_NONE = 0x00;
@@ -630,6 +630,17 @@ class BtouchVideomatrix extends utils.Adapter {
 		//this.log.info('config Connection: ' + this.config.optConnection);
 
 		this.log.info("Matrix Type:" + this.config.optSlotcount);
+		if (this.config.optSlotcount == '10x10') {
+			parentThis.MAXCHANNELS = 10;
+		} else if (this.config.optSlotcount == '18x18') {
+			parentThis.MAXCHANNELS = 18;
+		} else if (this.config.optSlotcount == '36x36') {
+			parentThis.MAXCHANNELS = 36;
+		} else if (this.config.optSlotcount == '72x72') {
+			parentThis.MAXCHANNELS = 72;
+		} if (this.config.optSlotcount == '144x144') {
+			parentThis.MAXCHANNELS = 144;
+		}
 
 		if (this.config.optConnection == 'connSerial') {
 			this.sSerialPortName = this.config.serialPort.trim();
