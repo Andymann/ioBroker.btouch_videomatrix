@@ -553,7 +553,7 @@ class BtouchVideomatrix extends utils.Adapter {
 
 	//DAS MUSS NOCH GEMACHT WERDEN
 	matrixChanged(id, val, ack) {
-		parentThis.log.info('matrixChanged() id:' + id);
+		//parentThis.log.info('matrixChanged() id:' + id);	//z.B. input_01_out_02
 		/*
 		if (connection && val && !val.ack) {
 			//this.log.info('matrixChanged: tabu=TRUE' );
@@ -586,7 +586,7 @@ class BtouchVideomatrix extends utils.Adapter {
 		if (id.toString().includes('.input_')) {
 			let sEingang = id.substring(id.indexOf('input_') + 6, id.indexOf('_out'));
 			let sAusgang = id.substring(id.indexOf('_out_') + 5);
-			//this.log.info('Neues Routing: IN:' + sEingang + ', OUT:' + sAusgang + '.Wert:' + val.toString() + '.Ende');
+			parentThis.log.info('matrixChanged(): Neues Routing: IN:' + sEingang + ', OUT:' + sAusgang + '.Wert:' + val.toString() + '.Ende');
 
 			//this.log.info('Neues Routing: IN: Ein Ausgang kann nur einen definierten Eingang besitzen');
 			for (var i = 0; i < MAXCHANNELS; i++) {
