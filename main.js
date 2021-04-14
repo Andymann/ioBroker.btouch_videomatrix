@@ -112,12 +112,13 @@ class BtouchVideomatrix extends utils.Adapter {
 			native: {},
 		});
 
+		// Kombinatinen von Ein- und Ausgang als bool
 		for (var i = 0; i < MAXCHANNELS; i++) {
 			for (var j = 0; j < MAXCHANNELS; j++) {
 				await this.setObjectAsync('input_' + (i + 1).toString().padStart(2, '0') + '_out_' + (j + 1).toString().padStart(2, '0'), {
 					type: 'state',
 					common: {
-						name: 'Connect Input to Output',
+						name: 'Connect Input to Output as boolean',
 						type: 'boolean',
 						def: 'false',
 						role: 'indicator',
@@ -128,6 +129,25 @@ class BtouchVideomatrix extends utils.Adapter {
 				});
 			}
 		}
+
+		// Kombinatinen von Ein- und Ausgang als Nummer ('Eingang 1 auf X')
+		//for (var i = 0; i < MAXCHANNELS; i++) {
+		//	for (var j = 0; j < MAXCHANNELS; j++) {
+		await this.setObjectAsync('test_input_' + (i + 1).toString().padStart(2, '0') + '_out_' + (j + 1).toString().padStart(2, '0'), {
+			type: 'state',
+			common: {
+				name: 'Connect Input to numbered Output',
+				type: 'number',
+				def: 0,
+				states: { 0: '1', 1: '2', 2: '3', 3: '4', 4: '5', 5: '6', 6: '7' },
+				role: 'list',
+				read: true,
+				write: true,
+			},
+			native: {},
+		});
+		//	}
+		//}
 	}
 
 
