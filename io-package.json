@@ -1,13 +1,16 @@
 {
   "common": {
     "name": "btouch_videomatrix",
-    "version": "0.0.2",
+    "version": "0.0.3",
     "news": {
       "0.0.1": {
         "de": "Erstveröffentlichung"
       },
       "0.0.2": {
         "de": "Aus bTouch wird BTouch"
+      },
+	  "0.0.3": {
+        "de": "Refactoring, Codebase an Audiomatrix b2008 angepasst"
       }
     },
     "title": "BTouch VideoMatrix",
