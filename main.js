@@ -133,9 +133,9 @@ class BtouchVideomatrix extends utils.Adapter {
 		// Kombinatinen von Ein- und Ausgang als Nummer ('Eingang 1 auf X')
 		//for (var i = 0; i < MAXCHANNELS; i++) {
 		//	for (var j = 0; j < MAXCHANNELS; j++) {
-		let i = 0;
-		let j = 0;
-		await this.setObjectAsync('SelectNumber.input_' + (i + 1).toString().padStart(2, '0') + '_out_' + (j + 1).toString().padStart(2, '0'), {
+		let ii = 0;
+		let jj = 0;
+		await this.setObjectAsync('SelectNumber.input_' + (ii + 1).toString().padStart(2, '0') + '_out_' + (jj + 1).toString().padStart(2, '0'), {
 			type: 'state',
 			common: {
 				name: 'Connect Input to numbered Output',
