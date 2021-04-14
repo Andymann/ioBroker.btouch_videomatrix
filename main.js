@@ -13,7 +13,7 @@ const serialport = require('serialport');
 const Readline = require('@serialport/parser-readline')
 const ByteLength = require('@serialport/parser-byte-length');
 const TIMEOUT = 5000;
-let MAXCHANNELS = 0;
+let MAXCHANNELS = 36;
 // Load your modules here, e.g.:
 // const fs = require("fs");
 const MODE_NONE = 0x00;
@@ -108,6 +108,24 @@ class BtouchVideomatrix extends utils.Adapter {
 			},
 			native: {},
 		});
+
+		for (var i = 0; i < MAXCHANNELS; i++) {
+			for (var j = 0; j < MAXCHANNELS; j++) {
+				await this.setObjectAsync('input_' + (i + 1).toString().padStart(2, '0') + '_out_' + (j + 1).toString().padStart(2, '0'), {
+					type: 'state',
+					common: {
+						name: 'Connect Input to Output',
+						type: 'boolean',
+						def: 'false',
+						role: 'indicator',
+						read: true,
+						write: true,
+					},
+					native: {},
+				});
+			}
+		}
+
 
 	}
 
@@ -332,7 +350,7 @@ class BtouchVideomatrix extends utils.Adapter {
 							//----Nach x Milisekunden ist noch gar nichts angekommen....
 							parentThis.log.error('processCMD(): KEINE EINKOMMENDEN DATEN NACH ' + TIMEOUT.toString() + ' Milisekunden. OFFLINE?');
 							bConnection = false;
-							this.setState('info.connection', bConnection, true); //Green led in 'Instances'
+							//this.setState('info.connection', bConnection, true); //Green led in 'Instances'
 							parentThis.disconnectMatrix();
 							parentThis.initMatrix();
 						} else {
@@ -400,7 +418,7 @@ class BtouchVideomatrix extends utils.Adapter {
 				parentThis.parseMSG(chunk);
 				bWaitingForResponse = false;
 				bConnection = true;
-				this.setState('info.connection', bConnection, true); //Green led in 'Instances'
+				//this.setState('info.connection', bConnection, true); //Green led in 'Instances'
 				in_msg = '';
 			} else {
 				// einkommende Daten ohne, dass auf eine Response gewartet wird entstehen, 
@@ -450,6 +468,7 @@ class BtouchVideomatrix extends utils.Adapter {
 		//this.setState('info.connection', true, true); //Green led in 'Instances'	
 		// z.b: HDMI36X36
 		if (sMSG.toLowerCase().includes('hdmi')) {
+			/*
 			let iXpos = sMSG.indexOf('X');
 			if (iXpos > -1) {
 				let sTmp = sMSG.substring(iXpos + 1);
@@ -457,7 +476,7 @@ class BtouchVideomatrix extends utils.Adapter {
 				parentThis.MAXCHANNELS = parseInt(sTmp, 10)
 
 			}
-
+			*/
 		}
 
 		/*
@@ -534,7 +553,69 @@ class BtouchVideomatrix extends utils.Adapter {
 		*/
 	}
 
+	//----Ein State wurde veraendert
 
+	//DAS MUSS NOCH GEMACHT WERDEN
+	matrixchanged(id, val, ack) {
+		/*
+		if (connection && val && !val.ack) {
+			//this.log.info('matrixChanged: tabu=TRUE' );
+			//tabu = true;
+		}
+		if (ack == false) {
+			if (id.toString().includes('.outputroutestate_')) {
+				let sAusgang = (id.toLowerCase().substring(id.lastIndexOf('_') + 1));
+				let sEingang = val.toString();
+				this.log.debug('VideoMatrix: matrixChanged: Eingang ' + sEingang + ' Ausgang ' + sAusgang);
+				var cmdRoute = sEingang + 'V' + sAusgang + '.';
+				//this.send(cmdRoute, 5);
+				arrCMD.push(cmdRoute);
+				this.processCMD();
+
+			} else if (id.toString().includes('.inputroutestate_')) {
+				let sEingang = (id.toLowerCase().substring(id.lastIndexOf('_') + 1));
+				let sAusgang = val.toString();
+
+
+				this.log.debug('VideoMatrix: matrixChanged: Eingang ' + sEingang + ' Ausgang ' + sAusgang);
+				let cmdRoute = sEingang + 'V' + sAusgang + '.';
+				//this.send(cmdRoute, 5);
+				arrCMD.push(cmdRoute);
+				this.processCMD();
+
+			} else if (id.toString().includes('.input_')) {
+				let sEingang = id.substring(id.indexOf('input_') + 6, id.indexOf('_out'));
+				let sAusgang = id.substring(id.indexOf('_out_') + 5);
+				//this.log.info('Neues Routing: IN:' + sEingang + ', OUT:' + sAusgang + '.Wert:' + val.toString() + '.Ende');
+
+				//this.log.info('Neues Routing: IN: Ein Ausgang kann nur einen definierten Eingang besitzen');
+				for (var i = 0; i < MAXCHANNELS; i++) {
+					if (i + 1 != parseInt(sEingang)) {
+						this.log.debug('Neues Routing: IN: Ein Ausgang kann nur einen definierten Eingang besitzen. Setzte Eingang ' + (i + 1).toString() + ' fuer Ausgang ' + sAusgang + ' auf FALSE');
+						this.setStateAsync('input_' + (i + 1).toString().padStart(2, '0') + '_out_' + (sAusgang).toString().padStart(2, '0'), { val: false, ack: true });
+					}
+				}
+
+				let cmdRoute;
+				if (val == true) {
+					cmdRoute = sEingang + 'V' + sAusgang + '.';
+					//this.setStateAsync('input_' + (pIN).toString().padStart(2, '0') + '_out_' + (pOUT).toString().padStart(2, '0'), { val: true, ack: true });
+				} else {
+					//----Ausschalten
+					cmdRoute = sAusgang + '$.';
+					//this.setStateAsync('input_' + (pIN).toString().padStart(2, '0') + '_out_' + (pOUT).toString().padStart(2, '0'), { val: false, ack: true });
+				}
+
+
+
+				arrCMD.push(cmdRoute);
+				this.processCMD();
+
+			}
+
+		}//----ack==FALSE                         
+		*/
+	}
 
 	//==============================================================================================================
 	/**
@@ -650,6 +731,8 @@ class BtouchVideomatrix extends utils.Adapter {
 		if (state) {
 			// The state was changed
 			this.log.info(`state ${id} changed: ${state.val} (ack = ${state.ack})`);
+			this.matrixchanged(id, state.val, state.ack);
+
 		} else {
 			// The state was deleted
 			this.log.info(`state ${id} deleted`);
