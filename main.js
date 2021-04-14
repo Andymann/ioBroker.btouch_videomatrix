@@ -463,7 +463,7 @@ class BtouchVideomatrix extends utils.Adapter {
 		} else if (sMSG.toLowerCase().startsWith('/v:')) {
 			//----Ein Ergebnis der Query
 			let iStart = sMSG.indexOf(':') + 1;
-			let tmpIN = sMSG.substring(iStart, msg.indexOf(' '));
+			let tmpIN = sMSG.substring(iStart, sMSG.indexOf(' '));
 			let tmpOUT = sMSG.substring(msg.lastIndexOf(' ') + 1).trim();
 			//this.log.info('parseMsg(): Routing Query Answer: IN:' + tmpIN + '; OUT:' + tmpOUT + ';');
 
