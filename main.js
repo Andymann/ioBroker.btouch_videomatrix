@@ -115,7 +115,7 @@ class BtouchVideomatrix extends utils.Adapter {
 		// Kombinatinen von Ein- und Ausgang als bool
 		for (var i = 0; i < MAXCHANNELS; i++) {
 			for (var j = 0; j < MAXCHANNELS; j++) {
-				await this.setObjectAsync('Bool.input_' + (i + 1).toString().padStart(2, '0') + '_out_' + (j + 1).toString().padStart(2, '0'), {
+				await this.setObjectAsync('Click.input_' + (i + 1).toString().padStart(2, '0') + '_out_' + (j + 1).toString().padStart(2, '0'), {
 					type: 'state',
 					common: {
 						name: 'Connect Input to Output as boolean',
@@ -133,7 +133,7 @@ class BtouchVideomatrix extends utils.Adapter {
 		// Kombinatinen von Ein- und Ausgang als Nummer ('Eingang 1 auf X')
 		//for (var i = 0; i < MAXCHANNELS; i++) {
 		//	for (var j = 0; j < MAXCHANNELS; j++) {
-		await this.setObjectAsync('Numbered.input_' + (i + 1).toString().padStart(2, '0') + '_out_' + (j + 1).toString().padStart(2, '0'), {
+		await this.setObjectAsync('Select.input_' + (i + 1).toString().padStart(2, '0') + '_out_' + (j + 1).toString().padStart(2, '0'), {
 			type: 'state',
 			common: {
 				name: 'Connect Input to numbered Output',
@@ -533,7 +533,7 @@ class BtouchVideomatrix extends utils.Adapter {
 	//----Wenn das Routing an der Hardware geaendert wird, kommt die info via parseMSG herein.
 	matrixChanged(id, val, ack) {
 		//parentThis.log.info('matrixChanged() id:' + id);	//z.B. input_01_out_02
-		if (id.toString().includes('Bool.input_')) {
+		if (id.toString().includes('Click.input_')) {
 			let sEingang = id.substring(id.indexOf('input_') + 6, id.indexOf('_out'));
 			let sAusgang = id.substring(id.indexOf('_out_') + 5);
 
