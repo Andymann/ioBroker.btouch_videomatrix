@@ -123,13 +123,13 @@ class BtouchVideomatrix extends utils.Adapter {
 						def: 'false',
 						role: 'indicator',
 						read: true,
-						write: true,
+						write: true
 					},
 					native: {},
 				});
 			}
 		}
-
+		/*
 		// Kombinatinen von Ein- und Ausgang als Nummer ('Eingang 1 auf X')
 		//for (var i = 0; i < MAXCHANNELS; i++) {
 		//	for (var j = 0; j < MAXCHANNELS; j++) {
@@ -145,12 +145,13 @@ class BtouchVideomatrix extends utils.Adapter {
 				states: { 0: 'Off', 1: '1', 2: '2', 3: '3', 4: '4', 5: '5', 6: '6' },
 				role: 'list',
 				read: true,
-				write: true,
+				write: true
 			},
 			native: {},
 		});
 		//	}
 		//}
+		*/
 	}
 
 
