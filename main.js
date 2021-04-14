@@ -416,9 +416,9 @@ class BtouchVideomatrix extends utils.Adapter {
 
 		if (parentThis.mode == MODE_SERIAL) {
 			//----Wegen des Parsers enthaelt <chunk> die komplette Response
-			if (bWaitingForResponse == true) {
+			if (parentThis.bWaitingForResponse == true) {
 				parentThis.parseMSG(chunk);
-				bWaitingForResponse = false;
+				parentThis.bWaitingForResponse = false;
 				bConnection = true;
 				//this.setState('info.connection', bConnection, true); //Green led in 'Instances'
 				in_msg = '';
@@ -432,9 +432,9 @@ class BtouchVideomatrix extends utils.Adapter {
 			parentThis.log.info('processIncoming() Mode_Network: TBD');
 			in_msg += chunk;
 			//....if in_msg == complete....
-			if (bWaitingForResponse == true) {
+			if (parentThis.bWaitingForResponse == true) {
 				parentThis.parseMSG(chunk);
-				bWaitingForResponse = false;
+				parentThis.bWaitingForResponse = false;
 				bConnection = true;
 				in_msg = '';
 			} else {
