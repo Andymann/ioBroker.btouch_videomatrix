@@ -125,8 +125,6 @@ class BtouchVideomatrix extends utils.Adapter {
 				});
 			}
 		}
-
-
 	}
 
 
@@ -142,13 +140,11 @@ class BtouchVideomatrix extends utils.Adapter {
 		bFirstPing = true;
 		iMissedPingCounter = 0;
 
-
 		//----CMD-Queue einrichten   
 		clearInterval(cmdInterval);
 		cmdInterval = setInterval(function () {
 			parentThis.processCMD();
 		}, 100);
-
 		this.connectMatrix();
 	}
 
@@ -166,7 +162,7 @@ class BtouchVideomatrix extends utils.Adapter {
 	}
 
 	connectMatrix(cb) {
-		this.log.info('connectMatrix()');
+		//this.log.info('connectMatrix()');
 		let parser;
 		arrCMD = [];
 
@@ -562,195 +558,198 @@ class BtouchVideomatrix extends utils.Adapter {
 			//this.log.info('matrixChanged: tabu=TRUE' );
 			//tabu = true;
 		}
-		if (ack == false) {
-			if (id.toString().includes('.outputroutestate_')) {
-				let sAusgang = (id.toLowerCase().substring(id.lastIndexOf('_') + 1));
-				let sEingang = val.toString();
-				this.log.debug('VideoMatrix: matrixChanged: Eingang ' + sEingang + ' Ausgang ' + sAusgang);
-				var cmdRoute = sEingang + 'V' + sAusgang + '.';
-				//this.send(cmdRoute, 5);
-				arrCMD.push(cmdRoute);
-				this.processCMD();
+		*/
+		//if (ack == false) { //Change via GUI
+		/*
+		if (id.toString().includes('.outputroutestate_')) {
+			let sAusgang = (id.toLowerCase().substring(id.lastIndexOf('_') + 1));
+			let sEingang = val.toString();
+			this.log.debug('VideoMatrix: matrixChanged: Eingang ' + sEingang + ' Ausgang ' + sAusgang);
+			var cmdRoute = sEingang + 'V' + sAusgang + '.';
+			//this.send(cmdRoute, 5);
+			arrCMD.push(cmdRoute);
+			this.processCMD();
 
-			} else if (id.toString().includes('.inputroutestate_')) {
-				let sEingang = (id.toLowerCase().substring(id.lastIndexOf('_') + 1));
-				let sAusgang = val.toString();
+		} else if (id.toString().includes('.inputroutestate_')) {
+			let sEingang = (id.toLowerCase().substring(id.lastIndexOf('_') + 1));
+			let sAusgang = val.toString();
 
 
-				this.log.debug('VideoMatrix: matrixChanged: Eingang ' + sEingang + ' Ausgang ' + sAusgang);
-				let cmdRoute = sEingang + 'V' + sAusgang + '.';
-				//this.send(cmdRoute, 5);
-				arrCMD.push(cmdRoute);
-				this.processCMD();
+			this.log.debug('VideoMatrix: matrixChanged: Eingang ' + sEingang + ' Ausgang ' + sAusgang);
+			let cmdRoute = sEingang + 'V' + sAusgang + '.';
+			//this.send(cmdRoute, 5);
+			arrCMD.push(cmdRoute);
+			this.processCMD();
 
-			} else if (id.toString().includes('.input_')) {
-				let sEingang = id.substring(id.indexOf('input_') + 6, id.indexOf('_out'));
-				let sAusgang = id.substring(id.indexOf('_out_') + 5);
-				//this.log.info('Neues Routing: IN:' + sEingang + ', OUT:' + sAusgang + '.Wert:' + val.toString() + '.Ende');
+		} else */
+		if (id.toString().includes('.input_')) {
+			let sEingang = id.substring(id.indexOf('input_') + 6, id.indexOf('_out'));
+			let sAusgang = id.substring(id.indexOf('_out_') + 5);
+			//this.log.info('Neues Routing: IN:' + sEingang + ', OUT:' + sAusgang + '.Wert:' + val.toString() + '.Ende');
 
-				//this.log.info('Neues Routing: IN: Ein Ausgang kann nur einen definierten Eingang besitzen');
-				for (var i = 0; i < MAXCHANNELS; i++) {
-					if (i + 1 != parseInt(sEingang)) {
-						this.log.debug('Neues Routing: IN: Ein Ausgang kann nur einen definierten Eingang besitzen. Setzte Eingang ' + (i + 1).toString() + ' fuer Ausgang ' + sAusgang + ' auf FALSE');
-						this.setStateAsync('input_' + (i + 1).toString().padStart(2, '0') + '_out_' + (sAusgang).toString().padStart(2, '0'), { val: false, ack: true });
-					}
+			//this.log.info('Neues Routing: IN: Ein Ausgang kann nur einen definierten Eingang besitzen');
+			for (var i = 0; i < MAXCHANNELS; i++) {
+				if (i + 1 != parseInt(sEingang)) {
+					this.log.debug('Neues Routing: IN: Ein Ausgang kann nur einen definierten Eingang besitzen. Setzte Eingang ' + (i + 1).toString() + ' fuer Ausgang ' + sAusgang + ' auf FALSE');
+					this.setStateAsync('input_' + (i + 1).toString().padStart(2, '0') + '_out_' + (sAusgang).toString().padStart(2, '0'), { val: false, ack: true });
 				}
-
-				let cmdRoute;
-				if (val == true) {
-					cmdRoute = sEingang + 'V' + sAusgang + '.';
-					//this.setStateAsync('input_' + (pIN).toString().padStart(2, '0') + '_out_' + (pOUT).toString().padStart(2, '0'), { val: true, ack: true });
-				} else {
-					//----Ausschalten
-					cmdRoute = sAusgang + '$.';
-					//this.setStateAsync('input_' + (pIN).toString().padStart(2, '0') + '_out_' + (pOUT).toString().padStart(2, '0'), { val: false, ack: true });
-				}
-
-
-
-				arrCMD.push(cmdRoute);
-				this.processCMD();
-
 			}
 
-		}//----ack==FALSE                         
-		*/
+			let cmdRoute;
+			if (val == true) {
+				cmdRoute = sEingang + 'V' + sAusgang + '.';
+				//this.setStateAsync('input_' + (pIN).toString().padStart(2, '0') + '_out_' + (pOUT).toString().padStart(2, '0'), { val: true, ack: true });
+			} else {
+				//----Ausschalten
+				cmdRoute = sAusgang + '$.';
+				//this.setStateAsync('input_' + (pIN).toString().padStart(2, '0') + '_out_' + (pOUT).toString().padStart(2, '0'), { val: false, ack: true });
+			}
+
+			if (ack == false) {	//Aenderung per GUI
+				this.log.debug('changeMatrix() via GUI');
+				arrCMD.push(cmdRoute);
+			} else {
+				this.log.debug('changeMatrix() via HARDWARE');
+			}
+		}
+
+	}
+	//}//----ack==FALSE                         
+}
+
+//==============================================================================================================
+/**
+ * Is called when databases are connected and adapter received configuration.
+ */
+async onReady() {
+	// Initialize your adapter here
+
+	// The adapters config (in the instance object everything under the attribute "native") is accessible via
+	//this.log.info('config optHost: ' + this.config.optHost);
+	//this.log.info('config optPort: ' + this.config.optPort);
+	//this.log.info('config Connection: ' + this.config.optConnection);
+
+	this.log.info("Matrix Type:" + this.config.optSlotcount);
+	if (this.config.optSlotcount == '10x10') {
+		parentThis.MAXCHANNELS = 10;
+	} else if (this.config.optSlotcount == '18x18') {
+		parentThis.MAXCHANNELS = 18;
+	} else if (this.config.optSlotcount == '36x36') {
+		parentThis.MAXCHANNELS = 36;
+	} else if (this.config.optSlotcount == '72x72') {
+		parentThis.MAXCHANNELS = 72;
+	} if (this.config.optSlotcount == '144x144') {
+		parentThis.MAXCHANNELS = 144;
 	}
 
-	//==============================================================================================================
-	/**
-	 * Is called when databases are connected and adapter received configuration.
-	 */
-	async onReady() {
-		// Initialize your adapter here
-
-		// The adapters config (in the instance object everything under the attribute "native") is accessible via
-		//this.log.info('config optHost: ' + this.config.optHost);
-		//this.log.info('config optPort: ' + this.config.optPort);
-		//this.log.info('config Connection: ' + this.config.optConnection);
-
-		this.log.info("Matrix Type:" + this.config.optSlotcount);
-		if (this.config.optSlotcount == '10x10') {
-			parentThis.MAXCHANNELS = 10;
-		} else if (this.config.optSlotcount == '18x18') {
-			parentThis.MAXCHANNELS = 18;
-		} else if (this.config.optSlotcount == '36x36') {
-			parentThis.MAXCHANNELS = 36;
-		} else if (this.config.optSlotcount == '72x72') {
-			parentThis.MAXCHANNELS = 72;
-		} if (this.config.optSlotcount == '144x144') {
-			parentThis.MAXCHANNELS = 144;
-		}
-
-		if (this.config.optConnection == 'connSerial') {
-			this.sSerialPortName = this.config.serialPort.trim();
-			this.mode = MODE_SERIAL;
-		} else if (this.config.optConnection == 'connNetwork') {
-			this.mode = MODE_NETWORK;
-		} else {
-			this.mode = MODE_NONE;
-		}
-
-		if (this.mode == MODE_SERIAL) {
-			this.log.info("Modus Seriell:" + this.sSerialPortName);
-		} else if (this.mode == MODE_NETWORK) {
-			this.log.info("Modus Netzwerk");
-		}
-
-		this.createStates();
-
-		/*
-		For every state in the system there has to be also an object of type state
-		Here a simple template for a boolean variable named "testVariable"
-		Because every adapter instance uses its own unique namespace variable names can't collide with other adapters variables
-		*/
-		await this.setObjectAsync('testVariable', {
-			type: 'state',
-			common: {
-				name: 'testVariable',
-				type: 'boolean',
-				role: 'indicator',
-				read: true,
-				write: true,
-			},
-			native: {},
-		});
-
-		this.createStates();
-
-		// in this template all states changes inside the adapters namespace are subscribed
-		this.subscribeStates('*');
-
-		/*
-		setState examples
-		you will notice that each setState will cause the stateChange event to fire (because of above subscribeStates cmd)
-		*/
-		/*
-		// the variable testVariable is set to true as command (ack=false)
-		await this.setStateAsync('testVariable', true);
-		
-		// same thing, but the value is flagged "ack"
-		// ack should be always set to true if the value is received from or acknowledged from the target system
-		await this.setStateAsync('testVariable', { val: true, ack: true });
-		
-		// same thing, but the state is deleted after 30s (getState will return null afterwards)
-		await this.setStateAsync('testVariable', { val: true, ack: true, expire: 30 });
-		
-		// examples for the checkPassword/checkGroup functions
-		let result = await this.checkPasswordAsync('admin', 'iobroker');
-		this.log.info('check user admin pw iobroker: ' + result);
-		
-		result = await this.checkGroupAsync('admin', 'admin');
-		this.log.info('check group user admin group admin: ' + result);
-		*/
-
-		this.initMatrix();
+	if (this.config.optConnection == 'connSerial') {
+		this.sSerialPortName = this.config.serialPort.trim();
+		this.mode = MODE_SERIAL;
+	} else if (this.config.optConnection == 'connNetwork') {
+		this.mode = MODE_NETWORK;
+	} else {
+		this.mode = MODE_NONE;
 	}
 
-	/**
-	 * Is called when adapter shuts down - callback has to be called under any circumstances!
-	 * @param {() => void} callback
-	 */
-	onUnload(callback) {
-		try {
-			this.log.info('cleaned everything up...');
-			callback();
-		} catch (e) {
-			callback();
-		}
+	if (this.mode == MODE_SERIAL) {
+		this.log.info("Modus Seriell:" + this.sSerialPortName);
+	} else if (this.mode == MODE_NETWORK) {
+		this.log.info("Modus Netzwerk");
 	}
 
-	/**
-	 * Is called if a subscribed object changes
-	 * @param {string} id
-	 * @param {ioBroker.Object | null | undefined} obj
-	 */
-	onObjectChange(id, obj) {
-		if (obj) {
-			// The object was changed
-			this.log.info(`object ${id} changed: ${JSON.stringify(obj)}`);
-		} else {
-			// The object was deleted
-			this.log.info(`object ${id} deleted`);
-		}
-	}
+	this.createStates();
 
-	/**
-	 * Is called if a subscribed state changes
-	 * @param {string} id
-	 * @param {ioBroker.State | null | undefined} state
-	 */
-	onStateChange(id, state) {
-		if (state) {
-			// The state was changed
-			this.log.info(`state ${id} changed: ${state.val} (ack = ${state.ack})`);
-			this.matrixchanged(id, state.val, state.ack);
+	/*
+	For every state in the system there has to be also an object of type state
+	Here a simple template for a boolean variable named "testVariable"
+	Because every adapter instance uses its own unique namespace variable names can't collide with other adapters variables
+	*/
+	await this.setObjectAsync('testVariable', {
+		type: 'state',
+		common: {
+			name: 'testVariable',
+			type: 'boolean',
+			role: 'indicator',
+			read: true,
+			write: true,
+		},
+		native: {},
+	});
 
-		} else {
-			// The state was deleted
-			this.log.info(`state ${id} deleted`);
-		}
+	this.createStates();
+
+	// in this template all states changes inside the adapters namespace are subscribed
+	this.subscribeStates('*');
+
+	/*
+	setState examples
+	you will notice that each setState will cause the stateChange event to fire (because of above subscribeStates cmd)
+	*/
+	/*
+	// the variable testVariable is set to true as command (ack=false)
+	await this.setStateAsync('testVariable', true);
+	
+	// same thing, but the value is flagged "ack"
+	// ack should be always set to true if the value is received from or acknowledged from the target system
+	await this.setStateAsync('testVariable', { val: true, ack: true });
+	
+	// same thing, but the state is deleted after 30s (getState will return null afterwards)
+	await this.setStateAsync('testVariable', { val: true, ack: true, expire: 30 });
+	
+	// examples for the checkPassword/checkGroup functions
+	let result = await this.checkPasswordAsync('admin', 'iobroker');
+	this.log.info('check user admin pw iobroker: ' + result);
+	
+	result = await this.checkGroupAsync('admin', 'admin');
+	this.log.info('check group user admin group admin: ' + result);
+	*/
+
+	this.initMatrix();
+}
+
+/**
+ * Is called when adapter shuts down - callback has to be called under any circumstances!
+ * @param {() => void} callback
+ */
+onUnload(callback) {
+	try {
+		this.log.info('cleaned everything up...');
+		callback();
+	} catch (e) {
+		callback();
 	}
+}
+
+/**
+ * Is called if a subscribed object changes
+ * @param {string} id
+ * @param {ioBroker.Object | null | undefined} obj
+ */
+onObjectChange(id, obj) {
+	if (obj) {
+		// The object was changed
+		this.log.info(`object ${id} changed: ${JSON.stringify(obj)}`);
+	} else {
+		// The object was deleted
+		this.log.info(`object ${id} deleted`);
+	}
+}
+
+/**
+ * Is called if a subscribed state changes
+ * @param {string} id
+ * @param {ioBroker.State | null | undefined} state
+ */
+onStateChange(id, state) {
+	if (state) {
+		// The state was changed
+		this.log.info(`state ${id} changed: ${state.val} (ack = ${state.ack})`);
+		this.matrixchanged(id, state.val, state.ack);
+	} else {
+		// The state was deleted
+		this.log.info(`state ${id} deleted`);
+	}
+}
 
 	// /**
 	//  * Some message was sent to this instance over message box. Used by email, pushover, text2speech, ...
