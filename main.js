@@ -352,7 +352,7 @@ class BtouchVideomatrix extends utils.Adapter {
 				parentThis.mode_query = MODE_QUERY_FINISHED;
 			}
 			this.log.debug('checkQueryDone(): Routing (bool):' + bTMP_Routing_done);
-			this.log.debug('checkQueryDone(): Routing:' + sRouting);
+			//this.log.debug('checkQueryDone(): Routing:' + sRouting);
 		} else if (parentThis.mode_query == MODE_QUERY_NONE) {
 			this.log.debug('checkQueryDone(): mode_query ist NONE');
 		} else if (parentThis.mode_query == MODE_QUERY_FINISHED) {
@@ -471,7 +471,7 @@ class BtouchVideomatrix extends utils.Adapter {
 			parentThis.arrStateQuery_Routing[parseInt(tmpOUT) - 1] = true;
 			parentThis.checkQueryDone();
 
-		} else if (msg.toLowerCase().startsWith('/')) {
+		} else if (sMSG.toLowerCase().startsWith('/')) {
 			//----Repsonse auf gesetztes Routing, Obacht bei der Reihenfolge.
 			//----Response z.B. /1V3.
 			let iTrenner = sMSG.toLowerCase().indexOf('v');
