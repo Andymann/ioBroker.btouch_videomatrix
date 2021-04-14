@@ -590,7 +590,7 @@ class BtouchVideomatrix extends utils.Adapter {
 			//this.log.info('Neues Routing: IN: Ein Ausgang kann nur einen definierten Eingang besitzen');
 			for (var i = 0; i < MAXCHANNELS; i++) {
 				if (i + 1 != parseInt(sEingang)) {
-					this.log.debug('Neues Routing: IN: Ein Ausgang kann nur einen definierten Eingang besitzen. Setzte Eingang ' + (i + 1).toString() + ' fuer Ausgang ' + sAusgang + ' auf FALSE');
+					this.log.debug('matrixChanged(): Neues Routing: IN: Ein Ausgang kann nur einen definierten Eingang besitzen. Setzte Eingang ' + (i + 1).toString() + ' fuer Ausgang ' + sAusgang + ' auf FALSE');
 					this.setStateAsync('input_' + (i + 1).toString().padStart(2, '0') + '_out_' + (sAusgang).toString().padStart(2, '0'), { val: false, ack: true });
 				}
 			}
@@ -606,10 +606,10 @@ class BtouchVideomatrix extends utils.Adapter {
 			}
 
 			if (ack == false) {	//Aenderung per GUI
-				this.log.debug('changeMatrix() via GUI');
+				parentThis.log.debug('changeMatrix() via GUI');
 				arrCMD.push(cmdRoute);
 			} else {
-				this.log.debug('changeMatrix() via HARDWARE');
+				parentThis.log.debug('changeMatrix() via HARDWARE');
 			}
 		}
 
@@ -744,7 +744,7 @@ class BtouchVideomatrix extends utils.Adapter {
 		if (state) {
 			// The state was changed
 			this.log.info(`state ${id} changed: ${state.val} (ack = ${state.ack})`);
-			this.matrixchanged(id, state.val, state.ack);
+			parentThis.matrixchanged(id, state.val, state.ack);
 		} else {
 			// The state was deleted
 			this.log.info(`state ${id} deleted`);
