@@ -51,7 +51,6 @@ let in_msg = '';
 //let iMaxTimeoutCounter = 0;
 //var lastCMD;
 
-let arrStateQuery_Routing = [];
 let bQueryComplete_Routing;
 
 let bWaitingForResponse = false;
