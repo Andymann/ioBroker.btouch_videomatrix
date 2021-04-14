@@ -54,7 +54,7 @@ let in_msg = '';
 let bQueryComplete_Routing;
 
 let bWaitingForResponse = false;
-l//et arrQuery = [];
+//let arrQuery = [];
 let arrStateQuery_Routing = [];
 
 
