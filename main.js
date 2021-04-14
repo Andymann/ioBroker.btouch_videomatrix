@@ -283,7 +283,7 @@ class BtouchVideomatrix extends utils.Adapter {
 		if (this.mode == MODE_SERIAL) {
 			if (bWaitQueue == false) {
 				if (arrCMD.length == 0) {
-					parentThis.log.debug('pingMatrix() seriell');
+					//parentThis.log.debug('pingMatrix() seriell');
 					arrCMD.push(CMDPING);
 					iMissedPingCounter = 0;
 				}
@@ -504,20 +504,8 @@ class BtouchVideomatrix extends utils.Adapter {
 					this.setStateAsync('input_' + (i + 1).toString().padStart(2, '0') + '_out_' + (sAusgang).toString().padStart(2, '0'), { val: false, ack: true });
 				}
 			}
-
 		} else {
 			this.log.info('VideoMatrix: parseMsg() Response unhandled:' + sMSG);
-		}
-	}
-
-	// Ein Ausgang kann nur einen definierten Eingang besitzen
-	fixExclusiveRoutingStates(pEingang, pAusgang) {
-		this.log.info('fixExclusiveRoutingStates():');
-		for (let i = 0; i < parentThis.MAXCHANNELS; i++) {
-			if (i + 1 != parseInt(pEingang)) {
-				this.log.debug('fixExclusiveRoutingStates(): Setzte Eingang ' + (i + 1).toString() + ' fuer Ausgang ' + pAusgang + ' auf FALSE');
-				this.setStateAsync('input_' + (i + 1).toString().padStart(2, '0') + '_out_' + (pAusgang).toString().padStart(2, '0'), { val: false, ack: true });
-			}
 		}
 	}
 
