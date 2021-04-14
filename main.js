@@ -470,7 +470,7 @@ class BtouchVideomatrix extends utils.Adapter {
 			this.log.info('fixExclusiveRoutingStates():');
 			for (let i = 0; i < parentThis.MAXCHANNELS; i++) {
 				this.log.debug('fixExclusiveRoutingStates(): Setzte Eingang ' + (i + 1).toString() + ' fuer Ausgang ' + tmpOUT + ' auf FALSE');
-				this.setStateAsync('input_' + (i + 1).toString().padStart(2, '0') + '_out_' + (tmpOut).toString().padStart(2, '0'), { val: false, ack: true });
+				this.setStateAsync('input_' + (i + 1).toString().padStart(2, '0') + '_out_' + (tmpOUT).toString().padStart(2, '0'), { val: false, ack: true });
 			}
 
 		} else if (sMSG.toLowerCase().startsWith('/v:')) {
