@@ -552,7 +552,8 @@ class BtouchVideomatrix extends utils.Adapter {
 	//----Ein State wurde veraendert
 
 	//DAS MUSS NOCH GEMACHT WERDEN
-	matrixchanged(id, val, ack) {
+	matrixChanged(id, val, ack) {
+		parentThis.log.info('matrixChanged() id:' + id);
 		/*
 		if (connection && val && !val.ack) {
 			//this.log.info('matrixChanged: tabu=TRUE' );
@@ -744,7 +745,7 @@ class BtouchVideomatrix extends utils.Adapter {
 		if (state) {
 			// The state was changed
 			this.log.info(`state ${id} changed: ${state.val} (ack = ${state.ack})`);
-			parentThis.matrixchanged(id, state.val, state.ack);
+			parentThis.matrixChanged(id, state.val, state.ack);
 		} else {
 			// The state was deleted
 			this.log.info(`state ${id} deleted`);
