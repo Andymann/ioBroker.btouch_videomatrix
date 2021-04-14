@@ -629,6 +629,8 @@ class BtouchVideomatrix extends utils.Adapter {
 		//this.log.info('config optPort: ' + this.config.optPort);
 		//this.log.info('config Connection: ' + this.config.optConnection);
 
+		this.log.info("Matrix Type:" + this.config.optSlotcount);
+
 		if (this.config.optConnection == 'connSerial') {
 			this.sSerialPortName = this.config.serialPort.trim();
 			this.mode = MODE_SERIAL;
