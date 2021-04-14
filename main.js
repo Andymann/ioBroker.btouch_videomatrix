@@ -371,10 +371,10 @@ class BtouchVideomatrix extends utils.Adapter {
 			if (bWaitingForResponse == false) {
 				if (arrCMD.length > 0) {
 					//this.log.debug('processCMD: bWaitingForResponse==FALSE, arrCMD.length=' + arrCMD.length.toString());
-					bWaitingForResponse = true;
+					parentThis.bWaitingForResponse = true;
 					const tmp = arrCMD.shift();
 					this.log.debug('processCMD: next CMD=' + tmp);
-					bHasIncomingData = false;
+					parentThis.bHasIncomingData = false;
 					matrix.write(tmp);
 					matrix.write('\n');
 
@@ -501,7 +501,7 @@ class BtouchVideomatrix extends utils.Adapter {
 			let sAusgang = id.substring(id.indexOf('_out_') + 5);
 
 			if (ack == false) {	//Aenderung per GUI
-				parentThis.log.info('matrixChanged(): Neues Routing: IN:' + sEingang + ', OUT:' + sAusgang + '.Wert:' + val.toString() + '.Ende');
+				parentThis.log.info('matrixChanged(): Neues Routing via GUI: IN:' + sEingang + ', OUT:' + sAusgang + '.Wert:' + val.toString() + '.Ende');
 				let cmdRoute;
 				if (val == true) {
 					cmdRoute = sEingang + 'V' + sAusgang + '.';
@@ -511,9 +511,7 @@ class BtouchVideomatrix extends utils.Adapter {
 					cmdRoute = sAusgang + '$.';
 					//this.setStateAsync('input_' + (pIN).toString().padStart(2, '0') + '_out_' + (pOUT).toString().padStart(2, '0'), { val: false, ack: true });
 				}
-
-
-				parentThis.log.debug('matrixChanged() via GUI. cmd=' + cmdRoute);
+				//parentThis.log.debug('matrixChanged() via GUI. cmd=' + cmdRoute);
 				arrCMD.push(cmdRoute);
 			} else {
 				parentThis.log.debug('matrixChanged() via HARDWARE');
