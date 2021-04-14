@@ -53,6 +53,7 @@
     "optHost": "BTouch3",
     "optPort": "1024",
     "optConnection": "connSerial",
+	"optSlotcount": "36x36",
     "serialPort": "/dev/ttyUSB0"
   },
   "objects": [],
