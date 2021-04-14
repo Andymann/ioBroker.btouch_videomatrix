@@ -467,7 +467,6 @@ class BtouchVideomatrix extends utils.Adapter {
 			let tmpOUT = sMSG.substring(iStart, sMSG.indexOf(' '));
 			parentThis.log.info('parseMSG(): OFF:' + tmpOUT);
 
-			this.log.info('fixExclusiveRoutingStates():');
 			for (let i = 0; i < parentThis.MAXCHANNELS; i++) {
 				this.log.debug('fixExclusiveRoutingStates(): Setzte Eingang ' + (i + 1).toString() + ' fuer Ausgang ' + tmpOUT + ' auf FALSE');
 				this.setStateAsync('input_' + (i + 1).toString().padStart(2, '0') + '_out_' + (tmpOUT).toString().padStart(2, '0'), { val: false, ack: true });
@@ -497,7 +496,6 @@ class BtouchVideomatrix extends utils.Adapter {
 				this.setStateAsync('input_' + (sEingang).toString().padStart(2, '0') + '_out_' + (sAusgang).toString().padStart(2, '0'), { val: true, ack: true });
 			}
 
-			this.log.info('fixExclusiveRoutingStates():');
 			for (let i = 0; i < parentThis.MAXCHANNELS; i++) {
 				if (i + 1 != parseInt(sEingang)) {
 					this.log.debug('fixExclusiveRoutingStates(): Setzte Eingang ' + (i + 1).toString() + ' fuer Ausgang ' + sAusgang + ' auf FALSE');
@@ -532,7 +530,7 @@ class BtouchVideomatrix extends utils.Adapter {
 				//parentThis.log.debug('matrixChanged() via GUI. cmd=' + cmdRoute);
 				arrCMD.push(cmdRoute);
 			} else {
-				parentThis.log.debug('matrixChanged() via HARDWARE');
+				//parentThis.log.debug('matrixChanged() via HARDWARE');
 			}
 
 		}
