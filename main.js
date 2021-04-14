@@ -323,7 +323,7 @@ class BtouchVideomatrix extends utils.Adapter {
 		//parentThis.arrQuery = [];
 		for (let i = 0; i < parentThis.MAXCHANNELS; i++) {
 			//arrQuery.push("Status" + (i + 1).toString() + ".");
-			parentThis.arrCMD.push("Status" + (i + 1).toString() + ".");
+			arrCMD.push("Status" + (i + 1).toString() + ".");
 			parentThis.arrStateQuery_Routing.push(false);
 		}
 
