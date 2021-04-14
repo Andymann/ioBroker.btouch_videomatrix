@@ -267,7 +267,7 @@ class BtouchVideomatrix extends utils.Adapter {
 
 
 		parser.on('data', function (chunk) {
-			parentThis.log.debug('parser.onData():' + chunk);
+			//parentThis.log.debug('parser.onData():' + chunk);
 			if (parentThis.mode == MODE_SERIAL) {
 				//----Hier kommt schon die komplette Response an
 				parentThis.processIncoming(chunk);
@@ -373,7 +373,7 @@ class BtouchVideomatrix extends utils.Adapter {
 					//this.log.debug('processCMD: bWaitingForResponse==FALSE, arrCMD.length=' + arrCMD.length.toString());
 					parentThis.bWaitingForResponse = true;
 					const tmp = arrCMD.shift();
-					this.log.debug('processCMD: next CMD=' + tmp);
+					//this.log.debug('processCMD: next CMD=' + tmp);
 					parentThis.bHasIncomingData = false;
 					matrix.write(tmp);
 					matrix.write('\n');
