@@ -351,7 +351,7 @@ class BtouchVideomatrix extends utils.Adapter {
 			if (bTMP_Routing_done == true) {
 				parentThis.mode_query = MODE_QUERY_FINISHED;
 			}
-			this.log.debug('checkQueryDone(): Routing:' + bQueryComplete_Routing);
+			this.log.debug('checkQueryDone(): Routing (bool):' + bTMP_Routing_done);
 			this.log.debug('checkQueryDone(): Routing:' + sRouting);
 		} else if (parentThis.mode_query == MODE_QUERY_NONE) {
 			this.log.debug('checkQueryDone(): mode_query ist NONE');
