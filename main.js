@@ -113,9 +113,9 @@ class BtouchVideomatrix extends utils.Adapter {
 		});
 
 		// Kombinatinen von Ein- und Ausgang als bool
-		for (var i = 0; i < MAXCHANNELS; i++) {
-			for (var j = 0; j < MAXCHANNELS; j++) {
-				await this.setObjectAsync('input_' + (i + 1).toString().padStart(2, '0') + '_out_' + (j + 1).toString().padStart(2, '0'), {
+		for (var i = 0; i < parentThis.MAXCHANNELS; i++) {
+			for (var j = 0; j < parentThis.MAXCHANNELS; j++) {
+				await this.setObjectAsync('SelectBool.input_' + (i + 1).toString().padStart(2, '0') + '_out_' + (j + 1).toString().padStart(2, '0'), {
 					type: 'state',
 					common: {
 						name: 'Connect Input to Output as boolean',
@@ -536,7 +536,7 @@ class BtouchVideomatrix extends utils.Adapter {
 	//----Wenn das Routing an der Hardware geaendert wird, kommt die info via parseMSG herein.
 	matrixChanged(id, val, ack) {
 		//parentThis.log.info('matrixChanged() id:' + id);	//z.B. input_01_out_02
-		if (id.toString().includes('.input_')) {
+		if (id.toString().includes('SelectBool.input_')) {
 			let sEingang = id.substring(id.indexOf('input_') + 6, id.indexOf('_out'));
 			let sAusgang = id.substring(id.indexOf('_out_') + 5);
 
