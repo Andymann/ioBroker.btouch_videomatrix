@@ -70,10 +70,31 @@
 	  	<label>
 			<input type="radio" name="optConnection" id="connSerial" checked> <span class="translate">Serial Connection</span>
 		</label><br>
-		<input type="text" id="serialPort" class="value"/><span class="translate"> e.g.</span> <code>/dev/ttyUSB0</code><br>
+		<input type="text" id="serialPort" class="value"/><span class="translate"> e.g.</span> <code>/dev/ttyUSB0</code>
 		<br>
-
-
+		<select class="value" id="optSlotcount">
+			<option value="matrix10">10x10</option>
+			<option value="matrix18">18x18</option>
+			<option value="matrix36">36x36</option>
+			<option value="matrix72">72x72</option>
+			<option value="matrix144">144x144</option>
+		</select>
+		  <br><br>
+		
+		<!--
+		<div class="input-field">
+			<label>Matrix</label>
+			<select class="value" id="optConnection">
+			  <option value="matrix10">10x10</option>
+			  <option value="matrix18">18x18</option>
+			  <option value="matrix36">36x36</option>
+			  <option value="matrix72">72x72</option>
+			  <option value="matrix144">144x144</option>
+			</select>
+		  </div>
+		  <br><br>
+		-->
+		<br><br>
 		<label>
 			<input type="radio" name="optConnection" id="connNetwork"> <span class="translate">Network Connection</span>
 		</label><br>     
