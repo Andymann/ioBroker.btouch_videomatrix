@@ -744,7 +744,7 @@ class BtouchVideomatrix extends utils.Adapter {
 	onStateChange(id, state) {
 		if (state) {
 			// The state was changed
-			this.log.info(`state ${id} changed: ${state.val} (ack = ${state.ack})`);
+			//this.log.info(`state ${id} changed: ${state.val} (ack = ${state.ack})`);
 			parentThis.matrixChanged(id, state.val, state.ack);
 		} else {
 			// The state was deleted
