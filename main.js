@@ -402,16 +402,16 @@ class BtouchVideomatrix extends utils.Adapter {
 					matrix.write(tmp);
 					matrix.write('\n');
 
-					if (query) {
-						clearTimeout(query);
+					if (parentThis.query) {
+						clearTimeout(parentThis.query);
 					}
-					query = setTimeout(function () {
+					parentThis.query = setTimeout(function () {
 						this.log.error('processCMD(): setTimeout()');
 						//----5 Sekunden keine Antwort und das Teil ist offline
 						if (parentThis.bHasIncomingData == false) {
 							//----Nach x Milisekunden ist noch gar nichts angekommen....
 							this.log.error('processCMD(): KEINE EINKOMMENDEN DATEN NACH ' + TIMEOUT.toString() + ' Milisekunden. OFFLINE?');
-							bConnection = false;
+							parentThis.bConnection = false;
 							//this.setState('info.connection', bConnection, true); //Green led in 'Instances'
 							parentThis.disconnectMatrix();
 							parentThis.initMatrix();
