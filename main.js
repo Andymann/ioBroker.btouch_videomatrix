@@ -634,7 +634,7 @@ class BtouchVideomatrix extends utils.Adapter {
 			native: {},
 		});
 
-		this.createStates();
+		//		this.createStates();
 
 		// in this template all states changes inside the adapters namespace are subscribed
 		this.subscribeStates('*');
@@ -662,7 +662,7 @@ class BtouchVideomatrix extends utils.Adapter {
 		this.log.info('check group user admin group admin: ' + result);
 		*/
 
-		initMatrix();
+		this.initMatrix();
 	}
 
 	/**
