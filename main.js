@@ -391,21 +391,22 @@ class BtouchVideomatrix extends utils.Adapter {
 	//wird alle 100ms aufgerufen. Die CMD-Queue wird abgearbeitet und Befehle gehen raus.
 	processCMD() {
 		//this.log.debug('processCMD()');
-		if (bWaitQueue == false) {
-			if (bWaitingForResponse == false) {
+		if (this.bWaitQueue == false) {
+			if (this.bWaitingForResponse == false) {
 				if (arrCMD.length > 0) {
 					this.log.debug('processCMD: bWaitingForResponse==FALSE, arrCMD.length=' + arrCMD.length.toString());
 					this.bWaitingForResponse = true;
-					const tmp = arrCMD.shift();
+					let tmp = arrCMD.shift();
 					this.log.debug('processCMD: next CMD=' + tmp);
 					this.bHasIncomingData = false;
-					matrix.write(tmp);
-					matrix.write('\n');
+					this.matrix.write(tmp);
+					this.matrix.write('\n');
 					if (query) {
 						clearTimeout(query);
 					}
 					query = setTimeout(function () {
 						//----5 Sekunden keine Antwort und das Teil ist offline
+						parentThis.log.debug('xxx 1');
 						if (parentThis.bHasIncomingData == false) {
 							//----Nach x Milisekunden ist noch gar nichts angekommen....
 							parentThis.log.error('processCMD(): KEINE EINKOMMENDEN DATEN NACH ' + TIMEOUT.toString() + ' Milisekunden. OFFLINE?');
@@ -437,7 +438,7 @@ class BtouchVideomatrix extends utils.Adapter {
 	processIncoming(chunk) {
 		bHasIncomingData = true; // IrgendETWAS ist angekommen
 
-		if (parentThis.mode == MODE_SERIAL) {
+		if (this.mode == MODE_SERIAL) {
 			//----Wegen des Parsers enthaelt <chunk> die komplette Response
 			if (this.bWaitingForResponse == true) {
 				this.parseMSG(chunk);
@@ -478,7 +479,7 @@ class BtouchVideomatrix extends utils.Adapter {
 	//----bWaitingForResponse==TRUE: reaktion auf Gui-Command
 	//----bWaitingForResponse==FALSE: Routing an der Hardware wurde geaendert
 	parseMSG(sMSG) {
-		parentThis.log.info('parseMSG():' + sMSG);
+		this.log.info('parseMSG():' + sMSG);
 		//this.setState('info.connection', true, true); //Green led in 'Instances'	
 		// z.b: HDMI36X36
 		if (sMSG.toLowerCase().includes('hdmi')) {
