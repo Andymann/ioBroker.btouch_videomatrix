@@ -206,18 +206,14 @@ class BtouchVideomatrix extends utils.Adapter {
 			matrix = new serialport(this.sSerialPortName, options);
 			//parser = matrix.pipe(new ByteLength({ length: 1 }));
 			parser = matrix.pipe(new Readline({ delimiter: '\r\n' }))
-			this.log.info('connectMatrix(): 2');
 			if (pingInterval) {
 				clearInterval(pingInterval);
-				parentThis.log.info('connectMatrix(): 3');
 			}
-			this.log.info('connectMatrix(): 4');
 			//----Alle x Sekunden ein PING
 			pingInterval = setInterval(function () {
 				parentThis.pingMatrix();
-				parentThis.log.info('connectMatrix(): 6');
 			}, 5000);
-			this.log.info('connectMatrix(): 5');
+
 		} else if (this.mode == MODE_NETWORK) {
 			this.log.info('connectMatrix():' + this.config.host + ':' + this.config.port);
 			matrix = new net.Socket();
@@ -398,11 +394,9 @@ class BtouchVideomatrix extends utils.Adapter {
 
 	//wird alle 100ms aufgerufen. Die CMD-Queue wird abgearbeitet und Befehle gehen raus.
 	processCMD() {
-		this.log.info('processCMD()');
+		//this.log.info('processCMD()');
 		if (bWaitQueue == false) {
-			this.log.debug('processCMD() 1');
 			if (bWaitingForResponse == false) {
-				this.log.debug('processCMD() 2');
 				if (arrCMD.length > 0) {
 					this.log.debug('processCMD: bWaitingForResponse==FALSE, arrCMD.length=' + arrCMD.length.toString());
 					bWaitingForResponse = true;
@@ -433,10 +427,10 @@ class BtouchVideomatrix extends utils.Adapter {
 					}, TIMEOUT);
 					this.log.debug('processCMD() 6');
 				} else {
-					this.log.debug('processCMD: bWaitingForResponse==FALSE, arrCMD ist leer. Kein Problem');
+					//this.log.debug('processCMD: bWaitingForResponse==FALSE, arrCMD ist leer. Kein Problem');
 				}
 			} else {
-				this.log.debug('AudioMatrix: processCMD: bWaitingForResponse==TRUE. Nichts machen');
+				//this.log.debug('AudioMatrix: processCMD: bWaitingForResponse==TRUE. Nichts machen');
 			}
 		} else {
 			this.log.debug('processCMD: bWaitQueue==TRUE, warten');
