@@ -240,7 +240,7 @@ class BtouchVideomatrix extends utils.Adapter {
 		}
 
 
-		matrix.on('data', function (chunk) {
+		this.matrix.on('data', function (chunk) {
 			//parentThis.log.info('matrix.onData():' + chunk + ' ' + toHexString(chunk));
 			if (parentThis.mode == MODE_SERIAL) {
 				//parentThis.processIncoming(chunk);
