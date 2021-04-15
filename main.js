@@ -391,7 +391,7 @@ class BtouchVideomatrix extends utils.Adapter {
 	//wird alle 100ms aufgerufen. Die CMD-Queue wird abgearbeitet und Befehle gehen raus.
 	processCMD() {
 		this.log.debug('processCMD()');
-		if (bWaitQueue == false) {
+		if (this.bWaitQueue == false) {
 			if (bWaitingForResponse == false) {
 				if (arrCMD.length > 0) {
 					this.log.debug('processCMD: bWaitingForResponse==FALSE, arrCMD.length=' + arrCMD.length.toString());
