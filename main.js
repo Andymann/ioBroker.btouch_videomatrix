@@ -431,7 +431,7 @@ class BtouchVideomatrix extends utils.Adapter {
 							parentThis.log.info('processCMD(): Irgendetwas kam an... es lebt.');
 						}
 					}, TIMEOUT);
-					log.debug('processCMD() 6');
+					this.log.debug('processCMD() 6');
 				} else {
 					this.log.debug('processCMD: bWaitingForResponse==FALSE, arrCMD ist leer. Kein Problem');
 				}
