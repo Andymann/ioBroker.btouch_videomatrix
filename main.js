@@ -190,7 +190,7 @@ class BtouchVideomatrix extends utils.Adapter {
 	}
 
 	connectMatrix(cb) {
-		this.log.info('connectMatrix()');
+		//this.log.debug('connectMatrix()');
 		let parser;
 		arrCMD = [];
 
@@ -403,7 +403,6 @@ class BtouchVideomatrix extends utils.Adapter {
 					matrix.write(tmp);
 					matrix.write('\n');
 					if (query) {
-						this.log.debug('processCMD() CLEAR TIMEOUT');
 						clearTimeout(query);
 					}
 					query = setTimeout(function () {
@@ -636,7 +635,7 @@ class BtouchVideomatrix extends utils.Adapter {
 			native: {},
 		});
 
-		//		this.createStates();
+		this.createStates();
 
 		// in this template all states changes inside the adapters namespace are subscribed
 		this.subscribeStates('*');
