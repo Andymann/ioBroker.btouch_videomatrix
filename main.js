@@ -391,16 +391,16 @@ class BtouchVideomatrix extends utils.Adapter {
 	//wird alle 100ms aufgerufen. Die CMD-Queue wird abgearbeitet und Befehle gehen raus.
 	processCMD() {
 		this.log.debug('processCMD()');
-		if (this.bWaitQueue == false) {
-			if (this.bWaitingForResponse == false) {
+		if (bWaitQueue == false) {
+			if (bWaitingForResponse == false) {
 				if (arrCMD.length > 0) {
-					this.log.debug('processCMD: bWaitingForResponse==FALSE, arrCMD.length=' + arrCMD.length.toString());
-					this.bWaitingForResponse = true;
+					log.debug('processCMD: bWaitingForResponse==FALSE, arrCMD.length=' + arrCMD.length.toString());
+					bWaitingForResponse = true;
 					let tmp = arrCMD.shift();
-					this.log.debug('processCMD: next CMD=' + tmp);
-					this.bHasIncomingData = false;
-					this.matrix.write(tmp);
-					this.matrix.write('\n');
+					log.debug('processCMD: next CMD=' + tmp);
+					bHasIncomingData = false;
+					matrix.write(tmp);
+					matrix.write('\n');
 					if (query) {
 						clearTimeout(query);
 					}
