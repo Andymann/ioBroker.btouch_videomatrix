@@ -461,7 +461,7 @@ class BtouchVideomatrix extends utils.Adapter {
 				this.bConnection = true;
 				this.in_msg = '';
 			} else {
-				this..log.info(': processIncoming() Network: bWaitingForResponse==FALSE; in_msg:' + in_msg);
+				this.log.info(': processIncoming() Network: bWaitingForResponse==FALSE; in_msg:' + in_msg);
 			}
 		}
 
