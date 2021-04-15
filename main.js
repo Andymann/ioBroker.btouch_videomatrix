@@ -303,12 +303,15 @@ class BtouchVideomatrix extends utils.Adapter {
 		});
 
 		//----Den Zustand der Hardware abfragen
-		parentThis.queryMatrix();
+		this.queryMatrix();
 	}
 
 	pingMatrix() {
+		this.log.info('pingMatrix(): 1');
 		if (this.mode == MODE_SERIAL) {
+			this.log.info('pingMatrix(): 2');
 			if (bWaitQueue == false) {
+				this.log.info('pingMatrix(): 3');
 				if (arrCMD.length == 0) {
 					//parentThis.log.debug('pingMatrix() seriell');
 					arrCMD.push(CMDPING);
@@ -316,6 +319,7 @@ class BtouchVideomatrix extends utils.Adapter {
 				}
 			}
 		} else if (this.mode == MODE_NETWORK) {
+			this.log.info('pingMatrix(): 4');
 			// ---   ALL TO BE DONE
 			if ((bConnection == true)/*&&(bWaitingForResponse==false)*/ && (bWaitQueue == false)) {
 				if (arrCMD.length == 0) {
