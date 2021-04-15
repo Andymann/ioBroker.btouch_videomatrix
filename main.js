@@ -303,7 +303,7 @@ class BtouchVideomatrix extends utils.Adapter {
 		});
 
 		//----Den Zustand der Hardware abfragen
-		this.queryMatrix();
+		//		this.queryMatrix();
 	}
 
 	pingMatrix() {
