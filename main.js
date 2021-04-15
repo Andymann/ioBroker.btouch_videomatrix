@@ -402,6 +402,7 @@ class BtouchVideomatrix extends utils.Adapter {
 					matrix.write(tmp);
 					matrix.write('\n');
 					if (query) {
+						this.log.debug('processCMD() CLEAR TIMEOUT');
 						clearTimeout(query);
 					}
 					query = setTimeout(function () {
