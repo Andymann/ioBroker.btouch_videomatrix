@@ -441,10 +441,10 @@ class BtouchVideomatrix extends utils.Adapter {
 
 		if (this.mode == MODE_SERIAL) {
 			//----Wegen des Parsers enthaelt <chunk> die komplette Response
-			if (this.bWaitingForResponse == true) {
-				this.parseMSG(chunk);
-				this.bWaitingForResponse = false;
-				this.bConnection = true;
+			if (bWaitingForResponse == true) {
+				parseMSG(chunk);
+				bWaitingForResponse = false;
+				bConnection = true;
 				//this.setState('info.connection', bConnection, true); //Green led in 'Instances'
 				in_msg = '';
 			} else {
@@ -457,11 +457,11 @@ class BtouchVideomatrix extends utils.Adapter {
 			this.log.info('processIncoming() Mode_Network: TBD');
 			in_msg += chunk;
 			//....if in_msg == complete....
-			if (this.bWaitingForResponse == true) {
-				this.parseMSG(chunk);
-				this.bWaitingForResponse = false;
-				this.bConnection = true;
-				this.in_msg = '';
+			if (bWaitingForResponse == true) {
+				parseMSG(chunk);
+				bWaitingForResponse = false;
+				bConnection = true;
+				in_msg = '';
 			} else {
 				this.log.info(': processIncoming() Network: bWaitingForResponse==FALSE; in_msg:' + in_msg);
 			}
@@ -514,7 +514,7 @@ class BtouchVideomatrix extends utils.Adapter {
 			let iTrenner = sMSG.toLowerCase().indexOf('v');
 			let sEingang = sMSG.substring(1, iTrenner);
 			let sAusgang = sMSG.substring(iTrenner + 1, sMSG.indexOf('.'));
-			if (parentThis.bWaitingForResponse == true) {
+			if (bWaitingForResponse == true) {
 				this.log.info('parseMsg(): SET Routing Answer: IN:' + sEingang + '; OUT:' + sAusgang + ';');
 			} else {
 				this.log.info('parseMsg(): Aenderung an der Hardware: IN:' + sEingang + '; OUT:' + sAusgang + ';');
