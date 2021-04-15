@@ -190,7 +190,7 @@ class BtouchVideomatrix extends utils.Adapter {
 	}
 
 	connectMatrix(cb) {
-		//this.log.info('connectMatrix()');
+		this.log.info('connectMatrix()');
 		let parser;
 		arrCMD = [];
 
