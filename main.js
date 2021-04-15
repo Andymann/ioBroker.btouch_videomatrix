@@ -419,13 +419,13 @@ class BtouchVideomatrix extends utils.Adapter {
 						}
 					}, TIMEOUT);
 				} else {
-					//this.log.debug('processCMD: bWaitingForResponse==FALSE, arrCMD ist leer. Kein Problem');
+					this.log.debug('processCMD: bWaitingForResponse==FALSE, arrCMD ist leer. Kein Problem');
 				}
 			} else {
-				//this.log.debug('AudioMatrix: processCMD: bWaitingForResponse==TRUE. Nichts machen');
+				this.log.debug('AudioMatrix: processCMD: bWaitingForResponse==TRUE. Nichts machen');
 			}
 		} else {
-			//this.log.debug('processCMD: bWaitQueue==TRUE, warten');
+			this.log.debug('processCMD: bWaitQueue==TRUE, warten');
 		}
 
 		//----Anzeige der Quelength auf der Oberflaeche
