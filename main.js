@@ -404,7 +404,7 @@ class BtouchVideomatrix extends utils.Adapter {
 					if (parentThis.query) {
 						clearTimeout(parentThis.query);
 					}
-					parentThis.query = setTimeout(function () {
+					query = setTimeout(function () {
 						this.log.debug('processCMD: 1');
 						//----5 Sekunden keine Antwort und das Teil ist offline
 						if (parentThis.bHasIncomingData == false) {
