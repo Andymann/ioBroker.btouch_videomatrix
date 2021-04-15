@@ -313,13 +313,14 @@ class BtouchVideomatrix extends utils.Adapter {
 			if (bWaitQueue == false) {
 				this.log.info('pingMatrix(): 3');
 				if (arrCMD.length == 0) {
+					this.log.info('pingMatrix(): 4');
 					//parentThis.log.debug('pingMatrix() seriell');
 					arrCMD.push(CMDPING);
 					iMissedPingCounter = 0;
 				}
 			}
 		} else if (this.mode == MODE_NETWORK) {
-			this.log.info('pingMatrix(): 4');
+			this.log.info('pingMatrix(): 5');
 			// ---   ALL TO BE DONE
 			if ((bConnection == true)/*&&(bWaitingForResponse==false)*/ && (bWaitQueue == false)) {
 				if (arrCMD.length == 0) {
