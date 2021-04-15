@@ -205,7 +205,7 @@ class BtouchVideomatrix extends utils.Adapter {
 
 			this.matrix = new serialport(this.sSerialPortName, options);
 			//parser = matrix.pipe(new ByteLength({ length: 1 }));
-			parser = matrix.pipe(new Readline({ delimiter: '\r\n' }))
+			parser = this.matrix.pipe(new Readline({ delimiter: '\r\n' }))
 			if (pingInterval) {
 				clearInterval(pingInterval);
 			}
