@@ -12,7 +12,7 @@ const net = require('net');
 const serialport = require('serialport');
 const Readline = require('@serialport/parser-readline')
 const ByteLength = require('@serialport/parser-byte-length');
-const TIMEOUT = 3000;
+const TIMEOUT = 5000;
 
 const MODE_NONE = 0x00;
 const MODE_SERIAL = 0x01;
@@ -212,7 +212,7 @@ class BtouchVideomatrix extends utils.Adapter {
 			//----Alle x Sekunden ein PING
 			pingInterval = setInterval(function () {
 				parentThis.pingMatrix();
-			}, 5000);
+			}, 3000);
 
 		} else if (this.mode == MODE_NETWORK) {
 			this.log.info('connectMatrix():' + this.config.host + ':' + this.config.port);
@@ -303,13 +303,10 @@ class BtouchVideomatrix extends utils.Adapter {
 	}
 
 	pingMatrix() {
-		this.log.info('pingMatrix(): 1');
+		//this.log.info('pingMatrix(): 1');
 		if (this.mode == MODE_SERIAL) {
-			this.log.info('pingMatrix(): 2');
 			if (bWaitQueue == false) {
-				this.log.info('pingMatrix(): 3. Len:' + arrCMD.length);
 				if (arrCMD.length == 0) {
-					this.log.info('pingMatrix(): 4');
 					//parentThis.log.debug('pingMatrix() seriell');
 					arrCMD.push(CMDPING);
 					iMissedPingCounter = 0;
@@ -403,17 +400,14 @@ class BtouchVideomatrix extends utils.Adapter {
 					let tmp = arrCMD.shift();
 					this.log.debug('processCMD: next CMD=' + tmp);
 					bHasIncomingData = false;
-					this.log.debug('processCMD() 3');
 					matrix.write(tmp);
 					matrix.write('\n');
 					if (query) {
 						this.log.debug('processCMD() CLEAR TIMEOUT');
 						clearTimeout(query);
 					}
-					this.log.debug('processCMD() 4');
 					query = setTimeout(function () {
 						//----5 Sekunden keine Antwort und das Teil ist offline
-						parentThis.log.debug('processCMD() 5:' + bHasIncomingData);
 						if (bHasIncomingData == false) {
 							//----Nach x Milisekunden ist noch gar nichts angekommen....
 							parentThis.log.error('processCMD(): KEINE EINKOMMENDEN DATEN NACH ' + TIMEOUT.toString() + ' Milisekunden. OFFLINE?');
@@ -425,7 +419,6 @@ class BtouchVideomatrix extends utils.Adapter {
 							parentThis.log.info('processCMD(): Irgendetwas kam an... es lebt.');
 						}
 					}, TIMEOUT);
-					this.log.debug('processCMD() 6');
 				} else {
 					//this.log.debug('processCMD: bWaitingForResponse==FALSE, arrCMD ist leer. Kein Problem');
 				}
