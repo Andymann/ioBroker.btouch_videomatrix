@@ -311,8 +311,8 @@ class BtouchVideomatrix extends utils.Adapter {
 		if (this.mode == MODE_SERIAL) {
 			this.log.info('pingMatrix(): 2');
 			if (bWaitQueue == false) {
-				this.log.info('pingMatrix(): 3');
-				if (this.arrCMD.length == 0) {
+				this.log.info('pingMatrix(): 3. Len:' + arrCMD.length);
+				if (arrCMD.length == 0) {
 					this.log.info('pingMatrix(): 4');
 					//parentThis.log.debug('pingMatrix() seriell');
 					arrCMD.push(CMDPING);
