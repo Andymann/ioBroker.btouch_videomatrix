@@ -172,7 +172,6 @@ class BtouchVideomatrix extends utils.Adapter {
 		clearInterval(cmdInterval);
 		cmdInterval = setInterval(function () {
 			parentThis.processCMD();
-			parentThis.log.info('initMatrix(): 1');
 		}, 100);
 		this.connectMatrix();
 	}
@@ -399,7 +398,7 @@ class BtouchVideomatrix extends utils.Adapter {
 
 	//wird alle 100ms aufgerufen. Die CMD-Queue wird abgearbeitet und Befehle gehen raus.
 	processCMD() {
-		this.log.debug('processCMD()');
+		this.log.info('processCMD()');
 		if (bWaitQueue == false) {
 			this.log.debug('processCMD() 1');
 			if (bWaitingForResponse == false) {
@@ -410,12 +409,14 @@ class BtouchVideomatrix extends utils.Adapter {
 					let tmp = arrCMD.shift();
 					this.log.debug('processCMD: next CMD=' + tmp);
 					bHasIncomingData = false;
+					this.log.debug('processCMD() 3');
 					matrix.write(tmp);
 					matrix.write('\n');
 					if (query) {
 						this.log.debug('processCMD() CLEAR TIMEOUT');
 						clearTimeout(query);
 					}
+					this.log.debug('processCMD() 4');
 					query = setTimeout(function () {
 						//----5 Sekunden keine Antwort und das Teil ist offline
 						parentThis.log.debug('xxx 1');
