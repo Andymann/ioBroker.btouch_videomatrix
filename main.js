@@ -129,29 +129,27 @@ class BtouchVideomatrix extends utils.Adapter {
 				});
 			}
 		}
-		/*
-		// Kombinatinen von Ein- und Ausgang als Nummer ('Eingang 1 auf X')
-		//for (var i = 0; i < MAXCHANNELS; i++) {
-		//	for (var j = 0; j < MAXCHANNELS; j++) {
-		let ii = 0;
-		let jj = 0;
-		await this.setObjectAsync('SelectNumber.input_' + (ii + 1).toString().padStart(2, '0') + '_out_' + (jj + 1).toString().padStart(2, '0'), {
-			type: 'state',
-			common: {
-				name: 'Connect Input to numbered Output',
-				type: 'number',
-				//def: 0,
-				//states: { 0: 'Off', 1: '1', 2: '2', 3: '3', 4: '4', 5: '5', 6: '6' },
-				states: { 0: 'Off', 1: '1', 2: '2', 3: '3', 4: '4', 5: '5', 6: '6' },
-				role: 'list',
-				read: true,
-				write: true
-			},
-			native: {},
-		});
-		//	}
-		//}
-		*/
+
+		for (var i = 0; i < parentThis.MAXCHANNELS; i++) {
+			// Kombinatinen von Ein- und Ausgang als Nummer ('Eingang 1 auf X')
+			//for (var i = 0; i < MAXCHANNELS; i++) {
+			//	for (var j = 0; j < MAXCHANNELS; j++) {
+			await this.setObjectAsync('SelectNumber.input_' + (i + 1).toString().padStart(2, '0') + '_out_to'), {
+				type: 'state',
+				common: {
+					name: 'Connect Input to numbered Output',
+					type: 'number',
+					//def: 0,
+					//states: { 0: 'Off', 1: '1', 2: '2', 3: '3', 4: '4', 5: '5', 6: '6' },
+					states: { 0: 'Off', 1: '1', 2: '2', 3: '3', 4: '4', 5: '5', 6: '6' },
+					role: 'list',
+					read: true,
+					write: true
+				},
+				native: {},
+			});
+		}
+
 	}
 
 
@@ -623,6 +621,7 @@ class BtouchVideomatrix extends utils.Adapter {
 		Here a simple template for a boolean variable named "testVariable"
 		Because every adapter instance uses its own unique namespace variable names can't collide with other adapters variables
 		*/
+		/*
 		await this.setObjectAsync('testVariable', {
 			type: 'state',
 			common: {
@@ -634,7 +633,7 @@ class BtouchVideomatrix extends utils.Adapter {
 			},
 			native: {},
 		});
-
+		*/
 		this.createStates();
 
 		// in this template all states changes inside the adapters namespace are subscribed
