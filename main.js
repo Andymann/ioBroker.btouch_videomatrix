@@ -401,12 +401,9 @@ class BtouchVideomatrix extends utils.Adapter {
 					parentThis.bHasIncomingData = false;
 					matrix.write(tmp);
 					matrix.write('\n');
-					this.log.debug('processCMD: 1');
 					if (parentThis.query) {
-						this.log.debug('processCMD: 2');
 						clearTimeout(parentThis.query);
 					}
-					this.log.debug('processCMD: 3');
 					parentThis.query = setTimeout(function () {
 						this.log.error('processCMD(): setTimeout()');
 						//----5 Sekunden keine Antwort und das Teil ist offline
@@ -420,7 +417,7 @@ class BtouchVideomatrix extends utils.Adapter {
 						} else {
 							parentThis.log.info('processCMD(): Irgendetwas kam an... es lebt.');
 						}
-					}, TIMEOUT);
+					}, 5000);
 					this.log.debug('processCMD: 4');
 				} else {
 					//this.log.debug('processCMD: bWaitingForResponse==FALSE, arrCMD ist leer. Kein Problem');
