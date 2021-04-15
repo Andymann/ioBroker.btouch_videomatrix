@@ -294,7 +294,7 @@ class BtouchVideomatrix extends utils.Adapter {
 
 
 		parser.on('data', function (chunk) {
-			//parentThis.log.debug('parser.onData():' + chunk);
+			parentThis.log.debug('parser.onData():' + chunk);
 			if (parentThis.mode == MODE_SERIAL) {
 				//----Hier kommt schon die komplette Response an
 				parentThis.processIncoming(chunk);
