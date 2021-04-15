@@ -172,6 +172,7 @@ class BtouchVideomatrix extends utils.Adapter {
 		clearInterval(cmdInterval);
 		cmdInterval = setInterval(function () {
 			parentThis.processCMD();
+			parentThis.log.info('initMatrix(): 1');
 		}, 100);
 		this.connectMatrix();
 	}
