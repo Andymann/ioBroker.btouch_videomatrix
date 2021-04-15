@@ -12,7 +12,7 @@ const net = require('net');
 const serialport = require('serialport');
 const Readline = require('@serialport/parser-readline')
 const ByteLength = require('@serialport/parser-byte-length');
-const TIMEOUT = 5000;
+const TIMEOUT = 3000;
 
 const MODE_NONE = 0x00;
 const MODE_SERIAL = 0x01;
@@ -216,7 +216,7 @@ class BtouchVideomatrix extends utils.Adapter {
 			pingInterval = setInterval(function () {
 				parentThis.pingMatrix();
 				parentThis.log.info('connectMatrix(): 6');
-			}, 3000);
+			}, 5000);
 			this.log.info('connectMatrix(): 5');
 		} else if (this.mode == MODE_NETWORK) {
 			this.log.info('connectMatrix():' + this.config.host + ':' + this.config.port);
