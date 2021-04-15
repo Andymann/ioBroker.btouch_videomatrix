@@ -173,7 +173,7 @@ class BtouchVideomatrix extends utils.Adapter {
 		cmdInterval = setInterval(function () {
 			parentThis.processCMD();
 		}, 100);
-		this.connectMatrix();
+		connectMatrix();
 	}
 
 	disconnectMatrix() {
@@ -194,7 +194,7 @@ class BtouchVideomatrix extends utils.Adapter {
 		let parser;
 		arrCMD = [];
 
-		if (parentThis.mode == MODE_SERIAL) {
+		if (mode == MODE_SERIAL) {
 			this.log.info('connectMatrix(): Serial Port Mode ' + this.sSerialPortName);
 			const options = {
 				baudRate: 9600,
@@ -215,7 +215,7 @@ class BtouchVideomatrix extends utils.Adapter {
 				parentThis.pingMatrix();
 			}, 3000);
 
-		} else if (parentThis.mode == MODE_NETWORK) {
+		} else if (mode == MODE_NETWORK) {
 			this.log.info('connectMatrix():' + this.config.host + ':' + this.config.port);
 			matrix = new net.Socket();
 			/*
