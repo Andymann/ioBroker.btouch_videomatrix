@@ -173,7 +173,7 @@ class BtouchVideomatrix extends utils.Adapter {
 		cmdInterval = setInterval(function () {
 			parentThis.processCMD();
 		}, 100);
-		this.connectMatrix();
+		connectMatrix();
 	}
 
 	disconnectMatrix() {
@@ -662,7 +662,7 @@ class BtouchVideomatrix extends utils.Adapter {
 		this.log.info('check group user admin group admin: ' + result);
 		*/
 
-		this.initMatrix();
+		initMatrix();
 	}
 
 	/**
