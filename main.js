@@ -451,6 +451,8 @@ class BtouchVideomatrix extends utils.Adapter {
 	// Verarbeitung eingehender Daten
 	processIncoming(chunk) {
 		bHasIncomingData = true; // IrgendETWAS ist angekommen
+		this.log.debug('processIncoming():' + chunk);
+
 
 		if (this.mode == MODE_SERIAL) {
 			//----Wegen des Parsers enthaelt <chunk> die komplette Response
