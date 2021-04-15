@@ -203,7 +203,7 @@ class BtouchVideomatrix extends utils.Adapter {
 				parity: 'none'
 			};
 
-			this.matrix = new serialport(this.sSerialPortName, options);
+			matrix = new serialport(this.sSerialPortName, options);
 			//parser = matrix.pipe(new ByteLength({ length: 1 }));
 			parser = this.matrix.pipe(new Readline({ delimiter: '\r\n' }))
 			if (pingInterval) {
@@ -217,7 +217,7 @@ class BtouchVideomatrix extends utils.Adapter {
 
 		} else if (this.mode == MODE_NETWORK) {
 			this.log.info('connectMatrix():' + this.config.host + ':' + this.config.port);
-			this.matrix = new net.Socket();
+			matrix = new net.Socket();
 			/*
 			matrix.connect(this.config.port, this.config.host, function () {
 				if (bConnection == false) {
@@ -240,7 +240,7 @@ class BtouchVideomatrix extends utils.Adapter {
 		}
 
 
-		this.matrix.on('data', function (chunk) {
+		matrix.on('data', function (chunk) {
 			//parentThis.log.info('matrix.onData():' + chunk + ' ' + toHexString(chunk));
 			if (parentThis.mode == MODE_SERIAL) {
 				//parentThis.processIncoming(chunk);
