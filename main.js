@@ -203,7 +203,7 @@ class BtouchVideomatrix extends utils.Adapter {
 				parity: 'none'
 			};
 
-			matrix = new serialport(this.sSerialPortName, options);
+			this.matrix = new serialport(this.sSerialPortName, options);
 			//parser = matrix.pipe(new ByteLength({ length: 1 }));
 			parser = matrix.pipe(new Readline({ delimiter: '\r\n' }))
 			if (pingInterval) {
