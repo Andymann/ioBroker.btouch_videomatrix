@@ -209,7 +209,7 @@ class BtouchVideomatrix extends utils.Adapter {
 			this.log.info('connectMatrix(): 2');
 			if (pingInterval) {
 				clearInterval(pingInterval);
-				this.log.info('connectMatrix(): 3');
+				parentThis.log.info('connectMatrix(): 3');
 			}
 			this.log.info('connectMatrix(): 4');
 			//----Alle x Sekunden ein PING
