@@ -291,7 +291,7 @@ class BtouchVideomatrix extends utils.Adapter {
 
 
 		parser.on('data', function (chunk) {
-			parentThis.log.debug('parser.onData():' + chunk);
+			//parentThis.log.debug('parser.onData():' + chunk);
 			if (parentThis.mode == MODE_SERIAL) {
 				//----Hier kommt schon die komplette Response an
 				parentThis.processIncoming(chunk);
@@ -396,14 +396,13 @@ class BtouchVideomatrix extends utils.Adapter {
 				if (arrCMD.length > 0) {
 					this.log.debug('processCMD: bWaitingForResponse==FALSE, arrCMD.length=' + arrCMD.length.toString());
 					this.bWaitingForResponse = true;
-					this.log.debug('processCMD: bWaitingForResponse==' + this.bWaitingForResponse);
 					const tmp = arrCMD.shift();
 					this.log.debug('processCMD: next CMD=' + tmp);
-					parentThis.bHasIncomingData = false;
+					this.bHasIncomingData = false;
 					matrix.write(tmp);
 					matrix.write('\n');
-					if (parentThis.query) {
-						clearTimeout(parentThis.query);
+					if (query) {
+						clearTimeout(query);
 					}
 					query = setTimeout(function () {
 						//----5 Sekunden keine Antwort und das Teil ist offline
@@ -440,29 +439,29 @@ class BtouchVideomatrix extends utils.Adapter {
 
 		if (parentThis.mode == MODE_SERIAL) {
 			//----Wegen des Parsers enthaelt <chunk> die komplette Response
-			if (parentThis.bWaitingForResponse == true) {
-				parentThis.parseMSG(chunk);
-				parentThis.bWaitingForResponse = false;
-				bConnection = true;
+			if (this.bWaitingForResponse == true) {
+				this.parseMSG(chunk);
+				this.bWaitingForResponse = false;
+				this.bConnection = true;
 				//this.setState('info.connection', bConnection, true); //Green led in 'Instances'
 				in_msg = '';
 			} else {
 				// einkommende Daten ohne, dass auf eine Response gewartet wird entstehen, 
 				// wenn an der Oberfläche etwas geändert wird. bsp: '/1V3.'
-				parentThis.log.info(': processIncoming() Serial: bWaitingForResponse==FALSE; in_msg:' + chunk);
-				parentThis.parseMSG(chunk);
+				this.log.info(': processIncoming() Serial: bWaitingForResponse==FALSE; in_msg:' + chunk);
+				this.parseMSG(chunk);
 			}
 		} else if (parentThis.mode == MODE_NETWORK) {
-			parentThis.log.info('processIncoming() Mode_Network: TBD');
+			this.log.info('processIncoming() Mode_Network: TBD');
 			in_msg += chunk;
 			//....if in_msg == complete....
-			if (parentThis.bWaitingForResponse == true) {
-				parentThis.parseMSG(chunk);
-				parentThis.bWaitingForResponse = false;
-				bConnection = true;
-				in_msg = '';
+			if (this.bWaitingForResponse == true) {
+				this.parseMSG(chunk);
+				this.bWaitingForResponse = false;
+				this.bConnection = true;
+				this.in_msg = '';
 			} else {
-				parentThis.log.info(': processIncoming() Network: bWaitingForResponse==FALSE; in_msg:' + in_msg);
+				this..log.info(': processIncoming() Network: bWaitingForResponse==FALSE; in_msg:' + in_msg);
 			}
 		}
 
