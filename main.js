@@ -511,7 +511,8 @@ class BtouchVideomatrix extends utils.Adapter {
 	//----bWaitingForResponse==FALSE: Routing an der Hardware wurde geaendert
 	async parseMSG(sMSG) {
 		let id = 'btouch_videomatrix.0.Labels.input_' + (1).toString().padStart(2, '0')
-		id = 'btouch_videomatrix.0.Labels.input_01';
+		//id = 'btouch_videomatrix.0.Labels.input_01';
+		id = 'Labels.input_01';
 		let tmpV = this.getState(id)
 		//this.log.info('parseMSG():' + sMSG + 'State test: Adapter.namespace:' + this.adapter.name + '  ' + id + ':' + tmpV);
 		var wert = await this.getStateAsync(id);
