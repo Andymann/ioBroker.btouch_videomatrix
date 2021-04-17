@@ -513,7 +513,7 @@ class BtouchVideomatrix extends utils.Adapter {
 	//----bWaitingForResponse==FALSE: Routing an der Hardware wurde geaendert
 	parseMSG(sMSG) {
 		let id = 'Labels.input_' + (1).toString().padStart(2, '0')
-		this.log.info('parseMSG():' + sMSG + 'State test:' + this.getState(id).val);
+		this.log.info('parseMSG():' + sMSG + 'State test:' + this.getObject(id));
 		//this.setState('info.connection', true, true); //Green led in 'Instances'	
 		// z.b: HDMI36X36
 		if (sMSG.toLowerCase().includes('hdmi')) {
