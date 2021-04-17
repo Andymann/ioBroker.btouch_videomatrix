@@ -509,12 +509,12 @@ class BtouchVideomatrix extends utils.Adapter {
 	//----Data coming from hardware
 	//----bWaitingForResponse==TRUE: reaktion auf Gui-Command
 	//----bWaitingForResponse==FALSE: Routing an der Hardware wurde geaendert
-	async parseMSG(sMSG) {
+	parseMSG(sMSG) {
 		let id = 'Labels.input_' + (1).toString().padStart(2, '0')
 		//id = 'btouch_videomatrix.0.Labels.input_01';
 		//id = 'Labels.input_01';
 		//this.log.info('parseMSG():' + sMSG + 'State test: Adapter.namespace:' + this.adapter.name + '  ' + id + ':' + tmpV);
-		var wert = await this.getStateAsync(id);
+		var wert = this.getStateAsync(id);
 		this.log.info('parseMSG():' + wert.val);
 		//this.setState('info.connection', true, true); //Green led in 'Instances'	
 		// z.b: HDMI36X36
