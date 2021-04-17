@@ -152,7 +152,7 @@ class BtouchVideomatrix extends utils.Adapter {
 
 		for (var i = 0; i < parentThis.MAXCHANNELS; i++) {
 			await this.setObjectAsync('Labels.input_' + (i + 1).toString().padStart(2, '0'), {
-				type: 'text',
+				type: 'state',
 				common: {
 					name: 'Input-Name',
 					type: 'string',
