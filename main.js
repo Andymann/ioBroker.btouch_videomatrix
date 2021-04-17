@@ -514,7 +514,7 @@ class BtouchVideomatrix extends utils.Adapter {
 		//id = 'btouch_videomatrix.0.Labels.input_01';
 		//id = 'Labels.input_01';
 		//this.log.info('parseMSG():' + sMSG + 'State test: Adapter.namespace:' + this.adapter.name + '  ' + id + ':' + tmpV);
-		var wert = this.getStateAsync(id);
+		var wert = await this.getStateAsync(id);
 		this.log.info('parseMSG():' + wert.val);
 		//this.setState('info.connection', true, true); //Green led in 'Instances'	
 		// z.b: HDMI36X36
