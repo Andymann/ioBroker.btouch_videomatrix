@@ -43,6 +43,8 @@ let cmdInterval;
 let sSerialPortName;
 let pingInterval;
 
+let stateList = { 0: 'Off', 1: '1', 2: '2', 3: '3', 4: '4', 5: '5', 6: '6' };
+
 
 //-------
 let query = null;
@@ -141,7 +143,8 @@ class BtouchVideomatrix extends utils.Adapter {
 					type: 'number',
 					//def: 0,
 					//states: { 0: 'Off', 1: '1', 2: '2', 3: '3', 4: '4', 5: '5', 6: '6' },
-					states: { 0: 'Off', 1: '1', 2: '2', 3: '3', 4: '4', 5: '5', 6: '6' },
+					//states: { 0: 'Off', 1: '1', 2: '2', 3: '3', 4: '4', 5: '5', 6: '6' },
+					states: parentThis.stateList,
 					role: 'list',
 					read: true,
 					write: true
