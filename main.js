@@ -238,7 +238,7 @@ class BtouchVideomatrix extends utils.Adapter {
 
 
 		matrix.on('data', function (chunk) {
-			parentThis.log.info('matrix.onData():' + chunk + ' ' + toHexString(chunk));
+			//parentThis.log.info('matrix.onData():' + chunk + ' ' + toHexString(chunk));
 			if (parentThis.mode == MODE_SERIAL) {
 				//parentThis.processIncoming(chunk);
 			} else if (parentThis.mode == MODE_NETWORK) {
@@ -288,7 +288,7 @@ class BtouchVideomatrix extends utils.Adapter {
 
 
 		parser.on('data', function (chunk) {
-			parentThis.log.debug('parser.onData():' + chunk);
+			//parentThis.log.debug('parser.onData():' + chunk);
 			if (parentThis.mode == MODE_SERIAL) {
 				//----Hier kommt schon die komplette Response an
 				parentThis.processIncoming(chunk);
