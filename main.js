@@ -166,6 +166,23 @@ class BtouchVideomatrix extends utils.Adapter {
 				native: {},
 			});
 		}
+
+		for (var i = 0; i < parentThis.MAXCHANNELS; i++) {
+			await this.setObjectAsync('Labels.output_' + (i + 1).toString().padStart(2, '0'), {
+				type: 'state',
+				common: {
+					name: 'Output-Name',
+					type: 'string',
+					//def: 0,
+					//states: { 0: 'Off', 1: '1', 2: '2', 3: '3', 4: '4', 5: '5', 6: '6' },
+					role: 'text',
+					read: true,
+					write: true,
+					def: 'Ausgang ' + (i + 1).toString().padStart(2, '0')
+				},
+				native: {},
+			});
+		}
 	}
 
 
@@ -495,7 +512,8 @@ class BtouchVideomatrix extends utils.Adapter {
 	//----bWaitingForResponse==TRUE: reaktion auf Gui-Command
 	//----bWaitingForResponse==FALSE: Routing an der Hardware wurde geaendert
 	parseMSG(sMSG) {
-		this.log.info('parseMSG():' + sMSG);
+		let id = 'Labels.input_' + (1).toString().padStart(2, '0')
+		this.log.info('parseMSG():' + sMSG + 'State test:' + getState(id).val);
 		//this.setState('info.connection', true, true); //Green led in 'Instances'	
 		// z.b: HDMI36X36
 		if (sMSG.toLowerCase().includes('hdmi')) {
