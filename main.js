@@ -150,6 +150,22 @@ class BtouchVideomatrix extends utils.Adapter {
 			});
 		}
 
+		for (var i = 0; i < parentThis.MAXCHANNELS; i++) {
+			await this.setObjectAsync('Labels.input_' + (i + 1).toString().padStart(2, '0'), {
+				type: 'text',
+				common: {
+					name: 'Input-Name',
+					type: 'string',
+					//def: 0,
+					//states: { 0: 'Off', 1: '1', 2: '2', 3: '3', 4: '4', 5: '5', 6: '6' },
+					role: 'text',
+					read: true,
+					write: true,
+					def: 'Eingang ' + (i + 1).toString().padStart(2, '0')
+				},
+				native: {},
+			});
+		}
 	}
 
 
