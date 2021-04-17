@@ -144,7 +144,7 @@ class BtouchVideomatrix extends utils.Adapter {
 					//def: 0,
 					//states: { 0: 'Off', 1: '1', 2: '2', 3: '3', 4: '4', 5: '5', 6: '6' },
 					//states: { 0: 'Off', 1: '1', 2: '2', 3: '3', 4: '4', 5: '5', 6: '6' },
-					states: parentThis.stateList,
+					states: stateList,
 					role: 'list',
 					read: true,
 					write: true
