@@ -429,6 +429,11 @@ class BtouchVideomatrix extends utils.Adapter {
 	//wird alle 100ms aufgerufen. Die CMD-Queue wird abgearbeitet und Befehle gehen raus.
 	processCMD() {
 		//this.log.info('processCMD()');
+
+		// nur ein test, um die labesl auszulesen	
+		this.readLabels();
+
+
 		if (bWaitQueue == false) {
 			if (bWaitingForResponse == false) {
 				if (arrCMD.length > 0) {
@@ -518,8 +523,6 @@ class BtouchVideomatrix extends utils.Adapter {
 	//----bWaitingForResponse==TRUE: reaktion auf Gui-Command
 	//----bWaitingForResponse==FALSE: Routing an der Hardware wurde geaendert
 	parseMSG(sMSG) {
-		// nur ein test, um die labesl auszulesen	
-		this.readLabels();
 		// z.b: HDMI36X36
 		if (sMSG.toLowerCase().includes('hdmi')) {
 			//....something something.
