@@ -441,7 +441,7 @@ class BtouchVideomatrix extends utils.Adapter {
 		if (this.mode == MODE_SERIAL) {
 			//----Wegen des Parsers enthaelt <chunk> die komplette Response
 			if (bWaitingForResponse == true) {
-				parseMSG(chunk);
+				this.parseMSG(chunk);
 				bWaitingForResponse = false;
 				bConnection = true;
 				//this.setState('info.connection', bConnection, true); //Green led in 'Instances'
@@ -457,7 +457,7 @@ class BtouchVideomatrix extends utils.Adapter {
 			in_msg += chunk;
 			//....if in_msg == complete....
 			if (bWaitingForResponse == true) {
-				parseMSG(chunk);
+				this.parseMSG(chunk);
 				bWaitingForResponse = false;
 				bConnection = true;
 				in_msg = '';
