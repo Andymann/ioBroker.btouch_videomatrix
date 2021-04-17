@@ -512,7 +512,8 @@ class BtouchVideomatrix extends utils.Adapter {
 	parseMSG(sMSG) {
 		let id = 'btouch_videomatrix.0.Labels.input_' + (1).toString().padStart(2, '0')
 		id = 'btouch_videomatrix.0.Labels.input_01';
-		this.log.info('parseMSG():' + sMSG + 'State test:' + id + ':' + this.getState(id));
+		let tmpV = getState(id)
+		this.log.info('parseMSG():' + sMSG + 'State test:' + id + ':' + tmpV);
 		//this.setState('info.connection', true, true); //Green led in 'Instances'	
 		// z.b: HDMI36X36
 		if (sMSG.toLowerCase().includes('hdmi')) {
