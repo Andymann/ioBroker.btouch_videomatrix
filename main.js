@@ -184,9 +184,9 @@ class BtouchVideomatrix extends utils.Adapter {
 	}
 
 	async readLabels() {
-		let id = 'Labels.input_' + (1).toString().padStart(2, '0');
-		var wert = await this.getStateAsync(id);
-		this.log.info('readLabels():' + wert.val);
+		//let id = 'Labels.input_' + (1).toString().padStart(2, '0');
+		//var wert = await this.getStateAsync(id);
+		//this.log.info('readLabels():' + wert.val);
 
 		var wert2 = await this.getStateAsync('Labels.input_' + (1).toString().padStart(2, '0'));
 		this.log.info('readLabels() 2:' + wert2.val);
