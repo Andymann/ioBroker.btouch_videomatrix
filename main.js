@@ -436,7 +436,7 @@ class BtouchVideomatrix extends utils.Adapter {
 		//this.log.info('processCMD()');
 
 		// nur ein test, um die labesl auszulesen	
-		this.readLabels();
+		//this.readLabels();
 
 
 		if (bWaitQueue == false) {
