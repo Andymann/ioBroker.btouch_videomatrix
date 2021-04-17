@@ -184,9 +184,11 @@ class BtouchVideomatrix extends utils.Adapter {
 	}
 
 	async readLabels() {
-		let id = 'Labels.input_' + (1).toString().padStart(2, '0')
-		var wert = await this.getStateAsync(id);
-		this.log.info('readLabels():' + wert.val);
+		//let idi = 'Labels.input_' + (1).toString().padStart(2, '0')
+		//var wert = await this.getStateAsync(id);
+		//this.log.info('readLabels():' + wert.val);
+		this.log.info('readLabels():' + await this.getStateAsync('Labels.input_' + (1).toString().padStart(2, '0')).val);
+		this.log.info('readLabels():' + await this.getStateAsync('Labels.output_' + (1).toString().padStart(2, '0')).val);
 	}
 
 
@@ -516,12 +518,9 @@ class BtouchVideomatrix extends utils.Adapter {
 	//----bWaitingForResponse==TRUE: reaktion auf Gui-Command
 	//----bWaitingForResponse==FALSE: Routing an der Hardware wurde geaendert
 	parseMSG(sMSG) {
-		//id = 'btouch_videomatrix.0.Labels.input_01';
-		//id = 'Labels.input_01';
-		//this.log.info('parseMSG():' + sMSG + 'State test: Adapter.namespace:' + this.adapter.name + '  ' + id + ':' + tmpV);
-		//this.setState('info.connection', true, true); //Green led in 'Instances'	
-		// z.b: HDMI36X36
+		// nur ein test, um die labesl auszulesen	
 		this.readLabels();
+		// z.b: HDMI36X36
 		if (sMSG.toLowerCase().includes('hdmi')) {
 			//....something something.
 		} else if (sMSG.toLowerCase().endsWith('close.')) {
