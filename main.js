@@ -656,10 +656,15 @@ class BtouchVideomatrix extends utils.Adapter {
 			}
 
 		} else if (id.toString().includes('SelectMapping.input_')) {
-			parentThis.log.info('matrixChanged(): Neues Routing via Dropdown:' + id + ' ' + val);
+			//parentThis.log.info('matrixChanged(): Neues Routing via Dropdown:' + id + ' ' + val);
 			//  matrixChanged(): Neues Routing via Dropdown:btouch_videomatrix.0.SelectMapping.input_03_out_to 3
+			//  matrixChanged(): Neues Routing via Dropdown:btouch_videomatrix.0.SelectMapping.input_01_out_to 0
 			if (ack == false) {	//Aenderung per GUI
+				let iStart = id.indexOf('.input_') + 7;
+				let tmpIn = id.substring(iStart, sMSG.indexOf('_'));
+				let tmpOut = id.substring(iStart, sMSG.indexOf(' '));
 
+				parentThis.log.info('matrixChanged(): Dropwdown:' + tmpIn + 'v' + tmpOut + '.');
 			}
 
 		}
