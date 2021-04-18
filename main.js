@@ -662,7 +662,7 @@ class BtouchVideomatrix extends utils.Adapter {
 			if (ack == false) {	//Aenderung per GUI
 				let iStart = id.indexOf('.input_') + 7;
 				let tmpIn = id.substring(iStart, id.indexOf('_out'));
-				let tmpOut = id.substring(id.lastIndexOf(' ') + 1);
+				let tmpOut = id.substring(id.indexOf('_out_to ') + 8);
 				parentThis.log.info('matrixChanged(): Dropwdown:' + tmpIn + 'v' + tmpOut + '.');
 				//  matrixChanged(): Dropwdown:_videomatrix.0.SelectMapping.input_vbtouch_videomatrix.0.SelectMapping.input_.
 				//  matrixChanged(): Dropwdown:02_outvbtouch_videomatrix.0.SelectMapping.input_02_out_to.
