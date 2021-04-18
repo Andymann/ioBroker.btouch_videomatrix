@@ -236,7 +236,7 @@ class BtouchVideomatrix extends utils.Adapter {
 		for (var i = 0; i < parentThis.MAXCHANNELS; i++) {
 			// Kombinatinen von Ein- und Ausgang
 			// ausgehend vom Ausgang ('Ausgang x bekommt Signal von Eingang y')
-			await this.setObjectAsync('SelectMapping.input_' + (i + 1).toString().padStart(2, '0') + '_out_to', {
+			await this.setObjectAsync('SelectMapping.output_' + (i + 1).toString().padStart(2, '0') + '_in_from', {
 				type: 'state',
 				common: {
 					//name: 'Connect Input ' + (i + 1).toString().padStart(2, '0') + ' to Output',
@@ -714,6 +714,24 @@ class BtouchVideomatrix extends utils.Adapter {
 				}
 				parentThis.log.info('matrixChanged(): Command:' + tmpCMD);
 				arrCMD.push(tmpCMD);
+
+			}
+
+		} else if (id.toString().includes('SelectMapping.output_')) {
+			//parentThis.log.info('matrixChanged(): Neues Routing via Dropdown:' + id + ' ' + val);
+			if (ack == false) {	//Aenderung per GUI
+				let iStart = id.indexOf('.output_') + 8;
+				let tmpIn = id.substring(iStart, id.indexOf('_in'));
+				let tmpCMD;
+				if (val == 0) {
+					parentThis.log.info('matrixChanged(): Eingang ' + tmpIn + 'AUSgeschaltet');
+					tmpCMD = tmpIn + '$.';
+				} else {
+					parentThis.log.info('matrixChanged(): Eingang ' + tmpIn + 'auf ' + val.toString());
+					tmpCMD = tmpIn + 'v' + val.toString() + '.';
+				}
+				parentThis.log.info('matrixChanged(): Command:' + tmpCMD);
+				//arrCMD.push(tmpCMD);
 
 			}
 
