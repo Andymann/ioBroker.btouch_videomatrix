@@ -186,7 +186,7 @@ class BtouchVideomatrix extends utils.Adapter {
 			var element = {};
 			element.id = i;
 			element.label = tmpOut.val;
-			outputNames.push(element);
+			outputNames[i] = element;
 
 			/*
 			//----Works.
