@@ -425,7 +425,7 @@ class BtouchVideomatrix extends utils.Adapter {
 		});
 
 		//----Den Zustand der Hardware abfragen
-		//		this.queryMatrix();
+		this.queryMatrix();
 	}
 
 	pingMatrix() {
@@ -611,6 +611,8 @@ class BtouchVideomatrix extends utils.Adapter {
 	//----Data coming from hardware
 	//----bWaitingForResponse==TRUE: reaktion auf Gui-Command
 	//----bWaitingForResponse==FALSE: Routing an der Hardware wurde geaendert
+
+	//---- 2Do: /1 to All.
 	parseMSG(sMSG) {
 		// z.b: HDMI36X36
 		if (sMSG.toLowerCase().includes('hdmi')) {
