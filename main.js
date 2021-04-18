@@ -661,8 +661,8 @@ class BtouchVideomatrix extends utils.Adapter {
 			//  matrixChanged(): Neues Routing via Dropdown:btouch_videomatrix.0.SelectMapping.input_01_out_to 0
 			if (ack == false) {	//Aenderung per GUI
 				let iStart = id.indexOf('.input_') + 7;
-				let tmpIn = id.substring(iStart, sMSG.indexOf('_'));
-				let tmpOut = id.substring(iStart, sMSG.indexOf(' '));
+				let tmpIn = id.substring(iStart, id.indexOf('_'));
+				let tmpOut = id.substring(iStart, id.indexOf(' '));
 
 				parentThis.log.info('matrixChanged(): Dropwdown:' + tmpIn + 'v' + tmpOut + '.');
 			}
