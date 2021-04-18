@@ -138,7 +138,7 @@ class BtouchVideomatrix extends utils.Adapter {
 			await this.setObjectAsync('Labels.input_' + (i + 1).toString().padStart(2, '0'), {
 				type: 'state',
 				common: {
-					name: 'Input-Name',
+					name: 'Input ' + (i + 1).toString().padStart(2, '0'),
 					type: 'string',
 					//def: 0,
 					//states: { 0: 'Off', 1: '1', 2: '2', 3: '3', 4: '4', 5: '5', 6: '6' },
@@ -156,7 +156,7 @@ class BtouchVideomatrix extends utils.Adapter {
 			await this.setObjectAsync('Labels.output_' + (i + 1).toString().padStart(2, '0'), {
 				type: 'state',
 				common: {
-					name: 'Output-Name',
+					name: 'Output ' + (i + 1).toString().padStart(2, '0'),
 					type: 'string',
 					//states: outputNames,
 					role: 'text',
@@ -207,10 +207,10 @@ class BtouchVideomatrix extends utils.Adapter {
 			// Kombinatinen von Ein- und Ausgang als Nummer ('Eingang 1 auf X')
 			//for (var i = 0; i < MAXCHANNELS; i++) {
 			//	for (var j = 0; j < MAXCHANNELS; j++) {
-			await this.setObjectAsync('SelectNumber.input_' + (i + 1).toString().padStart(2, '0') + '_out_to', {
+			await this.setObjectAsync('SelectMapping.input_' + (i + 1).toString().padStart(2, '0') + '_out_to', {
 				type: 'state',
 				common: {
-					name: 'Connect Input to numbered Output',
+					name: 'Connect Input ' + (i + 1).toString().padStart(2, '0') + ' to Output',
 					type: 'number',
 					//def: 0,
 					//states: { 0: 'Off', 1: '1', 2: '2', 3: '3', 4: '4', 5: '5', 6: '6' },
@@ -660,8 +660,8 @@ class BtouchVideomatrix extends utils.Adapter {
 				//parentThis.log.debug('matrixChanged() via HARDWARE');
 			}
 
-		} else if (id.toString().includes('Numbered.input_')) {
-			parentThis.log.info('matrixChanged(): Neues Routing via Numbered:' + id);
+		} else if (id.toString().includes('SelectMapping.input_')) {
+			parentThis.log.info('matrixChanged(): Neues Routing via Dropdown:' + id);
 		}
 
 		/*
