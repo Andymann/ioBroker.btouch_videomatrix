@@ -730,14 +730,14 @@ class BtouchVideomatrix extends utils.Adapter {
 			//parentThis.log.info('matrixChanged(): Neues Routing via Dropdown:' + id + ' ' + val);
 			if (ack == false) {	//Aenderung per GUI
 				let iStart = id.indexOf('.output_') + 8;
-				let tmpIn = id.substring(iStart, id.indexOf('_in'));
+				let tmpOut = id.substring(iStart, id.indexOf('_in'));
 				let tmpCMD;
 				if (val == 0) {
-					parentThis.log.info('matrixChanged(): Eingang ' + tmpIn + 'AUSgeschaltet');
-					tmpCMD = tmpIn + '$.';
+					parentThis.log.info('matrixChanged(): Ausgang ' + tmpOut + 'AUSgeschaltet');
+					tmpCMD = tmpOut + '$.';
 				} else {
-					parentThis.log.info('matrixChanged(): Eingang ' + tmpIn + ' auf ' + val.toString());
-					tmpCMD = tmpIn + 'v' + val.toString() + '.';
+					parentThis.log.info('matrixChanged(): Eingang ' + val.toString() + ' auf ' + tmpOut);
+					tmpCMD = val + 'v' + tmpOut + '.';
 				}
 				parentThis.log.info('matrixChanged(): Command:' + tmpCMD);
 				arrCMD.push(tmpCMD);
