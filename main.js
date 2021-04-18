@@ -198,7 +198,7 @@ class BtouchVideomatrix extends utils.Adapter {
 			this.log.info('readLabels(): adding ' + tmpIn.val);
 			this.log.info('readLabels(): adding ' + tmpOut.val);
 
-			inputNames[i + 1] = tmpIn.val;
+			inputNames[i] = tmpIn.val;
 			outputNames[i + 1] = tmpOut.val;
 
 		}
@@ -225,6 +225,7 @@ class BtouchVideomatrix extends utils.Adapter {
 		}
 	}
 
+	/*
 	async readLabels() {
 		//let id = 'Labels.input_' + (1).toString().padStart(2, '0');
 		//var wert = await this.getStateAsync(id);
@@ -251,7 +252,7 @@ class BtouchVideomatrix extends utils.Adapter {
 			outputNames[i] = tmpOut.val;
 		}
 	}
-
+	*/
 
 	initMatrix() {
 		this.log.info('initMatrix().');
@@ -804,7 +805,7 @@ class BtouchVideomatrix extends utils.Adapter {
 	onStateChange(id, state) {
 		if (state) {
 			// The state was changed
-			//this.log.info(`state ${id} changed: ${state.val} (ack = ${state.ack})`);
+			this.log.info(`state ${id} changed: ${state.val} (ack = ${state.ack})`);
 			parentThis.matrixChanged(id, state.val, state.ack);
 		} else {
 			// The state was deleted
