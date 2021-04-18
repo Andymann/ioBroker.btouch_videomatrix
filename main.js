@@ -661,11 +661,12 @@ class BtouchVideomatrix extends utils.Adapter {
 			//  matrixChanged(): Neues Routing via Dropdown:btouch_videomatrix.0.SelectMapping.input_01_out_to 0
 			if (ack == false) {	//Aenderung per GUI
 				let iStart = id.indexOf('.input_') + 7;
-				let tmpIn = id.substring(iStart, iStart + id.indexOf('_'));
-				let tmpOut = id.substring(id.indexOf(' '));
+				let tmpIn = id.substring(iStart + 1, id.indexOf('_'));
+				let tmpOut = id.substring(id.lastIndexOf(' '));
 
 				parentThis.log.info('matrixChanged(): Dropwdown:' + tmpIn + 'v' + tmpOut + '.');
 				//  matrixChanged(): Dropwdown:_videomatrix.0.SelectMapping.input_vbtouch_videomatrix.0.SelectMapping.input_.
+				//  matrixChanged(): Dropwdown:02_outvbtouch_videomatrix.0.SelectMapping.input_02_out_to.
 			}
 
 		}
