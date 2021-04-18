@@ -113,25 +113,25 @@ class BtouchVideomatrix extends utils.Adapter {
 			},
 			native: {},
 		});
-
-		// Kombinatinen von Ein- und Ausgang als bool
-		for (var i = 0; i < parentThis.MAXCHANNELS; i++) {
-			for (var j = 0; j < parentThis.MAXCHANNELS; j++) {
-				await this.setObjectAsync('SelectBool.input_' + (i + 1).toString().padStart(2, '0') + '_out_' + (j + 1).toString().padStart(2, '0'), {
-					type: 'state',
-					common: {
-						name: 'Connect Input to Output as boolean',
-						type: 'boolean',
-						def: 'false',
-						role: 'indicator',
-						read: true,
-						write: true
-					},
-					native: {},
-				});
-			}
-		}
-
+		/*
+				// Kombinatinen von Ein- und Ausgang als bool
+				for (var i = 0; i < parentThis.MAXCHANNELS; i++) {
+					for (var j = 0; j < parentThis.MAXCHANNELS; j++) {
+						await this.setObjectAsync('SelectBool.input_' + (i + 1).toString().padStart(2, '0') + '_out_' + (j + 1).toString().padStart(2, '0'), {
+							type: 'state',
+							common: {
+								name: 'Connect Input to Output as boolean',
+								type: 'boolean',
+								def: 'false',
+								role: 'indicator',
+								read: true,
+								write: true
+							},
+							native: {},
+						});
+					}
+				}
+		*/
 
 
 		for (var i = 0; i < parentThis.MAXCHANNELS; i++) {
@@ -169,6 +169,9 @@ class BtouchVideomatrix extends utils.Adapter {
 		}
 
 
+
+		outputNames[0] = 'Off';
+
 		for (var i = 0; i < parentThis.MAXCHANNELS; i++) {
 			var tmpIn = await this.getStateAsync('Labels.input_' + (i + 1).toString().padStart(2, '0'));
 			var tmpOut = await this.getStateAsync('Labels.output_' + (i + 1).toString().padStart(2, '0'));
@@ -182,20 +185,22 @@ class BtouchVideomatrix extends utils.Adapter {
 			outputNames[i] = elementOut;
 			*/
 
-			//?
+			/*
+			//Nö
 			var element = {};
 			element.id = i;
 			element.label = tmpOut.val;
 			outputNames[i] = element;
+			*/
 
-			/*
+
 			//----Works.
 			this.log.info('readLabels(): adding ' + tmpIn.val);
 			this.log.info('readLabels(): adding ' + tmpOut.val);
 
-			inputNames[i+1] = tmpIn.val;
-			outputNames[i+1] = tmpOut.val;
-			*/
+			inputNames[i + 1] = tmpIn.val;
+			outputNames[i + 1] = tmpOut.val;
+
 		}
 
 		for (var i = 0; i < parentThis.MAXCHANNELS; i++) {
