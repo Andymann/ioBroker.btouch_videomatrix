@@ -663,7 +663,7 @@ class BtouchVideomatrix extends utils.Adapter {
 				let tmpCMD;
 				if (val == 0) {
 					parentThis.log.info('matrixChanged(): Eingang ' + tmpIn + 'AUSgeschaltet');
-					tmpCmd = tmpIn + '$.';
+					tmpCMD = tmpIn + '$.';
 				} else {
 					parentThis.log.info('matrixChanged(): Eingang ' + tmpIn + 'auf ' + val.toString());
 					tmpCMD = tmpin + 'v' + val.toString() + '.';
