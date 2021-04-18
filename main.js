@@ -204,8 +204,8 @@ class BtouchVideomatrix extends utils.Adapter {
 			var elementIn = { i: tmpIn.val };
 			var elementOut = { i: tmpOut.val };
 
-			inputNames.push(elementIn);
-			outputNames.push(elementOut);
+			inputNames.extend(elementIn);
+			outputNames.extend(elementOut);
 		}
 	}
 
