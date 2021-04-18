@@ -155,7 +155,7 @@ class BtouchVideomatrix extends utils.Adapter {
 		await this.setObjectAsync('Labels.output_' + (0).toString().padStart(2, '0'), {
 			type: 'state',
 			common: {
-				name: 'Output ' + (0).toString().padStart(2, '0'),
+				name: 'Off',
 				type: 'string',
 				role: 'text',
 				read: true,
