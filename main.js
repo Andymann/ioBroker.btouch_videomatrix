@@ -173,13 +173,23 @@ class BtouchVideomatrix extends utils.Adapter {
 			var tmpIn = await this.getStateAsync('Labels.input_' + (i + 1).toString().padStart(2, '0'));
 			var tmpOut = await this.getStateAsync('Labels.output_' + (i + 1).toString().padStart(2, '0'));
 
+			/*
+			//NÖ
 			var elementIn = { i: tmpIn.val };
 			var elementOut = { i: tmpOut.val };
 
 			inputNames[i] = elementIn;
 			outputNames[i] = elementOut;
+			*/
+
+			//?
+			var element = {};
+			element.id = i;
+			element.label = tmpOut.val;
+			outputNames.push(element);
 
 			/*
+			//----Works.
 			this.log.info('readLabels(): adding ' + tmpIn.val);
 			this.log.info('readLabels(): adding ' + tmpOut.val);
 
