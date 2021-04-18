@@ -633,7 +633,7 @@ class BtouchVideomatrix extends utils.Adapter {
 	//----d.h.: Aenderungen, die ueber die GUI kommen.
 	//----Wenn das Routing an der Hardware geaendert wird, kommt die info via parseMSG herein.
 	matrixChanged(id, val, ack) {
-		parentThis.log.info('matrixChanged() id:' + id);	//z.B. input_01_out_02
+		//parentThis.log.info('matrixChanged() id:' + id);	//z.B. input_01_out_02
 		if (id.toString().includes('SelectBool.input_')) {
 			let sEingang = id.substring(id.indexOf('input_') + 6, id.indexOf('_out'));
 			let sAusgang = id.substring(id.indexOf('_out_') + 5);
@@ -658,6 +658,9 @@ class BtouchVideomatrix extends utils.Adapter {
 		} else if (id.toString().includes('SelectMapping.input_')) {
 			parentThis.log.info('matrixChanged(): Neues Routing via Dropdown:' + id + ' ' + val);
 			//  matrixChanged(): Neues Routing via Dropdown:btouch_videomatrix.0.SelectMapping.input_03_out_to 3
+			if (ack == false) {	//Aenderung per GUI
+
+			}
 
 		}
 
