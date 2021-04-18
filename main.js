@@ -132,26 +132,7 @@ class BtouchVideomatrix extends utils.Adapter {
 			}
 		}
 
-		for (var i = 0; i < parentThis.MAXCHANNELS; i++) {
-			// Kombinatinen von Ein- und Ausgang als Nummer ('Eingang 1 auf X')
-			//for (var i = 0; i < MAXCHANNELS; i++) {
-			//	for (var j = 0; j < MAXCHANNELS; j++) {
-			await this.setObjectAsync('SelectNumber.input_' + (i + 1).toString().padStart(2, '0') + '_out_to', {
-				type: 'state',
-				common: {
-					name: 'Connect Input to numbered Output',
-					type: 'number',
-					//def: 0,
-					//states: { 0: 'Off', 1: '1', 2: '2', 3: '3', 4: '4', 5: '5', 6: '6' },
-					//states: { 0: 'Off', 1: '1', 2: '2', 3: '3', 4: '4', 5: '5', 6: '6' },
-					states: outputNames,
-					role: 'list',
-					read: true,
-					write: true
-				},
-				native: {},
-			});
-		}
+
 
 		for (var i = 0; i < parentThis.MAXCHANNELS; i++) {
 			await this.setObjectAsync('Labels.input_' + (i + 1).toString().padStart(2, '0'), {
@@ -182,6 +163,45 @@ class BtouchVideomatrix extends utils.Adapter {
 					read: true,
 					write: true,
 					def: 'Ausgang ' + (i + 1).toString().padStart(2, '0')
+				},
+				native: {},
+			});
+		}
+
+
+		for (var i = 0; i < parentThis.MAXCHANNELS; i++) {
+			var tmpIn = await this.getStateAsync('Labels.input_' + (i + 1).toString().padStart(2, '0'));
+			var tmpOut = await this.getStateAsync('Labels.output_' + (i + 1).toString().padStart(2, '0'));
+
+			//var elementIn = { i: tmpIn.val };
+			//var elementOut = { i: tmpOut.val };
+
+			//inputNames.extend(elementIn);
+			//outputNames.extend(elementOut);
+
+			this.log.info('readLabels(): adding ' + tmpIn.val);
+			this.log.info('readLabels(): adding ' + tmpOut.val);
+
+			inputNames[i] = tmpIn.val;
+			outputNames[i] = tmpOut.val;
+		}
+
+		for (var i = 0; i < parentThis.MAXCHANNELS; i++) {
+			// Kombinatinen von Ein- und Ausgang als Nummer ('Eingang 1 auf X')
+			//for (var i = 0; i < MAXCHANNELS; i++) {
+			//	for (var j = 0; j < MAXCHANNELS; j++) {
+			await this.setObjectAsync('SelectNumber.input_' + (i + 1).toString().padStart(2, '0') + '_out_to', {
+				type: 'state',
+				common: {
+					name: 'Connect Input to numbered Output',
+					type: 'number',
+					//def: 0,
+					//states: { 0: 'Off', 1: '1', 2: '2', 3: '3', 4: '4', 5: '5', 6: '6' },
+					//states: { 0: 'Off', 1: '1', 2: '2', 3: '3', 4: '4', 5: '5', 6: '6' },
+					states: outputNames,
+					role: 'list',
+					read: true,
+					write: true
 				},
 				native: {},
 			});
@@ -228,9 +248,6 @@ class BtouchVideomatrix extends utils.Adapter {
 		bHasIncomingData = false;
 		bFirstPing = true;
 		iMissedPingCounter = 0;
-
-		this.readLabels();
-
 
 		//----CMD-Queue einrichten   
 		clearInterval(cmdInterval);
