@@ -152,6 +152,19 @@ class BtouchVideomatrix extends utils.Adapter {
 			});
 		}
 
+		await this.setObjectAsync('Labels.output_' + (0).toString().padStart(2, '0'), {
+			type: 'state',
+			common: {
+				name: 'Output ' + (0).toString().padStart(2, '0'),
+				type: 'string',
+				role: 'text',
+				read: true,
+				write: true,
+				def: 'Off'
+			},
+			native: {},
+		});
+
 		for (var i = 0; i < parentThis.MAXCHANNELS; i++) {
 			await this.setObjectAsync('Labels.output_' + (i + 1).toString().padStart(2, '0'), {
 				type: 'state',
@@ -168,9 +181,6 @@ class BtouchVideomatrix extends utils.Adapter {
 			});
 		}
 
-
-
-		outputNames[0] = 'Off';
 
 		for (var i = 0; i < parentThis.MAXCHANNELS; i++) {
 			var tmpIn = await this.getStateAsync('Labels.input_' + (i + 1).toString().padStart(2, '0'));
@@ -663,7 +673,8 @@ class BtouchVideomatrix extends utils.Adapter {
 
 		} else if (id.toString().includes('SelectMapping.input_')) {
 			parentThis.log.info('matrixChanged(): Neues Routing via Dropdown:' + id + ' ' + val);
-			//  Neues Routing via Dropdown:btouch_videomatrix.0.SelectMapping.input_07_out_to
+			//  matrixChanged(): Neues Routing via Dropdown:btouch_videomatrix.0.SelectMapping.input_03_out_to 3
+
 		}
 
 		/*
