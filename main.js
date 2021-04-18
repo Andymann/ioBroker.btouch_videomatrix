@@ -43,8 +43,8 @@ let cmdInterval;
 let sSerialPortName;
 let pingInterval;
 
-let stateList = { 0: 'Off', 1: '1', 2: '2', 3: '3', 4: '4', 5: '5', 6: '6' };
-
+let inputNames = {};// = { 0: 'Off', 1: '1', 2: '2', 3: '3', 4: '4', 5: '5', 6: '6' };
+let outputNames = {};
 
 //-------
 let query = null;
@@ -144,7 +144,7 @@ class BtouchVideomatrix extends utils.Adapter {
 					//def: 0,
 					//states: { 0: 'Off', 1: '1', 2: '2', 3: '3', 4: '4', 5: '5', 6: '6' },
 					//states: { 0: 'Off', 1: '1', 2: '2', 3: '3', 4: '4', 5: '5', 6: '6' },
-					states: stateList,
+					states: outputNames,
 					role: 'list',
 					read: true,
 					write: true
@@ -161,6 +161,7 @@ class BtouchVideomatrix extends utils.Adapter {
 					type: 'string',
 					//def: 0,
 					//states: { 0: 'Off', 1: '1', 2: '2', 3: '3', 4: '4', 5: '5', 6: '6' },
+					states: inputNames,
 					role: 'text',
 					read: true,
 					write: true,
@@ -176,6 +177,7 @@ class BtouchVideomatrix extends utils.Adapter {
 				common: {
 					name: 'Output-Name',
 					type: 'string',
+					states: outputNames,
 					role: 'text',
 					read: true,
 					write: true,
@@ -189,11 +191,22 @@ class BtouchVideomatrix extends utils.Adapter {
 	async readLabels() {
 		//let id = 'Labels.input_' + (1).toString().padStart(2, '0');
 		//var wert = await this.getStateAsync(id);
-		//this.log.info('readLabels():' + wert.val);
+		this.log.info('readLabels():');
 
 		var wert2 = await this.getStateAsync('Labels.input_' + (1).toString().padStart(2, '0'));
 		var wert3 = await this.getStateAsync('Labels.output_' + (1).toString().padStart(2, '0'));
 		this.log.info('readLabels() 2:' + wert2.val + ' ' + wert3.val);
+
+		for (var i = 0; i < parentThis.MAXCHANNELS; i++) {
+			var tmpIn = await this.getStateAsync('Labels.input_' + (1).toString().padStart(2, '0'));
+			var tmpOut = await this.getStateAsync('Labels.output_' + (1).toString().padStart(2, '0'));
+
+			var elementIn = { i: tmpIn.val };
+			var elementOut = { i: tmpOut.val };
+
+			this.inputNames.push(elementIn);
+			this.outputNames.push(elementOut);
+		}
 	}
 
 
@@ -209,6 +222,9 @@ class BtouchVideomatrix extends utils.Adapter {
 		bHasIncomingData = false;
 		bFirstPing = true;
 		iMissedPingCounter = 0;
+
+		this.readLabels();
+
 
 		//----CMD-Queue einrichten   
 		clearInterval(cmdInterval);
