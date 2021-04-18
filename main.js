@@ -736,11 +736,11 @@ class BtouchVideomatrix extends utils.Adapter {
 					parentThis.log.info('matrixChanged(): Eingang ' + tmpIn + 'AUSgeschaltet');
 					tmpCMD = tmpIn + '$.';
 				} else {
-					parentThis.log.info('matrixChanged(): Eingang ' + tmpIn + 'auf ' + val.toString());
+					parentThis.log.info('matrixChanged(): Eingang ' + tmpIn + ' auf ' + val.toString());
 					tmpCMD = tmpIn + 'v' + val.toString() + '.';
 				}
 				parentThis.log.info('matrixChanged(): Command:' + tmpCMD);
-				//arrCMD.push(tmpCMD);
+				arrCMD.push(tmpCMD);
 
 			}
 
