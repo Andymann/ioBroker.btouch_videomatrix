@@ -161,7 +161,7 @@ class BtouchVideomatrix extends utils.Adapter {
 					type: 'string',
 					//def: 0,
 					//states: { 0: 'Off', 1: '1', 2: '2', 3: '3', 4: '4', 5: '5', 6: '6' },
-					states: inputNames,
+					//states: inputNames,
 					role: 'text',
 					read: true,
 					write: true,
@@ -177,7 +177,7 @@ class BtouchVideomatrix extends utils.Adapter {
 				common: {
 					name: 'Output-Name',
 					type: 'string',
-					states: outputNames,
+					//states: outputNames,
 					role: 'text',
 					read: true,
 					write: true,
