@@ -657,16 +657,20 @@ class BtouchVideomatrix extends utils.Adapter {
 
 		} else if (id.toString().includes('SelectMapping.input_')) {
 			//parentThis.log.info('matrixChanged(): Neues Routing via Dropdown:' + id + ' ' + val);
-			//  matrixChanged(): Neues Routing via Dropdown:btouch_videomatrix.0.SelectMapping.input_03_out_to 3
-			//  matrixChanged(): Neues Routing via Dropdown:btouch_videomatrix.0.SelectMapping.input_01_out_to 0
 			if (ack == false) {	//Aenderung per GUI
 				let iStart = id.indexOf('.input_') + 7;
 				let tmpIn = id.substring(iStart, id.indexOf('_out'));
-				let tmpOut = id.substring(id.indexOf('_out_to ') + 8);
-				parentThis.log.info('matrixChanged(): Dropwdown:' + tmpIn + 'v' + tmpOut + '.');
-				//  matrixChanged(): Dropwdown:_videomatrix.0.SelectMapping.input_vbtouch_videomatrix.0.SelectMapping.input_.
-				//  matrixChanged(): Dropwdown:02_outvbtouch_videomatrix.0.SelectMapping.input_02_out_to.
-				//  matrixChanged(): Dropwdown:_videomatrix.0.SelectMapping.input_0vbtouch_videomatrix.0.SelectMapping.input_02_out_to.
+				let tmpCMD;
+				if (val == 0) {
+					parentThis.log.info('matrixChanged(): Eingang ' + tmpIn + 'AUSgeschaltet');
+					tmpCmd = tmpIn + '$.';
+				} else {
+					parentThis.log.info('matrixChanged(): Eingang ' + tmpIn + 'auf ' + val.toString());
+					tmpCMD = tmpin + 'v' + val.toString() + '.';
+				}
+				parentThis.log.info('matrixChanged(): Command:' + tmpCMD);
+				//parentThis.log.info('matrixChanged(): Dropwdown:' + tmpIn + 'v' + tmpOut + '.');
+				// matrixChanged(): Dropwdown:01vvideomatrix.0.SelectMapping.input_01_out_to.
 			}
 
 		}
