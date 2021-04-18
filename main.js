@@ -591,7 +591,11 @@ class BtouchVideomatrix extends utils.Adapter {
 
 			for (let i = 0; i < parentThis.MAXCHANNELS; i++) {
 				this.log.debug('fixExclusiveRoutingStates(): Setzte Eingang ' + (i + 1).toString() + ' fuer Ausgang ' + tmpOUT + ' auf FALSE');
-				this.setStateAsync('input_' + (i + 1).toString().padStart(2, '0') + '_out_' + (tmpOUT).toString().padStart(2, '0'), { val: false, ack: true });
+
+				//  boolsches Routing
+				//this.setStateAsync('input_' + (i + 1).toString().padStart(2, '0') + '_out_' + (tmpOUT).toString().padStart(2, '0'), { val: false, ack: true });
+
+				this.setStateAsync('SelectMapping.input_' + (i + 1).toString().padStart(2, '0') + '_out_to', { val: '00', ack: true });
 			}
 
 		} else if (sMSG.toLowerCase().startsWith('/v:')) {
@@ -615,13 +619,20 @@ class BtouchVideomatrix extends utils.Adapter {
 				this.log.info('parseMsg(): SET Routing Answer: IN:' + sEingang + '; OUT:' + sAusgang + ';');
 			} else {
 				this.log.info('parseMsg(): Aenderung an der Hardware: IN:' + sEingang + '; OUT:' + sAusgang + ';');
-				this.setStateAsync('input_' + (sEingang).toString().padStart(2, '0') + '_out_' + (sAusgang).toString().padStart(2, '0'), { val: true, ack: true });
+
+				//  boolSches Routing
+				//this.setStateAsync('input_' + (sEingang).toString().padStart(2, '0') + '_out_' + (sAusgang).toString().padStart(2, '0'), { val: true, ack: true });
+
 			}
 
 			for (let i = 0; i < parentThis.MAXCHANNELS; i++) {
 				if (i + 1 != parseInt(sEingang)) {
 					this.log.debug('fixExclusiveRoutingStates(): Setzte Eingang ' + (i + 1).toString() + ' fuer Ausgang ' + sAusgang + ' auf FALSE');
-					this.setStateAsync('input_' + (i + 1).toString().padStart(2, '0') + '_out_' + (sAusgang).toString().padStart(2, '0'), { val: false, ack: true });
+
+					//  boolsches Routing
+					//this.setStateAsync('input_' + (i + 1).toString().padStart(2, '0') + '_out_' + (sAusgang).toString().padStart(2, '0'), { val: false, ack: true });
+
+					this.setStateAsync('SelectMapping.input_' + (i + 1).toString().padStart(2, '0') + '_out_to', { val: sAusgang, ack: true });
 				}
 			}
 		} else {
