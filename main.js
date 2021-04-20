@@ -210,7 +210,7 @@ class BtouchVideomatrix extends utils.Adapter {
 			outputNames[i + 1] = tmpOut.val;
 		}
 
-		this.log.info('createStates():' + inputNames);
+		this.log.info('createStates():' + inputNames.join());
 		/*
 		for (var i = 0; i < parentThis.MAXCHANNELS; i++) {
 			// Kombinatinen von Ein- und Ausgang als Nummer ('Eingang 1 auf X')
