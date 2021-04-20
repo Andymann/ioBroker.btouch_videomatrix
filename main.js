@@ -47,6 +47,7 @@ let inputNames = {};// = { 0: 'Off', 1: '1', 2: '2', 3: '3', 4: '4', 5: '5', 6: 
 let outputNames = {};
 
 let arrInputNames = [];
+let lstInputNames = '';
 
 //-------
 let query = null;
@@ -249,7 +250,7 @@ class BtouchVideomatrix extends utils.Adapter {
 					name: 'Output ' + (i + 1).toString().padStart(2, '0') + ' gets Signal from',
 					type: 'number',
 					//states: inputNames,
-					states: arrInputNames.join(),
+					states: arrInputNames,
 					role: 'list',
 					read: true,
 					write: true
