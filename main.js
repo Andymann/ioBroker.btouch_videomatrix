@@ -239,10 +239,9 @@ class BtouchVideomatrix extends utils.Adapter {
 			await this.setObjectAsync('SelectMapping.output_' + (i + 1).toString().padStart(2, '0') + '_in_from', {
 				type: 'state',
 				common: {
-					//name: 'Connect Input ' + (i + 1).toString().padStart(2, '0') + ' to Output',
 					name: 'Output ' + (i + 1).toString().padStart(2, '0') + ' gets Signal from',
 					type: 'number',
-					states: inputNames,
+					states: { inputNames },
 					role: 'list',
 					read: true,
 					write: true
