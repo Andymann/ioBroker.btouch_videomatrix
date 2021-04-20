@@ -46,6 +46,8 @@ let pingInterval;
 let inputNames = {};// = { 0: 'Off', 1: '1', 2: '2', 3: '3', 4: '4', 5: '5', 6: '6' };
 let outputNames = {};
 
+let arrInputNames = [];
+
 //-------
 let query = null;
 let in_msg = '';
@@ -198,7 +200,8 @@ class BtouchVideomatrix extends utils.Adapter {
 		outputNames[0] = tmpOff_Out.val;
 
 
-		inputNames[0] = (tmpOff_In.val).toString();
+		inputNames[0] = tmpOff_In.val;
+		arrInputNames.push(tmpOff_In.val);
 
 		for (var i = 0; i < parentThis.MAXCHANNELS; i++) {
 			var tmpIn = await this.getStateAsync('Labels.input_' + (i + 1).toString().padStart(2, '0'));
@@ -208,11 +211,13 @@ class BtouchVideomatrix extends utils.Adapter {
 			this.log.info('readLabels(): adding ' + tmpIn.val);
 			this.log.info('readLabels(): adding ' + tmpOut.val);
 
-			inputNames[i + 1] = (tmpIn.val).toString();
+			inputNames[i + 1] = tmpIn.val;
+			arrInputNames.push(tmpIn.val);
+
 			outputNames[i + 1] = tmpOut.val;
 		}
 
-		this.log.info('createStates():' + inputNames);
+		this.log.info('createStates():' + arrInputNames.join());
 		/*
 		for (var i = 0; i < parentThis.MAXCHANNELS; i++) {
 			// Kombinatinen von Ein- und Ausgang als Nummer ('Eingang 1 auf X')
