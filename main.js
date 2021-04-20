@@ -623,20 +623,18 @@ class BtouchVideomatrix extends utils.Adapter {
 			let iStart = sMSG.indexOf('/') + 1;
 			let tmpOUT = sMSG.substring(iStart, sMSG.indexOf(' '));
 			parentThis.log.info('parseMSG(): OFF:' + tmpOUT);
-
-			/*
-			for (let i = 0; i < parentThis.MAXCHANNELS; i++) {
-				this.log.debug('fixExclusiveRoutingStates(): Setzte Eingang ' + (i + 1).toString() + ' fuer Ausgang ' + tmpOUT + ' auf FALSE');
-
-				//  boolsches Routing
-				//this.setStateAsync('input_' + (i + 1).toString().padStart(2, '0') + '_out_' + (tmpOUT).toString().padStart(2, '0'), { val: false, ack: true });
-
-				//this.setStateAsync('SelectMapping.input_' + (i + 1).toString().padStart(2, '0') + '_out_to', { val: '00', ack: true });
-			}
-			*/
-
-
 			//  Derzeit kein Fix fuer exklusives Routing, weil sich an der Matrix selbst ein Ausgang nicht auf OFF schalten lässe
+		} else if (sMSG.toLower().includes('all.')) {
+			// /1 to All. Das passiert vornehmlich an der Matrix
+			let iStart = sMSG.indexOf('/') + 1;
+			let tmpIN = str.substring(iStart, str.indexOf(' '));
+
+			if (bWaitingForResponse == true) {
+				parentThis.log.info('parseMSG(): to All:' + tmpIN);
+			} else {
+				parentThis.log.info('parseMSG(): an der Hardware to All:' + tmpIN);
+			}
+
 
 		} else if (sMSG.toLowerCase().startsWith('/v:')) {
 			//----Ein Ergebnis der Query
@@ -660,10 +658,9 @@ class BtouchVideomatrix extends utils.Adapter {
 				this.log.info('parseMsg(): SET Routing Answer: IN:' + sEingang + '; OUT:' + sAusgang + ';');
 			} else {
 				this.log.info('parseMsg(): Aenderung an der Hardware: IN:' + sEingang + '; OUT:' + sAusgang + ';');
-
-				//  boolSches Routing
-				//this.setStateAsync('input_' + (sEingang).toString().padStart(2, '0') + '_out_' + (sAusgang).toString().padStart(2, '0'), { val: true, ack: true });
-
+				for (let i = 0; i < parentThis.MAXCHANNELS; i++) {
+					this.setStateAsync('SelectMapping.output_' + (i).toString().padStart(2, '0') + '_in_from', { val: tmpIN, ack: true });
+				}
 			}
 
 			this.setStateAsync('SelectMapping.output_' + (sAusgang).toString().padStart(2, '0') + '_in_from', { val: sEingang, ack: true });
