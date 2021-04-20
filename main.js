@@ -633,6 +633,9 @@ class BtouchVideomatrix extends utils.Adapter {
 				parentThis.log.info('parseMSG(): to All:' + tmpIN);
 			} else {
 				parentThis.log.info('parseMSG(): an der Hardware to All:' + tmpIN);
+				for (let i = 0; i < parentThis.MAXCHANNELS; i++) {
+					this.setStateAsync('SelectMapping.output_' + (i).toString().padStart(2, '0') + '_in_from', { val: tmpIN, ack: true });
+				}
 			}
 
 
@@ -658,9 +661,6 @@ class BtouchVideomatrix extends utils.Adapter {
 				this.log.info('parseMsg(): SET Routing Answer: IN:' + sEingang + '; OUT:' + sAusgang + ';');
 			} else {
 				this.log.info('parseMsg(): Aenderung an der Hardware: IN:' + sEingang + '; OUT:' + sAusgang + ';');
-				for (let i = 0; i < parentThis.MAXCHANNELS; i++) {
-					this.setStateAsync('SelectMapping.output_' + (i).toString().padStart(2, '0') + '_in_from', { val: tmpIN, ack: true });
-				}
 			}
 
 			this.setStateAsync('SelectMapping.output_' + (sAusgang).toString().padStart(2, '0') + '_in_from', { val: sEingang, ack: true });
