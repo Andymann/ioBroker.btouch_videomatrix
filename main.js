@@ -624,7 +624,7 @@ class BtouchVideomatrix extends utils.Adapter {
 			let tmpOUT = sMSG.substring(iStart, sMSG.indexOf(' '));
 			parentThis.log.info('parseMSG(): OFF:' + tmpOUT);
 			//  Derzeit kein Fix fuer exklusives Routing, weil sich an der Matrix selbst ein Ausgang nicht auf OFF schalten lässe
-		} else if (sMSG.toLower().includes('all.')) {
+		} else if (sMSG.toLowerCase().includes('all.')) {
 			// /1 to All. Das passiert vornehmlich an der Matrix
 			let iStart = sMSG.indexOf('/') + 1;
 			let tmpIN = str.substring(iStart, str.indexOf(' '));
