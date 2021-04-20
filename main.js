@@ -634,7 +634,7 @@ class BtouchVideomatrix extends utils.Adapter {
 			} else {
 				parentThis.log.info('parseMSG(): an der Hardware to All:' + tmpIN);
 				for (let i = 0; i < parentThis.MAXCHANNELS; i++) {
-					this.setStateAsync('SelectMapping.output_' + (i).toString().padStart(2, '0') + '_in_from', { val: tmpIN, ack: true });
+					this.setStateAsync('SelectMapping.output_' + (i + 1).toString().padStart(2, '0') + '_in_from', { val: tmpIN, ack: true });
 				}
 			}
 
