@@ -220,7 +220,7 @@ class BtouchVideomatrix extends utils.Adapter {
 
 		lstInputNames = '{00=OFF,01=Eingang 1,02=Eingang zwei, 03=Eingang DREI}';
 
-		this.log.info('createStates():' + listInputNames);
+		this.log.info('createStates():' + lstInputNames);
 		/*
 		for (var i = 0; i < parentThis.MAXCHANNELS; i++) {
 			// Kombinatinen von Ein- und Ausgang als Nummer ('Eingang 1 auf X')
