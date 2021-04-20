@@ -627,7 +627,7 @@ class BtouchVideomatrix extends utils.Adapter {
 		} else if (sMSG.toLowerCase().includes('all.')) {
 			// /1 to All. Das passiert vornehmlich an der Matrix
 			let iStart = sMSG.indexOf('/') + 1;
-			let tmpIN = str.substring(iStart, str.indexOf(' '));
+			let tmpIN = sMSG.substring(iStart, sMSG.indexOf(' '));
 
 			if (bWaitingForResponse == true) {
 				parentThis.log.info('parseMSG(): to All:' + tmpIN);
