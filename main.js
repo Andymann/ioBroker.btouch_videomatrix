@@ -241,7 +241,7 @@ class BtouchVideomatrix extends utils.Adapter {
 				common: {
 					name: 'Output ' + (i + 1).toString().padStart(2, '0') + ' gets Signal from',
 					type: 'number',
-					states: { inputNames },
+					states: inputNames.join(),
 					role: 'list',
 					read: true,
 					write: true
