@@ -1,7 +1,7 @@
 {
   "common": {
     "name": "btouch_videomatrix",
-    "version": "0.0.3",
+    "version": "0.9.0",
     "news": {
       "0.0.1": {
         "de": "Erstveröffentlichung"
@@ -11,6 +11,9 @@
       },
 	  "0.0.3": {
         "de": "Refactoring, Codebase an Audiomatrix b2008 angepasst"
+      },
+	  "0.9.": {
+        "de": "Steuerung per serielle, Port funktioniert. Eingaben am Panel der Matrix werden verarbeitet"
       }
     },
     "title": "BTouch VideoMatrix",
