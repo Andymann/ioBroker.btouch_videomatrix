@@ -13,7 +13,7 @@
         "de": "Refactoring, Codebase an Audiomatrix b2008 angepasst"
       },
 	  "0.9.": {
-        "de": "Steuerung per serielle, Port funktioniert. Eingaben am Panel der Matrix werden verarbeitet"
+        "de": "Steuerung per seriellem Port funktioniert. Eingaben am Panel der Matrix werden verarbeitet"
       }
     },
     "title": "BTouch VideoMatrix",
