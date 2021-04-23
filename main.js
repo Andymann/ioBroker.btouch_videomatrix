@@ -262,17 +262,17 @@ class BtouchVideomatrix extends utils.Adapter {
 		// Erzeugen von zusaetzlichen Datenpunkten, die z.B. in VIS ermöglichen, 
 		// ein Dropdown-Feld zu nutzen
 		let sList_In = '';
-		for (let i = 0; i < inputNames.length(); i++) {
+		for (let i = 0; i < inputNames.length; i++) {
 			sList_In = sList_In + inputNames[i];
-			if (i < inputNames.length() - 1) {
+			if (i < inputNames.length - 1) {
 				sList_In = sList_In + ';';
 			}
 		}
 
 		let sList_Out = '';
-		for (let i = 0; i < outputNames.length(); i++) {
+		for (let i = 0; i < outputNames.length; i++) {
 			sList_Out = sList_Out + outputNames[i];
-			if (i < outputNames.length() - 1) {
+			if (i < outputNames.length - 1) {
 				sList_Out = sList_Out + ';';
 			}
 		}
@@ -280,7 +280,7 @@ class BtouchVideomatrix extends utils.Adapter {
 		let sList_values = '';
 		for (let i = 0; i < MAXCHANNELS; i++) {
 			sList_values = sList_values + i.toString();
-			if (i < sList_values.length() - 1) {
+			if (i < sList_values.length - 1) {
 				sList_values = sList_values + ';';
 			}
 		}
