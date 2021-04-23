@@ -268,6 +268,7 @@ class BtouchVideomatrix extends utils.Adapter {
 
 
 		for (let i = 0; i < inputNames.length; i++) {
+			this.log.info('readLabels(): createlist ################');
 			sList_In = sList_In + inputNames[i];
 			if (i < inputNames.length - 1) {
 				sList_In = sList_In + ';';
