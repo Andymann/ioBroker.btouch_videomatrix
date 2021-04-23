@@ -322,7 +322,7 @@ class BtouchVideomatrix extends utils.Adapter {
 				role: 'text',
 				read: true,
 				write: false,
-				def: sList_In_values
+				def: sList_values
 			},
 			native: {},
 		});
