@@ -259,6 +259,19 @@ class BtouchVideomatrix extends utils.Adapter {
 					read: true,
 					write: true
 				},
+				// Next up: addOn for using the Selection Wdiget in HABPanel
+				stateDescription: {
+					options: [
+						{
+							value: '1',
+							label: 'Label eins'
+						},
+						{
+							value: '2',
+							label: 'Label zwei'
+						}
+					]
+				},
 				native: {},
 			});
 		}
