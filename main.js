@@ -249,7 +249,7 @@ class BtouchVideomatrix extends utils.Adapter {
 		var options = [];
 		for (var i = 0; i < parentThis.MAXCHANNELS; i++) {
 			//var opt = { 'value': i, 'label': 'eingang ' + i.toString() };
-			var opt = { 'value': i, 'label': inputNames[i] };
+			var opt = { 'value': i.toString(), 'label': inputNames[i] };
 			options.push(opt);
 		}
 
