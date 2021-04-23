@@ -248,7 +248,8 @@ class BtouchVideomatrix extends utils.Adapter {
 
 		var options = [];
 		for (var i = 0; i < parentThis.MAXCHANNELS; i++) {
-			var opt = { 'value': i, 'label': 'eingang ' + i.toString() };
+			//var opt = { 'value': i, 'label': 'eingang ' + i.toString() };
+			var opt = { 'value': i, 'label': inputNames[i] };
 			options.push(opt);
 		}
 
@@ -267,18 +268,6 @@ class BtouchVideomatrix extends utils.Adapter {
 				},
 				// Next up: addOn for using the Selection Wdiget in HABPanel
 				stateDescription: {
-					/*
-					options: [
-						{
-							value: '1',
-							label: 'Label eins'
-						},
-						{
-							value: '2',
-							label: 'Label zwei'
-						}
-					]
-					*/
 					options
 				},
 				native: {},
