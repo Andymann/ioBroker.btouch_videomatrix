@@ -276,7 +276,7 @@ class BtouchVideomatrix extends utils.Adapter {
 
 		this.log.info('readLabels(): sList: ' + sList_In + '*******************');
 
-		for (let i = 0; i < outputNames.length; i++) {
+		for (let i = 0; i < parentThis.MAXCHANNELS; i++) {
 			sList_Out = sList_Out + outputNames[i];
 			if (i < outputNames.length - 1) {
 				sList_Out = sList_Out + ';';
@@ -284,7 +284,7 @@ class BtouchVideomatrix extends utils.Adapter {
 		}
 
 
-		for (let i = 0; i < MAXCHANNELS; i++) {
+		for (let i = 0; i < parentThis.MAXCHANNELS; i++) {
 			sList_values = sList_values + i.toString();
 			if (i < sList_values.length - 1) {
 				sList_values = sList_values + ';';
@@ -300,7 +300,7 @@ class BtouchVideomatrix extends utils.Adapter {
 				role: 'text',
 				read: true,
 				write: false,
-				def: sList_In
+				def: parentThis.sList_In
 			},
 			native: {},
 		});
@@ -313,7 +313,7 @@ class BtouchVideomatrix extends utils.Adapter {
 				role: 'text',
 				read: true,
 				write: false,
-				def: sList_Out
+				def: parentThis.sList_Out
 			},
 			native: {},
 		});
@@ -326,7 +326,7 @@ class BtouchVideomatrix extends utils.Adapter {
 				role: 'text',
 				read: true,
 				write: false,
-				def: sList_values
+				def: parentThis.sList_values
 			},
 			native: {},
 		});
@@ -339,7 +339,7 @@ class BtouchVideomatrix extends utils.Adapter {
 				role: 'text',
 				read: true,
 				write: false,
-				def: sList_values
+				def: parentThis.sList_values
 			},
 			native: {},
 		});
