@@ -266,12 +266,10 @@ class BtouchVideomatrix extends utils.Adapter {
 		// Erzeugen von zusaetzlichen Datenpunkten, die z.B. in VIS ermöglichen, 
 		// ein Dropdown-Feld zu nutzen
 
-		parentThis.log.info('readLabels(): createlist #########-----#######');
 
 		for (let i = 0; i < parentThis.MAXCHANNELS; i++) {
-			this.log.info('readLabels(): createlist ################');
 			sList_In = sList_In + inputNames[i];
-			if (i < inputNames.length - 1) {
+			if (i < parentThis.MAXCHANNELS - 1) {
 				sList_In = sList_In + ';';
 			}
 		}
