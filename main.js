@@ -267,8 +267,9 @@ class BtouchVideomatrix extends utils.Adapter {
 		// ein Dropdown-Feld zu nutzen
 
 		parentThis.log.info('readLabels(): createlist #########-----#######');
-		for (let i = 0; i < MAXCHANNELS; i++) {
-			parentThis.log.info('readLabels(): createlist ################');
+
+		for (let i = 0; i < parentThis.MAXCHANNELS; i++) {
+			this.log.info('readLabels(): createlist ################');
 			sList_In = sList_In + inputNames[i];
 			if (i < inputNames.length - 1) {
 				sList_In = sList_In + ';';
