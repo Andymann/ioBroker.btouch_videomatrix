@@ -892,10 +892,10 @@ class BtouchVideomatrix extends utils.Adapter {
 		}
 
 
-		if (this.config.optConnection == 'connSerial') {
+		if (this.config.optConnection === 'connSerial') {
 			this.sSerialPortName = this.config.serialPort.trim();
 			this.mode = MODE_SERIAL;
-		} else if (this.config.optConnection == 'connNetwork') {
+		} else if (this.config.optConnection === 'connNetwork') {
 			this.mode = MODE_NETWORK;
 		} else {
 			this.mode = MODE_NONE;
