@@ -125,7 +125,7 @@ class BtouchVideomatrix extends utils.Adapter {
 				await this.setObjectAsync('SelectBool.input_' + (i + 1).toString().padStart(2, '0') + '_out_' + (j + 1).toString().padStart(2, '0'), {
 					type: 'state',
 					common: {
-						name: 'Connect Input ' + (i + 1).toString() + 'to Output ' + (j + 1).toString() + ' as boolean',
+						name: 'Connect Input ' + (i + 1).toString() + ' to Output ' + (j + 1).toString() + ' as boolean',
 						type: 'boolean',
 						def: false,
 						role: 'indicator',
@@ -542,7 +542,7 @@ class BtouchVideomatrix extends utils.Adapter {
 
 
 		matrix.on('data', function (chunk) {
-			//parentThis.log.info('matrix.onData():' + chunk + ' ' + toHexString(chunk));
+			parentThis.log.info('matrix.onData():' + chunk + ' ' + toHexString(chunk));
 			if (parentThis.mode == MODE_SERIAL) {
 				//parentThis.processIncoming(chunk);
 			} else if (parentThis.mode == MODE_NETWORK) {
