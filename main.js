@@ -549,57 +549,58 @@ class BtouchVideomatrix extends utils.Adapter {
 				parentThis.processIncoming(chunk);
 			}
 		});
-		/*
-				matrix.on('timeout', function (e) {
-					//if (e.code == 'ENOTFOUND' || e.code == 'ECONNREFUSED' || e.code == 'ETIMEDOUT') {
-					//            matrix.destroy();
-					//}
-					parentThis.log.error('VideoMatrix TIMEOUT. TBD');
-					//parentThis.connection=false;
-					//parentThis.setConnState(false, true);
-					//            parentThis.reconnect();
-				});
-		
-				matrix.on('error', function (e) {
-					if (e.code == 'ENOTFOUND' || e.code == 'ECONNREFUSED' || e.code == 'ETIMEDOUT') {
-						//matrix.destroy();
-						//parentThis.initMatrix();
-						if (e.code == 'ECONNREFUSED') {
-							parentThis.log.error('Keine Verbindung. Ist der Adapter online?');
-							arrCMD.push(cmdWaitQueue_1000);
-						}
-					}
-					parentThis.log.error(e);
-					//            parentThis.reconnect();
-				});
-		
-				matrix.on('close', function (e) {
-					//if (bConnection) {
-					parentThis.log.error('VideoMatrix closed. TBD');
-					//}
-					//parentThis.reconnect();
-				});
-		
-				matrix.on('disconnect', function (e) {
-					parentThis.log.error('VideoMatrix disconnected. TBD');
-					//            parentThis.reconnect();
-				});
-		
-				matrix.on('end', function (e) {
-					parentThis.log.error('VideoMatrix ended');
-					//parentThis.setState('info.connection', false, true);
-				});
-		
-		
-				parser.on('data', function (chunk) {
-					//parentThis.log.debug('parser.onData():' + chunk);
-					if (parentThis.mode == MODE_SERIAL) {
-						//----Hier kommt schon die komplette Response an
-						parentThis.processIncoming(chunk);
-					}
-					//parentThis.processIncoming(chunk);
-				});
-		*/
+
+		matrix.on('timeout', function (e) {
+			//if (e.code == 'ENOTFOUND' || e.code == 'ECONNREFUSED' || e.code == 'ETIMEDOUT') {
+			//            matrix.destroy();
+			//}
+			parentThis.log.error('VideoMatrix TIMEOUT. TBD');
+			//parentThis.connection=false;
+			//parentThis.setConnState(false, true);
+			//            parentThis.reconnect();
+		});
+
+		matrix.on('error', function (e) {
+			if (e.code == 'ENOTFOUND' || e.code == 'ECONNREFUSED' || e.code == 'ETIMEDOUT') {
+				//matrix.destroy();
+				//parentThis.initMatrix();
+				if (e.code == 'ECONNREFUSED') {
+					parentThis.log.error('Keine Verbindung. Ist der Adapter online?');
+					arrCMD.push(cmdWaitQueue_1000);
+				}
+			}
+			parentThis.log.error('UKU!');
+			parentThis.log.error(e);
+			//            parentThis.reconnect();
+		});
+
+		matrix.on('close', function (e) {
+			//if (bConnection) {
+			parentThis.log.error('VideoMatrix closed. TBD');
+			//}
+			//parentThis.reconnect();
+		});
+
+		matrix.on('disconnect', function (e) {
+			parentThis.log.error('VideoMatrix disconnected. TBD');
+			//            parentThis.reconnect();
+		});
+
+		matrix.on('end', function (e) {
+			parentThis.log.error('VideoMatrix ended');
+			//parentThis.setState('info.connection', false, true);
+		});
+
+
+		parser.on('data', function (chunk) {
+			//parentThis.log.debug('parser.onData():' + chunk);
+			if (parentThis.mode == MODE_SERIAL) {
+				//----Hier kommt schon die komplette Response an
+				parentThis.processIncoming(chunk);
+			}
+			//parentThis.processIncoming(chunk);
+		});
+
 		//----Den Zustand der Hardware abfragen
 		this.queryMatrix();
 	}
