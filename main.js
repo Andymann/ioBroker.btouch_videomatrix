@@ -497,7 +497,7 @@ class BtouchVideomatrix extends utils.Adapter {
 			//if (e.code == 'ENOTFOUND' || e.code == 'ECONNREFUSED' || e.code == 'ETIMEDOUT') {
 			//            matrix.destroy();
 			//}
-			parentThis.log.error('AudioMatrix TIMEOUT. TBD');
+			parentThis.log.error('VideoMatrix TIMEOUT. TBD');
 			//parentThis.connection=false;
 			//parentThis.setConnState(false, true);
 			//            parentThis.reconnect();
@@ -518,18 +518,18 @@ class BtouchVideomatrix extends utils.Adapter {
 
 		matrix.on('close', function (e) {
 			//if (bConnection) {
-			parentThis.log.error('AudioMatrix closed. TBD');
+			parentThis.log.error('VideoMatrix closed. TBD');
 			//}
 			//parentThis.reconnect();
 		});
 
 		matrix.on('disconnect', function (e) {
-			parentThis.log.error('AudioMatrix disconnected. TBD');
+			parentThis.log.error('VideoMatrix disconnected. TBD');
 			//            parentThis.reconnect();
 		});
 
 		matrix.on('end', function (e) {
-			parentThis.log.error('AudioMatrix ended');
+			parentThis.log.error('VideoMatrix ended');
 			//parentThis.setState('info.connection', false, true);
 		});
 
