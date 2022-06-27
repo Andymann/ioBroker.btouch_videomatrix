@@ -540,16 +540,18 @@ class BtouchVideomatrix extends utils.Adapter {
 			});
 		}
 
-
 		matrix.on('data', function (chunk) {
+			/*
 			parentThis.log.info('matrix.onData():' + chunk);
 			if (parentThis.mode == MODE_SERIAL) {
 				//parentThis.processIncoming(chunk);
 			} else if (parentThis.mode == MODE_NETWORK) {
 				parentThis.processIncoming(chunk);
 			}
+			*/
 		});
 
+		/*
 		matrix.on('timeout', function (e) {
 			//if (e.code == 'ENOTFOUND' || e.code == 'ECONNREFUSED' || e.code == 'ETIMEDOUT') {
 			//            matrix.destroy();
@@ -569,7 +571,6 @@ class BtouchVideomatrix extends utils.Adapter {
 					arrCMD.push(cmdWaitQueue_1000);
 				}
 			}
-			parentThis.log.error('UKU!');
 			parentThis.log.error(e);
 			//            parentThis.reconnect();
 		});
@@ -600,7 +601,7 @@ class BtouchVideomatrix extends utils.Adapter {
 			}
 			//parentThis.processIncoming(chunk);
 		});
-
+		*/
 		//----Den Zustand der Hardware abfragen
 		this.queryMatrix();
 	}
