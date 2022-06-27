@@ -13,7 +13,7 @@ const net = require('net');
 //const Readline = require('@serialport/parser-readline')
 // const ByteLength = require('@serialport/parser-byte-length');
 const { SerialPort } = require('serialport');
-const { Readline } = require('serialport');
+const { ReadlineParser } = require('@serialport/parser-readline')
 const TIMEOUT = 5000;
 
 const MODE_NONE = 0x00;
@@ -433,12 +433,12 @@ class BtouchVideomatrix extends utils.Adapter {
 
 		if (this.mode == MODE_SERIAL) {
 			this.log.info('connectMatrix(): Serial Port Mode ' + this.sSerialPortName);
-			const options = {
-				baudRate: 9600,
-				dataBits: 8,
-				stopBits: 1,
-				parity: 'none'
-			};
+			//const options = {
+			//	baudRate: 9600,
+			//	dataBits: 8,
+			//	stopBits: 1,
+			//	parity: 'none'
+			//};
 
 			//matrix = new serialport(this.sSerialPortName, options);
 			matrix = new SerialPort({
@@ -450,7 +450,7 @@ class BtouchVideomatrix extends utils.Adapter {
 			});
 
 			//parser = matrix.pipe(new ByteLength({ length: 1 }));
-			parser = matrix.pipe(new Readline({ delimiter: '\r\n' }))
+			parser = matrix.pipe(new ReadlineParser({ delimiter: '\r\n' }))
 			if (pingInterval) {
 				clearInterval(pingInterval);
 			}
