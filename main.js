@@ -449,7 +449,7 @@ class BtouchVideomatrix extends utils.Adapter {
 			}, 3000);
 
 		} else if (this.mode == MODE_NETWORK) {
-			this.log.info('connectMatrix():' + this.config.host + ':' + this.config.port);
+			this.log.info('connectMatrix():' + this.config.optHost + ':' + this.config.optPort);
 			matrix = new net.Socket();
 			/*
 			matrix.connect(this.config.port, this.config.host, function () {
