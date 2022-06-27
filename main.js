@@ -540,16 +540,16 @@ class BtouchVideomatrix extends utils.Adapter {
 			});
 		}
 
+
+		matrix.on('data', function (chunk) {
+			parentThis.log.info('matrix.onData():' + chunk);
+			if (parentThis.mode == MODE_SERIAL) {
+				//parentThis.processIncoming(chunk);
+			} else if (parentThis.mode == MODE_NETWORK) {
+				parentThis.processIncoming(chunk);
+			}
+		});
 		/*
-				matrix.on('data', function (chunk) {
-					parentThis.log.info('matrix.onData():' + chunk);
-					if (parentThis.mode == MODE_SERIAL) {
-						//parentThis.processIncoming(chunk);
-					} else if (parentThis.mode == MODE_NETWORK) {
-						parentThis.processIncoming(chunk);
-					}
-				});
-		
 				matrix.on('timeout', function (e) {
 					//if (e.code == 'ENOTFOUND' || e.code == 'ECONNREFUSED' || e.code == 'ETIMEDOUT') {
 					//            matrix.destroy();
