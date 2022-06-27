@@ -707,7 +707,7 @@ class BtouchVideomatrix extends utils.Adapter {
 		//this.readLabels();
 
 
-		if (bWaitQueue == false) {
+		if ((matrix != null) && (bWaitQueue == false)) {
 			if (bWaitingForResponse == false) {
 				if (arrCMD.length > 0) {
 					this.log.debug('processCMD: bWaitingForResponse==FALSE, arrCMD.length=' + arrCMD.length.toString());
