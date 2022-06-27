@@ -901,7 +901,7 @@ class BtouchVideomatrix extends utils.Adapter {
 			this.mode = MODE_NONE;
 		}
 
-		this.mode = MODE_NETWORK;
+		//this.mode = MODE_NETWORK;
 
 		if (this.mode == MODE_SERIAL) {
 			this.log.info("Modus Seriell:" + this.sSerialPortName);
