@@ -539,15 +539,7 @@ class BtouchVideomatrix extends utils.Adapter {
 				}
 			});
 
-			matrix.on('data', function (chunk) {
-				parentThis.log.info('matrix.onData():' + chunk);
-				if (parentThis.mode == MODE_SERIAL) {
-					//parentThis.processIncoming(chunk);
-				} else if (parentThis.mode == MODE_NETWORK) {
-					parentThis.processIncoming(chunk);
-				}
 
-			});
 
 		}
 
@@ -555,6 +547,17 @@ class BtouchVideomatrix extends utils.Adapter {
 
 
 		/*
+
+		matrix.on('data', function (chunk) {
+			parentThis.log.info('matrix.onData():' + chunk);
+			if (parentThis.mode == MODE_SERIAL) {
+				//parentThis.processIncoming(chunk);
+			} else if (parentThis.mode == MODE_NETWORK) {
+				parentThis.processIncoming(chunk);
+			}
+
+		});
+		
 		matrix.on('timeout', function (e) {
 			//if (e.code == 'ENOTFOUND' || e.code == 'ECONNREFUSED' || e.code == 'ETIMEDOUT') {
 			//            matrix.destroy();
@@ -698,9 +701,9 @@ class BtouchVideomatrix extends utils.Adapter {
 
 	//wird alle 100ms aufgerufen. Die CMD-Queue wird abgearbeitet und Befehle gehen raus.
 	processCMD() {
-		//this.log.info('processCMD()');
+		this.log.info('processCMD()');
 
-		// nur ein test, um die labesl auszulesen	
+		// nur ein test, um die labels auszulesen	
 		//this.readLabels();
 
 
