@@ -892,6 +892,7 @@ class BtouchVideomatrix extends utils.Adapter {
 		}
 
 
+
 		if (this.config.optConnection === 'connSerial') {
 			this.sSerialPortName = this.config.serialPort.trim();
 			this.mode = MODE_SERIAL;
@@ -908,6 +909,7 @@ class BtouchVideomatrix extends utils.Adapter {
 		} else if (this.mode == MODE_NETWORK) {
 			this.log.info("Modus Netzwerk");
 		}
+		this.log.info(this.config.optConnection);
 
 		//this.createStates();
 
