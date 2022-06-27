@@ -77,17 +77,28 @@
 		</select>
 		</div>
 	<br><br>
+<!--
+	<label>Connection-Type</label>
+	<select class="value" id="optConnection">
+		<option value="Network">Network</option>
+		<option value="Serial">Serial</option>
+	</select>
 
+	<label>Host</label><input type="text" class="value" id="optHost"/>
+	<label>Port</label><input type="text" class="value" id="optPort" /><br> 
+	<label>Serial Port</label><input type="text" class="value" id="serialPort" /><br> 
+	<input type="text" id="serialPort" class="value"/><span class="translate"> e.g.</span> <code>/dev/ttyUSB0</code>
+-->	
 	
 	<label>
 		<input type="radio" name="optConnection" id="connSerial"> <span class="translate">Serial Connection</span>
 	</label><br>
-	<input type="text" id="serialPort" class="value"/><span class="translate"> e.g.</span> <code>/dev/ttyUSB0</code>
+	<input type="text" id="serialPort" class="value"/><span class="value" class="translate"> e.g.</span> <code>/dev/ttyUSB0</code>
 	<br>
 	<br>
 	<br>
 	<label>
-		<input type="radio" name="optConnection" id="connNetwork" checked> <span class="translate">Network Connection</span>
+		<input type="radio" name="optConnection" id="connNetwork" checked> <span class="value" class="translate">Network Connection</span>
 	</label><br>     
 	<label>Host</label><input type="text" class="value" id="optHost"/>
 	<label>Port</label><input type="text" class="value" id="optPort" /><br> 
