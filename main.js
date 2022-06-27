@@ -17,8 +17,8 @@ const { ReadlineParser } = require('@serialport/parser-readline')
 const TIMEOUT = 5000;
 
 const MODE_NONE = 0x00;
-const MODE_SERIAL = 0x01;
-const MODE_NETWORK = 0x02;
+const MODE_SERIAL = 0x11;
+const MODE_NETWORK = 0x12;
 
 const MODE_QUERY_NONE = 0x00;
 const MODE_QUERY_STARTED = 0x01;
@@ -58,13 +58,10 @@ let sList_values = '';
 //-------
 let query = null;
 let in_msg = '';
-//let iMaxTryCounter = 0;
-//let iMaxTimeoutCounter = 0;
-//var lastCMD;
 
 let bQueryComplete_Routing;
 let bWaitingForResponse = false;
-//let arrQuery = [];
+
 let arrStateQuery_Routing = [];
 
 
@@ -433,14 +430,6 @@ class BtouchVideomatrix extends utils.Adapter {
 
 		if (this.mode == MODE_SERIAL) {
 			this.log.info('connectMatrix(): Serial Port Mode ' + this.sSerialPortName);
-			//const options = {
-			//	baudRate: 9600,
-			//	dataBits: 8,
-			//	stopBits: 1,
-			//	parity: 'none'
-			//};
-
-			//matrix = new serialport(this.sSerialPortName, options);
 			matrix = new SerialPort({
 				path: this.sSerialPortName,
 				baudRate: 9600,
@@ -901,6 +890,7 @@ class BtouchVideomatrix extends utils.Adapter {
 		} if (this.config.optSlotcount == '144x144') {
 			parentThis.MAXCHANNELS = 144;
 		}
+
 
 		if (this.config.optConnection == 'connSerial') {
 			this.sSerialPortName = this.config.serialPort.trim();
