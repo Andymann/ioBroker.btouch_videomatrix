@@ -540,15 +540,17 @@ class BtouchVideomatrix extends utils.Adapter {
 			});
 		}
 
+		this.log.info('UKU' + this.matrix.toString());
+
 		matrix.on('data', function (chunk) {
-			/*
+
 			parentThis.log.info('matrix.onData():' + chunk);
 			if (parentThis.mode == MODE_SERIAL) {
 				//parentThis.processIncoming(chunk);
 			} else if (parentThis.mode == MODE_NETWORK) {
 				parentThis.processIncoming(chunk);
 			}
-			*/
+
 		});
 
 		/*
