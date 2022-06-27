@@ -125,9 +125,9 @@ class BtouchVideomatrix extends utils.Adapter {
 				await this.setObjectAsync('SelectBool.input_' + (i + 1).toString().padStart(2, '0') + '_out_' + (j + 1).toString().padStart(2, '0'), {
 					type: 'state',
 					common: {
-						name: 'Connect Input to Output as boolean',
+						name: 'Connect Input ' + (i + 1).toString() + 'to Output ' + (j + 1).toString() + ' as boolean',
 						type: 'boolean',
-						def: 'false',
+						def: false,
 						role: 'indicator',
 						read: true,
 						write: true
@@ -424,7 +424,7 @@ class BtouchVideomatrix extends utils.Adapter {
 	}
 
 	connectMatrix(cb) {
-		//this.log.debug('connectMatrix()');
+		this.log.debug('connectMatrix()');
 		let parser;
 		arrCMD = [];
 
