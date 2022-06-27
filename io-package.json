@@ -14,6 +14,9 @@
       },
 	  "0.9.": {
         "de": "Steuerung per seriellem Port funktioniert. Eingaben am Panel der Matrix werden verarbeitet"
+      },
+	  "0.9.1": {
+        "de": "SerialPort Constructor upgedatet"
       }
     },
     "title": "BTouch VideoMatrix",
