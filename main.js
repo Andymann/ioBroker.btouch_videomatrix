@@ -451,25 +451,93 @@ class BtouchVideomatrix extends utils.Adapter {
 		} else if (this.mode == MODE_NETWORK) {
 			this.log.info('connectMatrix():' + this.config.optHost + ':' + this.config.optPort);
 			matrix = new net.Socket();
-			/*
 			matrix.connect(this.config.port, this.config.host, function () {
-				if (bConnection == false) {
-					parentThis.log.debug('connectMatrix() Network. bConnection==false, sending CMDCONNECT:' + toHexString(cmdConnect));
-					arrCMD.push(cmdConnect);
-					arrCMD.push(cmdWaitQueue_1000);
-				} else {
-					parentThis.log.debug('_connect() Network. bConnection==true. Nichts tun');
+				clearInterval(query);
+				query = setInterval(function () {
+					if (connection == false) {
+						if (bWaitingForResponse == false) {
+							parentThis.log.info('VideoMatrix: connectMatrix().connection==false, sending CMDPING:' + cmdPing);
+							arrCMD.push(cmdPing);
+							iMaxTryCounter = 3;
+							parentThis.processCMD();
+						} else {
+							parentThis.log.debug('VideoMatrix: connectMatrix().connection==false, bWaitingForResponse==false; nichts machen');
+						}
+					} else {
+						if (bQueryDone == true) {
+							if (arrCMD.length == 0) {
+								parentThis.log.debug('VideoMatrix: connectMatrix().connection==true, bQueryDone==TRUE, idle, pinging Matrix');
+								parentThis.pingMatrix();
+							} else {
+								parentThis.log.debug('VideoMatrix: connectMatrix().connection==true, bQueryDone==TRUE, arrCMD.length>0; idle, aber KEIN ping auf Matrix');
+							}
+						} else {
+							if (!bQueryInProgress) {
+								parentThis.log.debug('VideoMatrix: connectMatrix().connection==true, bQueryDone==FALSE, idle, query Matrix');
+								parentThis.queryMatrix();
+							} else {
+								parentThis.log.debug('VideoMatrix: connectMatrix().connection==true, bQueryDone==FALSE, bQueryInProgress==TRUE, idle');
+								parentThis.queryMatrix();
+							}
+						}
+					}
+
+					//-	---Intervall fuer Befehle, Timeouts, etc
+					setTimeout(function () {
+						//parentThis.log.info('VideoMatrix: connectMatrix(): kleines Timeout');
+						if (bWaitingForResponse == true) {
+							if (bQueryInProgress == false) {
+								if (iMaxTryCounter > 0) {
+									//----Es kann passieren, dass man direkt NACH dem Senden eines Befehls an die Matrix und VOR der Antwort hier landet.
+									//----deswegen wird erstmal der MaxTryCounter heruntergesetzt und -sofern nichts kommt- bis zum naechsten Timeout gewartet.
+									//----Wenn iMaxTryCounter==0 ist, koennen wir von einem Problem ausgehen
+									parentThis.log.info('VideoMatrix: connectMatrix(): kleines Timeout. bWaitingForResponse==TRUE iMaxTryCounter==' + iMaxTryCounter.toString());
+									parentThis.log.info('VideoMatrix: connectMatrix(): kleines Timeout. lastCMD =' + lastCMD + '. MinorProblem = TRUE');
+									iMaxTryCounter--;
+									parentThis.setState('minorProblem', true, true);
+								} else {
+									if (iMaxTimeoutCounter < 3) {
+										parentThis.log.info('VideoMatrix: connectMatrix() in_msg: kleines Timeout. bWaitingForResponse==TRUE iMaxTryCounter==0. Erneutes Senden von ' + lastCMD);
+										iMaxTimeoutCounter++;
+										iMaxTryCounter = 3;
+										if (lastCMD !== undefined) {
+											setTimeout(function () {
+												matrix.write(lastCMD + '\n\r');
+											}, 100);
+										}
+									} else {
+										parentThis.log.error('VideoMatrix: connectMatrix() in_msg: kleines Timeout. bWaitingForResponse==TRUE iMaxTryCounter==0. Erneutes Senden von ' + lastCMD + 'schlug mehrfach fehl');
+										iMaxTimeoutCounter = 0;
+										parentThis.log.error('VideoMatrix: connectMatrix() in_msg: kleines Timeout. bWaitingForResponse==TRUE iMaxTryCounter==0');
+										//parentThis.log.error('WIE reagieren wir hier drauf? Was ist, wenn ein Befehl nicht umgesetzt werden konnte?');
+										bWaitingForResponse = false;
+										lastCMD = '';
+										in_msg = '';
+										arrCMD = [];
+										parentThis.reconnect();
+									}
+								}
+							} else {
+								parentThis.setState('minorProblem', true, true);
+								if (connection == true) {
+									parentThis.log.info('VideoMatrix: connectMatrix(): kleines Timeout. bWaitingForResponse==TRUE, bQueryInProgress==TRUE. Abwarten. iMaxTryCounter==' + iMaxTryCounter.toString());
+								} else {
+									//----Fuer den Fall, dass der Verbindungsversuch fehlschlaegt
+									parentThis.log.info('VideoMatrix: connectMatrix(): kleines Timeout. bWaitingForResponse==TRUE, bQueryInProgress==TRUE. Connection==FALSE. iMaxTryCounter==' + iMaxTryCounter.toString());
+									bWaitingForResponse = false;
+									iMaxTryCounter--;
+								}
+							}
+						} else {
+							parentThis.log.debug('VideoMatrix: connectMatrix() in_msg: kleines Timeout. bWaitingForResponse==FALSE, kein Problem');
+						}
+					}, 333/*kleinesIntervall*/);
+				}, 5000);
+
+				if (cb) {
+					cb();
 				}
-				if (pingInterval) {
-					clearInterval(pingInterval);
-				}
-	
-				//----Alle 0,75 Sekunden ein PING
-				pingInterval = setInterval(function () {
-					parentThis.pingMatrix();
-				}, 750);
 			});
-			*/
 		}
 
 
@@ -902,14 +970,11 @@ class BtouchVideomatrix extends utils.Adapter {
 			this.mode = MODE_NONE;
 		}
 
-		//this.mode = MODE_NETWORK;
-
 		if (this.mode == MODE_SERIAL) {
 			this.log.info("Modus Seriell:" + this.sSerialPortName);
 		} else if (this.mode == MODE_NETWORK) {
 			this.log.info("Modus Netzwerk");
 		}
-		this.log.info(this.config.optConnection);
 
 		//this.createStates();
 
