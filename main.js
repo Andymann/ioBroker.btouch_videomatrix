@@ -538,20 +538,21 @@ class BtouchVideomatrix extends utils.Adapter {
 					cb();
 				}
 			});
+
+			matrix.on('data', function (chunk) {
+				parentThis.log.info('matrix.onData():' + chunk);
+				if (parentThis.mode == MODE_SERIAL) {
+					//parentThis.processIncoming(chunk);
+				} else if (parentThis.mode == MODE_NETWORK) {
+					parentThis.processIncoming(chunk);
+				}
+
+			});
+
 		}
 
-		this.log.info('UKU' + this.matrix.toString());
 
-		matrix.on('data', function (chunk) {
 
-			parentThis.log.info('matrix.onData():' + chunk);
-			if (parentThis.mode == MODE_SERIAL) {
-				//parentThis.processIncoming(chunk);
-			} else if (parentThis.mode == MODE_NETWORK) {
-				parentThis.processIncoming(chunk);
-			}
-
-		});
 
 		/*
 		matrix.on('timeout', function (e) {
