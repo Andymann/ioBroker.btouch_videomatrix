@@ -118,25 +118,25 @@ class BtouchVideomatrix extends utils.Adapter {
 			},
 			native: {},
 		});
-		/*
-				// Kombinatinen von Ein- und Ausgang als bool
-				for (var i = 0; i < parentThis.MAXCHANNELS; i++) {
-					for (var j = 0; j < parentThis.MAXCHANNELS; j++) {
-						await this.setObjectAsync('SelectBool.input_' + (i + 1).toString().padStart(2, '0') + '_out_' + (j + 1).toString().padStart(2, '0'), {
-							type: 'state',
-							common: {
-								name: 'Connect Input to Output as boolean',
-								type: 'boolean',
-								def: 'false',
-								role: 'indicator',
-								read: true,
-								write: true
-							},
-							native: {},
-						});
-					}
-				}
-		*/
+
+		// Kombinatinen von Ein- und Ausgang als bool
+		for (var i = 0; i < parentThis.MAXCHANNELS; i++) {
+			for (var j = 0; j < parentThis.MAXCHANNELS; j++) {
+				await this.setObjectAsync('SelectBool.input_' + (i + 1).toString().padStart(2, '0') + '_out_' + (j + 1).toString().padStart(2, '0'), {
+					type: 'state',
+					common: {
+						name: 'Connect Input to Output as boolean',
+						type: 'boolean',
+						def: 'false',
+						role: 'indicator',
+						read: true,
+						write: true
+					},
+					native: {},
+				});
+			}
+		}
+
 
 		await this.setObjectAsync('Labels.input_' + (0).toString().padStart(2, '0'), {
 			type: 'state',
@@ -877,7 +877,7 @@ class BtouchVideomatrix extends utils.Adapter {
 					cmdRoute = sAusgang + '$.';
 					//this.setStateAsync('input_' + (pIN).toString().padStart(2, '0') + '_out_' + (pOUT).toString().padStart(2, '0'), { val: false, ack: true });
 				}
-				//parentThis.log.debug('matrixChanged() via GUI. cmd=' + cmdRoute);
+				parentThis.log.debug('matrixChanged() via GUI. cmd=' + cmdRoute);
 				arrCMD.push(cmdRoute);
 			} else {
 				//parentThis.log.debug('matrixChanged() via HARDWARE');
@@ -921,15 +921,15 @@ class BtouchVideomatrix extends utils.Adapter {
 
 		}
 
-		/*
-			//this.log.info('Neues Routing: IN: Ein Ausgang kann nur einen definierten Eingang besitzen');
-			for (let i = 0; i < parentThis.MAXCHANNELS; i++) {
-				if (i + 1 != parseInt(sEingang)) {
-					//this.log.debug('matrixChanged(): Neues Routing: IN: Ein Ausgang kann nur einen definierten Eingang besitzen. Setzte Eingang ' + (i + 1).toString() + ' fuer Ausgang ' + sAusgang + ' auf FALSE');
-					this.setStateAsync('input_' + (i + 1).toString().padStart(2, '0') + '_out_' + (sAusgang).toString().padStart(2, '0'), { val: false, ack: true });
-				}
+
+		//this.log.info('Neues Routing: IN: Ein Ausgang kann nur einen definierten Eingang besitzen');
+		for (let i = 0; i < parentThis.MAXCHANNELS; i++) {
+			if (i + 1 != parseInt(sEingang)) {
+				this.log.debug('matrixChanged(): Neues Routing: IN: Ein Ausgang kann nur einen definierten Eingang besitzen. Setzte Eingang ' + (i + 1).toString() + ' fuer Ausgang ' + sAusgang + ' auf FALSE');
+				this.setStateAsync('input_' + (i + 1).toString().padStart(2, '0') + '_out_' + (sAusgang).toString().padStart(2, '0'), { val: false, ack: true });
 			}
-			*/
+		}
+
 	}
 	//}//----ack==FALSE                         
 
