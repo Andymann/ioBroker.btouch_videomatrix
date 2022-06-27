@@ -1,96 +1,103 @@
 <html>
-  <head>
-    <!-- Load ioBroker scripts and styles-->
-    <link rel="stylesheet" type="text/css" href="../../css/adapter.css" />
-    <link rel="stylesheet" type="text/css" href="../../lib/css/materialize.css" />
 
-    <script type="text/javascript" src="../../lib/js/jquery-3.2.1.min.js"></script>
-    <script type="text/javascript" src="../../socket.io/socket.io.js"></script>
+<head>
 
-    <script type="text/javascript" src="../../js/translate.js"></script>
-    <script type="text/javascript" src="../../lib/js/materialize.js"></script>
-    <script type="text/javascript" src="../../js/adapter-settings.js"></script>
+	<!-- Load ioBroker scripts and styles-->
+	<link rel="stylesheet" type="text/css" href="../../css/adapter.css" />
+	<link rel="stylesheet" type="text/css" href="../../lib/css/materialize.css">
 
-    <!-- Load our own files -->
-    <link rel="stylesheet" type="text/css" href="style.css" />
-    <script type="text/javascript" src="words.js"></script>
+	<script type="text/javascript" src="../../lib/js/jquery-3.2.1.min.js"></script>
+	<script type="text/javascript" src="../../socket.io/socket.io.js"></script>
 
-    <script type="text/javascript">
-      // This will be called by the admin adapter when the settings page loads
-      function load(settings, onChange) {
-        // example: select elements with id=key and class=value and insert value
-        if (!settings) return;
-        $(".value").each(function () {
-          var $key = $(this);
-          var id = $key.attr("id");
-          if ($key.attr("type") === "checkbox") {
-            // do not call onChange direct, because onChange could expect some arguments
-            $key.prop("checked", settings[id]).on("change", () => onChange());
-          } else {
-            // do not call onChange direct, because onChange could expect some arguments
-            $key
-              .val(settings[id])
-              .on("change", () => onChange())
-              .on("keyup", () => onChange());
-          }
-        });
-        onChange(false);
-        // reinitialize all the Materialize labels on the page if you are dynamically adding inputs:
-        if (M) M.updateTextFields();
-      }
+	<script type="text/javascript" src="../../js/translate.js"></script>
+	<script type="text/javascript" src="../../lib/js/materialize.js"></script>
+	<script type="text/javascript" src="../../js/adapter-settings.js"></script>
 
-      // This will be called by the admin adapter when the user presses the save button
-      function save(callback) {
-        // example: select elements with class=value and build settings object
-        var obj = {};
-        $(".value").each(function () {
-          var $this = $(this);
-          if ($this.attr("type") === "checkbox") {
-            obj[$this.attr("id")] = $this.prop("checked");
-          } else {
-            obj[$this.attr("id")] = $this.val();
-          }
-        });
-        callback(obj);
-      }
-    </script>
-  </head>
+	<!-- Load our own files -->
+	<link rel="stylesheet" type="text/css" href="style.css" />
+	<script type="text/javascript" src="words.js"></script>
 
-  <body>
-    <div class="m adapter-container">
-      <div class="row">
-        <div class="col s12 m4 l2">
-          <img src="btouch_videomatrix.png" class="logo" />
-        </div>
-      </div>
+	<script type="text/javascript">
+		// This will be called by the admin adapter when the settings page loads
+		function load(settings, onChange) {
+			// example: select elements with id=key and class=value and insert value
+			if (!settings) return;
+			$('.value').each(function () {
+				var $key = $(this);
+				var id = $key.attr('id');
+				if ($key.attr('type') === 'checkbox') {
+					// do not call onChange direct, because onChange could expect some arguments
+					$key.prop('checked', settings[id])
+						.on('change', () => onChange())
+						;
+				} else {
+					// do not call onChange direct, because onChange could expect some arguments
+					$key.val(settings[id])
+						.on('change', () => onChange())
+						.on('keyup', () => onChange())
+						;
+				}
+			});
+			onChange(false);
+			// reinitialize all the Materialize labels on the page if you are dynamically adding inputs:
+			if (M) M.updateTextFields();
+		}
 
+		// This will be called by the admin adapter when the user presses the save button
+		function save(callback) {
+			// example: select elements with class=value and build settings object
+			var obj = {};
+			$('.value').each(function () {
+				var $this = $(this);
+				if ($this.attr('type') === 'checkbox') {
+					obj[$this.attr('id')] = $this.prop('checked');
+				} else {
+					obj[$this.attr('id')] = $this.val();
+				}
+			});
+			callback(obj);
+		}
+	</script>
 
-	  <!-- Testing kram-->
-	  	<div class="input-field"></div>
-		<label>Matrix-Type</label>
-		<select class="value" id="optSlotcount">
-			<option value="10x10">10x10</option>
-			<option value="18x18">18x18</option>
-			<option value="36x36">36x36</option>
-			<option value="72x72">72x72</option>
-			<option value="144x144">144x144</option>
-		</select>
-		<br><br>
+</head>
 
-		<div class="input-field"></div>
-		<label>Connection-Type</label>
-		<select class="value" id="optConnection">
-			<option value="Network">Network</option>
-			<option value="Serial">Serial</option>
-		</select>
-		<br><br>
+<body>
 
+	<div class="m adapter-container">
 
-		<label>Host</label><input type="text" class="value" id="optHost"/>
-		<label>Port</label><input type="text" class="value" id="optPort" /><br> <br><br>
-		<label>Serial Port</label><input type="text" class="value" id="serialPort" /><br> 
-		<input type="text" id="serialPort" class="value"/><span class="translate"> e.g.</span> <code>/dev/ttyUSB0</code>
+		<div class="row">
+			<div class="col s12 m4 l2">
+				<img src="videomatrix.png" class="logo">
+			</div>
+		</div>
+
+		<!-- Put your content here -->
+
+		<!-- For example columns with settings: -->
+		<div class="row">
+			<div class="col s6 input-field">
+				<input type="checkbox" class="value" id="option1" />
+				<label for="option1" class="translate">option1</label>
+			</div>
+
+			<div class="col s6 input-field">
+				<input type="text" class="value" id="option2" />
+				<label for="option2" class="translate">option2</label>
+			</div>
+
+			<div class="col s6 input-field">
+				<input type="text" class="value" id="host" />
+				<label for="host" class="translate">host</label>
+			</div>
+
+			<div class="col s6 input-field">
+				<input type="text" class="value" id="port" />
+				<label for="port" class="translate">port</label>
+			</div>
+		</div>
+
 	</div>
-	</body>
-  </body>
+
+</body>
+
 </html>
