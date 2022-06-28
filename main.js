@@ -880,7 +880,7 @@ class BtouchVideomatrix extends utils.Adapter {
 			for (let i = 0; i < parentThis.MAXCHANNELS; i++) {
 				if (i + 1 != parseInt(sEingang)) {
 					this.log.debug('matrixChanged(): Neues Routing: IN: Ein Ausgang kann nur einen definierten Eingang besitzen. Setzte Eingang ' + (i + 1).toString() + ' fuer Ausgang ' + sAusgang + ' auf FALSE');
-					this.setStateAsync('input_' + (i + 1).toString().padStart(2, '0') + '_out_' + (sAusgang).toString().padStart(2, '0'), { val: false, ack: true });
+					this.setStateAsync('SelectBool.input_' + (i + 1).toString().padStart(2, '0') + '_out_' + (sAusgang).toString().padStart(2, '0'), { val: false, ack: true });
 				}
 			}
 		} else if (id.toString().includes('SelectMapping.input_')) {
