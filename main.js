@@ -816,7 +816,7 @@ class BtouchVideomatrix extends utils.Adapter {
 			//this.log.info('parseMsg(): Routing Query Answer: IN:' + tmpIN + '; OUT:' + tmpOUT + ';');
 
 			this.setStateAsync('SelectBool.input_' + (tmpIN).toString().padStart(2, '0') + '_out_' + (tmpOUT).toString().padStart(2, '0'), { val: true, ack: true });
-			this.setStateAsync('SelectMapping.output_' + (tmpOUT).toString().padStart(2, '0') + '_in_from', { val: parseInt(tmpIN, 10), ack: true });
+			//this.setStateAsync('SelectMapping.output_' + (tmpOUT).toString().padStart(2, '0') + '_in_from', { val: parseInt(tmpIN, 10), ack: true });
 			parentThis.arrStateQuery_Routing[parseInt(tmpOUT) - 1] = true;
 			parentThis.checkQueryDone();
 
@@ -832,7 +832,7 @@ class BtouchVideomatrix extends utils.Adapter {
 				this.log.info('parseMsg(): Aenderung an der Hardware: IN:' + sEingang + '; OUT:' + sAusgang + ';');
 			}
 
-			this.setStateAsync('SelectMapping.output_' + (sAusgang).toString().padStart(2, '0') + '_in_from', { val: sEingang, ack: true });
+			//this.setStateAsync('SelectMapping.output_' + (sAusgang).toString().padStart(2, '0') + '_in_from', { val: sEingang, ack: true });
 			
 			
 			for (let i = 0; i < parentThis.MAXCHANNELS; i++) {
