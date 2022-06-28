@@ -751,12 +751,13 @@ class BtouchVideomatrix extends utils.Adapter {
 				this.parseMSG(chunk);
 			}
 		} else if (parentThis.mode == MODE_NETWORK) {
-			this.log.info('processIncoming() Mode_Network: TBD');
+			//this.log.info('processIncoming() Mode_Network: TBD');
 			in_msg += chunk;
 			//....if in_msg == complete....
 			if(in_msg.indexOf('\r\n') > -1) {
 				if (bWaitingForResponse == true) {
-					this.parseMSG(chunk);
+					this.log.info('processIncoming() Mode_Network: Message complete:' + in_msg);
+					this.parseMSG(in_msg);
 					bWaitingForResponse = false;
 					bConnection = true;
 					in_msg = '';
