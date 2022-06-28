@@ -805,11 +805,9 @@ class BtouchVideomatrix extends utils.Adapter {
 			} else {
 				parentThis.log.info('parseMSG(): an der Hardware to All:' + tmpIN);
 				for (let i = 0; i < parentThis.MAXCHANNELS; i++) {
-					this.setStateAsync('SelectMapping.output_' + (i + 1).toString().padStart(2, '0') + '_in_from', { val: tmpIN, ack: true });
+					this.setStateAsync('SelectMapping.output_' + (i + 1).toString().padStart(2, '0') + '_in_from', { val: parseInt(tmpIN, 10), ack: true });
 				}
 			}
-
-
 		} else if (sMSG.toLowerCase().startsWith('/v:')) {
 			//----Ein Ergebnis der Query
 			let iStart = sMSG.indexOf(':') + 1;
@@ -818,7 +816,7 @@ class BtouchVideomatrix extends utils.Adapter {
 			//this.log.info('parseMsg(): Routing Query Answer: IN:' + tmpIN + '; OUT:' + tmpOUT + ';');
 
 			//this.setStateAsync('input_' + (tmpIN).toString().padStart(2, '0') + '_out_' + (tmpOUT).toString().padStart(2, '0'), { val: true, ack: true });
-			this.setStateAsync('SelectMapping.output_' + (tmpOUT).toString().padStart(2, '0') + '_in_from', { val: tmpIN, ack: true });
+			this.setStateAsync('SelectMapping.output_' + (tmpOUT).toString().padStart(2, '0') + '_in_from', { val: parseInt(tmpIN, 10), ack: true });
 			parentThis.arrStateQuery_Routing[parseInt(tmpOUT) - 1] = true;
 			parentThis.checkQueryDone();
 
