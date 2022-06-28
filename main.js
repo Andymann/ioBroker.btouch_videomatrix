@@ -539,7 +539,7 @@ class BtouchVideomatrix extends utils.Adapter {
 					cb();
 				}
 			}).on('data', function (chunk) {
-				parentThis.log.info('matrix.onData():' + chunk);
+				//parentThis.log.info('matrix.onData():' + chunk);
 				if (parentThis.mode == MODE_SERIAL) {
 					//parentThis.processIncoming(chunk);
 				} else if (parentThis.mode == MODE_NETWORK) {
@@ -580,17 +580,15 @@ class BtouchVideomatrix extends utils.Adapter {
 
 		}
 
-		/*
-
 		parser.on('data', function (chunk) {
 			//parentThis.log.debug('parser.onData():' + chunk);
 			if (parentThis.mode == MODE_SERIAL) {
 				//----Hier kommt schon die komplette Response an
 				parentThis.processIncoming(chunk);
 			}
-			//parentThis.processIncoming(chunk);
+			parentThis.processIncoming(chunk);
 		});
-		*/
+	
 
 		//----Den Zustand der Hardware abfragen
 		this.queryMatrix();
@@ -692,7 +690,7 @@ class BtouchVideomatrix extends utils.Adapter {
 		if ((matrix != null) && (bWaitQueue == false)) {
 			if (bWaitingForResponse == false) {
 				if (arrCMD.length > 0) {
-					this.log.debug('processCMD: bWaitingForResponse==FALSE, arrCMD.length=' + arrCMD.length.toString());
+					this.log.info('processCMD: bWaitingForResponse==FALSE, arrCMD.length=' + arrCMD.length.toString());
 					bWaitingForResponse = true;
 					let tmp = arrCMD.shift();
 					this.log.debug('processCMD: next CMD=' + tmp);
