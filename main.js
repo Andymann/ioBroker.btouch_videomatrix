@@ -781,6 +781,7 @@ class BtouchVideomatrix extends utils.Adapter {
 	//---- 2Do: /1 to All.
 	parseMSG(sMSG) {
 		// z.b: HDMI36X36
+		sMSG = sMSG.toString();
 		if (sMSG.toLowerCase().includes('hdmi')) {
 			//....something something.
 		} else if (sMSG.toLowerCase().endsWith('close.')) {
