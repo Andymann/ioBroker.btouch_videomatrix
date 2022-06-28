@@ -813,9 +813,9 @@ class BtouchVideomatrix extends utils.Adapter {
 			let iStart = sMSG.indexOf(':') + 1;
 			let tmpIN = sMSG.substring(iStart, sMSG.indexOf(' '));
 			let tmpOUT = sMSG.substring(sMSG.lastIndexOf(' ') + 1).trim();
-			//this.log.info('parseMsg(): Routing Query Answer: IN:' + tmpIN + '; OUT:' + tmpOUT + ';');
-
+			this.log.info('parseMsg(): Routing Query Answer: IN:' + tmpIN + '; OUT:' + tmpOUT + ';');
 			this.setStateAsync('SelectBool.input_' + (tmpIN).toString().padStart(2, '0') + '_out_' + (tmpOUT).toString().padStart(2, '0'), { val: true, ack: true });
+			
 			//this.setStateAsync('SelectMapping.output_' + (tmpOUT).toString().padStart(2, '0') + '_in_from', { val: parseInt(tmpIN, 10), ack: true });
 			parentThis.arrStateQuery_Routing[parseInt(tmpOUT) - 1] = true;
 			parentThis.checkQueryDone();
