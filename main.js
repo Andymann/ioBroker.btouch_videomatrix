@@ -821,7 +821,7 @@ class BtouchVideomatrix extends utils.Adapter {
 			parentThis.checkQueryDone();
 
 			for (let i = 0; i < parentThis.MAXCHANNELS; i++) {
-				if (i + 1 != parseInt(tmpIn)) {
+				if (i + 1 != parseInt(tmpIN)) {
 					this.log.debug('fixExclusiveRoutingStates(): Setzte Eingang ' + (i + 1).toString() + ' fuer Ausgang ' + tmpOUT + ' auf FALSE');
 
 					//  boolsches Routing
