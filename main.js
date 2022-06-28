@@ -580,6 +580,7 @@ class BtouchVideomatrix extends utils.Adapter {
 
 		}
 
+		/*
 		parser.on('data', function (chunk) {
 			//parentThis.log.debug('parser.onData():' + chunk);
 			if (parentThis.mode == MODE_SERIAL) {
@@ -588,7 +589,7 @@ class BtouchVideomatrix extends utils.Adapter {
 			}
 			parentThis.processIncoming(chunk);
 		});
-	
+		*/
 
 		//----Den Zustand der Hardware abfragen
 		this.queryMatrix();
@@ -714,7 +715,7 @@ class BtouchVideomatrix extends utils.Adapter {
 						}
 					}, TIMEOUT);
 				} else {
-					this.log.debug('processCMD: bWaitingForResponse==FALSE, arrCMD ist leer. Kein Problem');
+					// this.log.debug('processCMD: bWaitingForResponse==FALSE, arrCMD ist leer. Kein Problem');
 				}
 			} else {
 				this.log.debug('AudioMatrix: processCMD: bWaitingForResponse==TRUE. Nichts machen');
@@ -753,13 +754,17 @@ class BtouchVideomatrix extends utils.Adapter {
 			this.log.info('processIncoming() Mode_Network: TBD');
 			in_msg += chunk;
 			//....if in_msg == complete....
-			if (bWaitingForResponse == true) {
-				this.parseMSG(chunk);
-				bWaitingForResponse = false;
-				bConnection = true;
-				in_msg = '';
-			} else {
-				this.log.info(': processIncoming() Network: bWaitingForResponse==FALSE; in_msg:' + in_msg);
+			if(in_msg.indexOf('\r\n') > -1) {
+				if (bWaitingForResponse == true) {
+					this.parseMSG(chunk);
+					bWaitingForResponse = false;
+					bConnection = true;
+					in_msg = '';
+				} else {
+					this.log.info(': processIncoming() Network: bWaitingForResponse==FALSE; in_msg:' + in_msg);
+				}
+			}else{
+				this.log.info('processIncoming() Mode_Network: Message not complete:' + in_msg);
 			}
 		}
 
