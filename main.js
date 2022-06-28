@@ -593,7 +593,6 @@ class BtouchVideomatrix extends utils.Adapter {
 		*/
 
 		//----Den Zustand der Hardware abfragen
-		this.log.info('UKU going to query the Matrix');
 		this.queryMatrix();
 	}
 
@@ -637,6 +636,7 @@ class BtouchVideomatrix extends utils.Adapter {
 
 	//----Fragt die Werte vom Geraet ab.
 	queryMatrix() {
+		this.log.info('UKU going to query the Matrix');
 		this.log.debug('VideoMatrix: queryMatrix(). arrCMD.length vorher=' + arrCMD.length.toString());
 		parentThis.mode_query = MODE_QUERY_STARTED;
 		parentThis.arrStateQuery_Routing = [];
