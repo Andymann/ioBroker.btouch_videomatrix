@@ -502,6 +502,7 @@ class BtouchVideomatrix extends utils.Adapter {
 										iMaxTryCounter = 3;
 										if (lastCMD !== undefined) {
 											setTimeout(function () {
+
 												matrix.write(lastCMD + '\n\r');
 											}, 100);
 										}
@@ -590,7 +591,9 @@ class BtouchVideomatrix extends utils.Adapter {
 			//parentThis.processIncoming(chunk);
 		});
 		*/
+
 		//----Den Zustand der Hardware abfragen
+		this.log.info('UKU going to query the Matrix');
 		this.queryMatrix();
 	}
 
