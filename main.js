@@ -653,7 +653,7 @@ class BtouchVideomatrix extends utils.Adapter {
 			arrCMD.push(item);
 		});
 		*/
-		//this.log.debug('VideoMatrix: queryMatrix(). arrCMD.length hinterher=' + arrCMD.length.toString());
+		this.log.info('VideoMatrix: queryMatrix(). arrCMD.length hinterher=' + arrCMD.length.toString());
 		//iMaxTryCounter = 3;
 	}
 
