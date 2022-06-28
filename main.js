@@ -733,7 +733,7 @@ class BtouchVideomatrix extends utils.Adapter {
 	// Verarbeitung eingehender Daten
 	processIncoming(chunk) {
 		bHasIncomingData = true; // IrgendETWAS ist angekommen
-		this.log.debug('processIncoming():' + chunk);
+		//this.log.debug('processIncoming():' + chunk);
 
 
 		if (this.mode == MODE_SERIAL) {
@@ -765,7 +765,7 @@ class BtouchVideomatrix extends utils.Adapter {
 					this.log.info(': processIncoming() Network: bWaitingForResponse==FALSE; in_msg:' + in_msg);
 				}
 			}else{
-				this.log.info('processIncoming() Mode_Network: Message not complete:' + in_msg);
+				//this.log.info('processIncoming() Mode_Network: Message not complete:' + in_msg);
 			}
 		}
 
@@ -815,7 +815,7 @@ class BtouchVideomatrix extends utils.Adapter {
 			let tmpOUT = sMSG.substring(sMSG.lastIndexOf(' ') + 1).trim();
 			//this.log.info('parseMsg(): Routing Query Answer: IN:' + tmpIN + '; OUT:' + tmpOUT + ';');
 
-			//this.setStateAsync('input_' + (tmpIN).toString().padStart(2, '0') + '_out_' + (tmpOUT).toString().padStart(2, '0'), { val: true, ack: true });
+			this.setStateAsync('input_' + (tmpIN).toString().padStart(2, '0') + '_out_' + (tmpOUT).toString().padStart(2, '0'), { val: true, ack: true });
 			this.setStateAsync('SelectMapping.output_' + (tmpOUT).toString().padStart(2, '0') + '_in_from', { val: parseInt(tmpIN, 10), ack: true });
 			parentThis.arrStateQuery_Routing[parseInt(tmpOUT) - 1] = true;
 			parentThis.checkQueryDone();
@@ -833,18 +833,18 @@ class BtouchVideomatrix extends utils.Adapter {
 			}
 
 			this.setStateAsync('SelectMapping.output_' + (sAusgang).toString().padStart(2, '0') + '_in_from', { val: sEingang, ack: true });
-			/*
+			
+			
 			for (let i = 0; i < parentThis.MAXCHANNELS; i++) {
 				if (i + 1 != parseInt(sEingang)) {
 					this.log.debug('fixExclusiveRoutingStates(): Setzte Eingang ' + (i + 1).toString() + ' fuer Ausgang ' + sAusgang + ' auf FALSE');
 
 					//  boolsches Routing
-					//this.setStateAsync('input_' + (i + 1).toString().padStart(2, '0') + '_out_' + (sAusgang).toString().padStart(2, '0'), { val: false, ack: true });
-
+					this.setStateAsync('input_' + (i + 1).toString().padStart(2, '0') + '_out_' + (sAusgang).toString().padStart(2, '0'), { val: false, ack: true });
 					//this.setStateAsync('SelectMapping.input_' + (i + 1).toString().padStart(2, '0') + '_out_to', { val: sAusgang, ack: true });
 				}
 			}
-			*/
+			
 		} else {
 			this.log.info('VideoMatrix: parseMsg() Response unhandled:' + sMSG);
 		}
