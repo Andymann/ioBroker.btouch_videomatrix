@@ -874,7 +874,9 @@ class BtouchVideomatrix extends utils.Adapter {
 				this.log.debug('parseMsg(): Aenderung an der Hardware: IN:' + sEingang + '; OUT:' + sAusgang + ';');
 			}
 
-			this.setBooleanRouting(sMSG,false);
+			//----OBACHT: setBooleanRouting erwartet das ACK-Flag als zweiten Paramter
+			//----bWaitingForResponse==FALSE -> ACK = TRUE
+			this.setBooleanRouting(sMSG,true);
 			this.cleanupBooleanRouting(sEingang, sAusgang)
 
 
