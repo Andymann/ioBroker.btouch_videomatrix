@@ -794,6 +794,11 @@ class BtouchVideomatrix extends utils.Adapter {
 		if(sMSG.endsWith('.')){
 			sMSG = sMSG.substring(0, sMSG.length - 1);
 		}
+
+		if(sMSG.includes(' -> ')){
+			//Routing Abfrage
+			sMSG = sMSG.replace(' -> ','V');
+		}
 		if(bAck==true){
 			//---Schalten an der Harwdware, / vorneweg, 
 			
