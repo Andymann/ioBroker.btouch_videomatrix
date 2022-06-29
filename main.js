@@ -766,6 +766,7 @@ class BtouchVideomatrix extends utils.Adapter {
 					//----Hier landen wir auch, wenn an der Hardware das Routing veraendert wurde
 					this.log.debug(': processIncoming() Network: bWaitingForResponse==FALSE; in_msg:' + in_msg);
 					this.parseMSG(in_msg);
+					in_msg = '';
 					//this.setBooleanRouting(in_msg, true);
 				}
 			}else{
