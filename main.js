@@ -795,7 +795,7 @@ class BtouchVideomatrix extends utils.Adapter {
 			sMSG = sMSG.substring(0, sMSG.length - 1);
 		}
 
-		if(sMSG.includes(' -> ')){
+		if(sMSG.toString().includes(' -> ')){
 			//Routing Abfrage
 			sMSG = sMSG.replace(' -> ','V');
 		}
