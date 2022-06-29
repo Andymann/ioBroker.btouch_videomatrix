@@ -787,6 +787,10 @@ class BtouchVideomatrix extends utils.Adapter {
 	setBooleanRouting(sMSG, bAck){
 		this.log.debug('setBooleanRouting():' + sMSG + ' ' + bAck.toString());
 
+		let iTrenner = sMSG.toLowerCase().indexOf('v');
+		let sEingang = sMSG.substring(1, iTrenner);
+		let sAusgang = sMSG.substring(iTrenner + 1, sMSG.indexOf('.'));
+		/*
 		sMSG = sMSG.toString().trim();
 		sMSG = sMSG.toString().replace('->', 'V');
 		sMSG = sMSG.toString().replace('/', '');
@@ -795,6 +799,8 @@ class BtouchVideomatrix extends utils.Adapter {
 		sMSG = sMSG.toString().replace(' ', '');
 		sMSG = sMSG.toString().replace('.', '');
 		sMSG = sMSG.toString().replace(' ', '');
+		*/
+
 		/*
 		//Repsonse:   /1V1.
 		if(sMSG.toString().startsWith('/')){
@@ -824,10 +830,10 @@ class BtouchVideomatrix extends utils.Adapter {
 		if(sMSG.indexOf('To All')==-1){
 			this.log.debug('setBooleanRouting(): MAIN PART:' + sMSG);
 			//let iStart = sMSG.substring(0, sMSG.indexOf('V')-1)
-			let tmpIN = sMSG.substring(0, sMSG.indexOf('V'));
-			let tmpOUT = sMSG.substring(sMSG.lastIndexOf('V') + 1).trim();
-			this.log.debug('setBooleanRouting: IN:' + tmpIN + '; OUT:' + tmpOUT + ';');
-			this.setStateAsync('input_' + (tmpIN).toString().padStart(2, '0') + '_out_' + (tmpOUT).toString().padStart(2, '0'), { val: true, ack: bAck });
+			//let tmpIN = sMSG.substring(0, sMSG.indexOf('V'));
+			//let tmpOUT = sMSG.substring(sMSG.lastIndexOf('V') + 1).trim();
+			this.log.debug('setBooleanRouting: IN:' + sEingang + '; OUT:' + sAusgang + ';');
+			this.setStateAsync('input_' + (sEingang).toString().padStart(2, '0') + '_out_' + (sAusgang).toString().padStart(2, '0'), { val: true, ack: bAck });
 
 			this.cleanupBooleanRouting(tmpIN, tmpOUT);
 		}
