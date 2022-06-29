@@ -789,42 +789,30 @@ class BtouchVideomatrix extends utils.Adapter {
 
 		sMSG = sMSG.toString().trim();
 
-		this.log.debug('setBooleanRouting():-' + sMSG + '- ' + bAck.toString());
+		//this.log.debug('setBooleanRouting():-' + sMSG + '- ' + bAck.toString());
 
 		sMSG = sMSG.toString().replace('/V:', '');	// Von einer query
 		sMSG = sMSG.toString().replace(' -> ', 'V');// Von einer Query
 		sMSG = sMSG.toString().replace('.', '');// Von einer Query
 		
-		this.log.debug('setBooleanRouting():+' + sMSG + '+ ' + bAck.toString());
+		//this.log.debug('setBooleanRouting():+' + sMSG + '+ ' + bAck.toString());
 		
 		let iTrenner = sMSG.toLowerCase().indexOf('v');
 		let sEingang = sMSG.substring(0, iTrenner);
 		let sAusgang = sMSG.substring(iTrenner + 1);
 		
-		this.log.debug('setBooleanRouting(): IN:+' + sEingang + '+ OUT: +' + sAusgang + '+');
+		//this.log.debug('setBooleanRouting(): IN:+' + sEingang + '+ OUT: +' + sAusgang + '+');
 
 
-		//if(sMSG.toString().endsWith('/')){
-		//	this.log.debug('UKU!');
-		//	sMSG = sMSG.toString().slice(0, -1);
-		//}
-		
-		//if(bAck==true){
-			//---Schalten an der Harwdware, / vorneweg, 	
-		//}
 		//----Wenn an der Matrix ein Eingang 'to All' geschaltet wird, muessen wir verzweigen
-		/*
+		
 		if(sMSG.indexOf('To All')==-1){
-			this.log.debug('setBooleanRouting(): MAIN PART:' + sMSG);
-			//let iStart = sMSG.substring(0, sMSG.indexOf('V')-1)
-			//let tmpIN = sMSG.substring(0, sMSG.indexOf('V'));
-			//let tmpOUT = sMSG.substring(sMSG.lastIndexOf('V') + 1).trim();
 			this.log.debug('setBooleanRouting: IN:' + sEingang + '; OUT:' + sAusgang + ';');
 			this.setStateAsync('input_' + (sEingang).toString().padStart(2, '0') + '_out_' + (sAusgang).toString().padStart(2, '0'), { val: true, ack: bAck });
 
 			this.cleanupBooleanRouting(sEingang, sAusgang);
 		}
-		*/
+		
 	}
 
 	//----Schaltet die uebrigen Zustaenden beim Boolschen Routing aus
