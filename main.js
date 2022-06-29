@@ -871,10 +871,10 @@ class BtouchVideomatrix extends utils.Adapter {
 				this.log.debug('parseMsg(): Aenderung an der Hardware: IN:' + sEingang + '; OUT:' + sAusgang + ';');
 			}
 
-			//----Muss gar nicht gemacht, werden, weil wir ueber die GUI den Status ja bereits gesetzt haben
-			//this.setBooleanRouting(sMSG,false);
-
+			this.setBooleanRouting(sMSG,false);
 			this.cleanupBooleanRouting(sEingang, sAusgang)
+
+			
 		} else {
 			this.log.warn('VideoMatrix: parseMsg() Response unhandled:' + sMSG);
 		}
