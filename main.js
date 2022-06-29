@@ -791,10 +791,11 @@ class BtouchVideomatrix extends utils.Adapter {
 		if(sMSG.toString().startsWith('/')){
 			sMSG = sMSG.substring(1);
 		}
-		if(sMSG.toString().endsWith('.')){
-			sMSG = sMSG.substring(0, sMSG.length - 1);
+		
+		if (sMSG[sMSG.length-1] === "."){
+			sMSG = sMSG.slice(0,-1);
 		}
-
+    	
 		if(sMSG.toString().includes(' -> ')){
 			//Routing Abfrage: Incoming: V:1 -> 2
 			sMSG = sMSG.replace('V:', '');
