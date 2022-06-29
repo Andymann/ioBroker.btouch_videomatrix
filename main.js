@@ -454,7 +454,7 @@ class BtouchVideomatrix extends utils.Adapter {
 			matrix.connect(this.config.optPort, this.config.optHost, function () {
 				clearInterval(query);
 				query = setInterval(function () {
-					if (connection == false) {
+					if (bConnection == false) {
 						if (bWaitingForResponse == false) {
 							parentThis.log.debug('VideoMatrix: connectMatrix().connection==false, sending CMDPING:' + cmdPing);
 							arrCMD.push(cmdPing);
