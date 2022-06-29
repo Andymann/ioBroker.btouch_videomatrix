@@ -788,10 +788,10 @@ class BtouchVideomatrix extends utils.Adapter {
 		this.log.debug('setBooleanRouting():' + sMSG + ' ' + bAck.toString());
 
 		//Repsonse:   /1V1.
-		if(sMSG.startsWith('/')){
+		if(sMSG.toString().startsWith('/')){
 			sMSG = sMSG.substring(1);
 		}
-		if(sMSG.endsWith('.')){
+		if(sMSG.toString().endsWith('.')){
 			sMSG = sMSG.substring(0, sMSG.length - 1);
 		}
 
