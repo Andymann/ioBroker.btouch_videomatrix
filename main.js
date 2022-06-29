@@ -787,7 +787,7 @@ class BtouchVideomatrix extends utils.Adapter {
 	setBooleanRouting(sMSG, bAck){
 		this.log.debug('setBooleanRouting():' + sMSG + ' ' + bAck.toString());
 
-		//----Wenn an der Matrix ein Eingang 'to All' geschaltet wird, muessen wir verzweigen
+		//Repsonse:   /1V1.
 		if(sMSG.startsWith('/')){
 			sMSG = sMSG.substring(1);
 		}
@@ -796,13 +796,15 @@ class BtouchVideomatrix extends utils.Adapter {
 		}
 
 		if(sMSG.toString().includes(' -> ')){
-			//Routing Abfrage
+			//Routing Abfrage: Incoming: V:1 -> 2
+			sMSG = sMSG.replace('V:', '');
 			sMSG = sMSG.replace(' -> ','V');
 		}
 		if(bAck==true){
 			//---Schalten an der Harwdware, / vorneweg, 
 			
 		}
+		//----Wenn an der Matrix ein Eingang 'to All' geschaltet wird, muessen wir verzweigen
 		if(sMSG.indexOf('To All')==-1){
 			this.log.debug('setBooleanRouting(): MAIN PART:' + sMSG);
 			//let iStart = sMSG.substring(0, sMSG.indexOf('V')-1)
