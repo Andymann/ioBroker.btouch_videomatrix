@@ -801,7 +801,7 @@ class BtouchVideomatrix extends utils.Adapter {
 		if(sMSG.indexOf('To All')==-1){
 			this.log.debug('setBooleanRouting(): MAIN PART:' + sMSG);
 			//let iStart = sMSG.substring(0, sMSG.indexOf('V')-1)
-			let tmpIN = sMSG.substring(iStart, sMSG.indexOf('V'));
+			let tmpIN = sMSG.substring(0, sMSG.indexOf('V'));
 			let tmpOUT = sMSG.substring(sMSG.lastIndexOf('V') + 1).trim();
 			this.log.debug('setBooleanRouting: IN:' + tmpIN + '; OUT:' + tmpOUT + ';');
 			this.setStateAsync('input_' + (tmpIN).toString().padStart(2, '0') + '_out_' + (tmpOUT).toString().padStart(2, '0'), { val: true, ack: bAck });
