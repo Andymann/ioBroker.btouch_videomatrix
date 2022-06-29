@@ -792,11 +792,11 @@ class BtouchVideomatrix extends utils.Adapter {
 			sMSG = sMSG.substring(1);
 		}
 		
-		if (sMSG[sMSG.length-1] === "."){
+		if(sMSG.indexOf('.')>-1){
 			this.log.debug('UKU!');
 			sMSG = sMSG.slice(0,-1);
 		}
-    	
+		
 		if(sMSG.toString().includes(' -> ')){
 			//Routing Abfrage: Incoming: V:1 -> 2
 			sMSG = sMSG.replace('V:', '');
