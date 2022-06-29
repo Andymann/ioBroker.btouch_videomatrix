@@ -790,8 +790,11 @@ class BtouchVideomatrix extends utils.Adapter {
 		sMSG = sMSG.toString().trim();
 		sMSG = sMSG.toString().replace('->', 'V');
 		sMSG = sMSG.toString().replace('/', '');
+		sMSG = sMSG.toString().replace('/', '');
+		sMSG = sMSG.toString().replace(' ', '');
 		sMSG = sMSG.toString().replace(' ', '');
 		sMSG = sMSG.toString().replace('.', '');
+		sMSG = sMSG.toString().replace(' ', '');
 		/*
 		//Repsonse:   /1V1.
 		if(sMSG.toString().startsWith('/')){
