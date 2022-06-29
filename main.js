@@ -13,7 +13,8 @@ const net = require('net');
 //const Readline = require('@serialport/parser-readline')
 // const ByteLength = require('@serialport/parser-byte-length');
 const { SerialPort } = require('serialport');
-const { ReadlineParser } = require('@serialport/parser-readline')
+const { ReadlineParser } = require('@serialport/parser-readline');
+const { debug } = require('console');
 const TIMEOUT = 5000;
 
 const MODE_NONE = 0x00;
@@ -798,6 +799,7 @@ class BtouchVideomatrix extends utils.Adapter {
 			}
 		}
 		if(sMSG.indexOf('To All')==-1){
+			debug.log('setBooleanRouting(): MAIN PART:' + sMSG):
 			let iStart = sMSG.indexOf(':') + 1;
 			let tmpIN = sMSG.substring(iStart, sMSG.indexOf(' '));
 			let tmpOUT = sMSG.substring(sMSG.lastIndexOf(' ') + 1).trim();
