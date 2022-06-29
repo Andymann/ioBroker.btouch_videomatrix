@@ -390,7 +390,7 @@ class BtouchVideomatrix extends utils.Adapter {
 	}
 
 	initMatrix() {
-		this.log.info('initMatrix().');
+		this.log.debug('initMatrix().');
 
 		arrCMD = [];
 		mode = MODE_NONE;
@@ -412,13 +412,13 @@ class BtouchVideomatrix extends utils.Adapter {
 
 	disconnectMatrix() {
 		if (parentThis.mode == MODE_SERIAL) {
-			this.log.info('disConnectMatrix() Serial');
+			this.log.debug('disConnectMatrix() Serial');
 			if (matrix.isOpen) {
 				matrix.close();
 				matrix.destroy();
 			}
 		} else if (parentThis.mode == MODE_NETWORK) {
-			this.log.info('disConnectMatrix() Network');
+			this.log.debug('disConnectMatrix() Network');
 		}
 		matrix.destroy();
 	}
@@ -429,7 +429,7 @@ class BtouchVideomatrix extends utils.Adapter {
 		arrCMD = [];
 
 		if (this.mode == MODE_SERIAL) {
-			this.log.info('connectMatrix(): Serial Port Mode ' + this.sSerialPortName);
+			this.log.debug('connectMatrix(): Serial Port Mode ' + this.sSerialPortName);
 			matrix = new SerialPort({
 				path: this.sSerialPortName,
 				baudRate: 9600,
@@ -449,14 +449,14 @@ class BtouchVideomatrix extends utils.Adapter {
 			}, 3000);
 
 		} else if (this.mode == MODE_NETWORK) {
-			this.log.info('connectMatrix():' + this.config.optHost + ':' + this.config.optPort);
+			this.log.debug('connectMatrix():' + this.config.optHost + ':' + this.config.optPort);
 			matrix = new net.Socket();
 			matrix.connect(this.config.optPort, this.config.optHost, function () {
 				clearInterval(query);
 				query = setInterval(function () {
 					if (connection == false) {
 						if (bWaitingForResponse == false) {
-							parentThis.log.info('VideoMatrix: connectMatrix().connection==false, sending CMDPING:' + cmdPing);
+							parentThis.log.debug('VideoMatrix: connectMatrix().connection==false, sending CMDPING:' + cmdPing);
 							arrCMD.push(cmdPing);
 							iMaxTryCounter = 3;
 							parentThis.processCMD();
@@ -567,11 +567,11 @@ class BtouchVideomatrix extends utils.Adapter {
 				//            parentThis.reconnect();
 			}).on('close', function (e) {
 				//if (bConnection) {
-				parentThis.log.error('VideoMatrix closed. TBD');
+				parentThis.log.debug('VideoMatrix closed. TBD');
 				//}
 				//parentThis.reconnect();
 			}).on('disconnect', function (e) {
-				parentThis.log.error('VideoMatrix disconnected. TBD');
+				parentThis.log.debug('VideoMatrix disconnected. TBD');
 				//            parentThis.reconnect();
 			}).on('end', function (e) {
 				parentThis.log.error('VideoMatrix ended');
@@ -635,7 +635,7 @@ class BtouchVideomatrix extends utils.Adapter {
 
 	//----Fragt die Werte vom Geraet ab.
 	queryMatrix(){
-		this.log.info('VideoMatrix: queryMatrix(). arrCMD.length vorher=' + arrCMD.length.toString());
+		this.log.debug('queryMatrix(). arrCMD.length vorher=' + arrCMD.length.toString());
 		parentThis.mode_query = MODE_QUERY_STARTED;
 		parentThis.arrStateQuery_Routing = [];
 		//parentThis.arrQuery = [];
@@ -705,7 +705,7 @@ class BtouchVideomatrix extends utils.Adapter {
 						//----5 Sekunden keine Antwort und das Teil ist offline
 						if (bHasIncomingData == false) {
 							//----Nach x Milisekunden ist noch gar nichts angekommen....
-							parentThis.log.error('processCMD(): KEINE EINKOMMENDEN DATEN NACH ' + TIMEOUT.toString() + ' Milisekunden. OFFLINE?');
+							parentThis.log.warn('processCMD(): KEINE EINKOMMENDEN DATEN NACH ' + TIMEOUT.toString() + ' Milisekunden. OFFLINE?');
 							parentThis.bConnection = false;
 							//this.setState('info.connection', bConnection, true); //Green led in 'Instances'
 							parentThis.disconnectMatrix();
