@@ -764,7 +764,8 @@ class BtouchVideomatrix extends utils.Adapter {
 				} else {
 					//----Hier landen wir auch, wenn an der Hardware das Routing veraendert wurde
 					this.log.debug(': processIncoming() Network: bWaitingForResponse==FALSE; in_msg:' + in_msg);
-					this.setBooleanRouting(in_msg, true);
+					this.parseMSG(in_msg);
+					//this.setBooleanRouting(in_msg, true);
 				}
 			}else{
 				//this.log.info('processIncoming() Mode_Network: Message not complete:' + in_msg);
@@ -781,15 +782,28 @@ class BtouchVideomatrix extends utils.Adapter {
 	}
 
 	//---Ein Eingang und ein Ausgang wurden verknuepft, das Setzen der States gehschieht hier
+	//----Sowohl intern, wenn ueber die GUI, als auch extern, wenn Daten einkommen
 	setBooleanRouting(sMSG, bAck){
 		this.log.debug('setBooleanRouting():' + sMSG + ' ' + bAck.toString());
-		let iStart = sMSG.indexOf(':') + 1;
-		let tmpIN = sMSG.substring(iStart, sMSG.indexOf(' '));
-		let tmpOUT = sMSG.substring(sMSG.lastIndexOf(' ') + 1).trim();
-		this.log.debug('setBooleanRouting: IN:' + tmpIN + '; OUT:' + tmpOUT + ';');
-		this.setStateAsync('input_' + (tmpIN).toString().padStart(2, '0') + '_out_' + (tmpOUT).toString().padStart(2, '0'), { val: true, ack: bAck });
 
-		this.cleanupBooleanRouting(tmpIN, tmpOUT);
+		//----Wenn an der Matrix ein Eingang 'to All' geschaltet wird, muessen wir verzweigen
+		//----wenn sMSG mit / beginnt, wurde an der Hardware geschaltet. sMSG z.B. /4V4
+		if(bAck==true){
+			//---Schalten an der Harwdware, / vorneweg, 
+			if(sMSG.startsWith('/')){
+				sMSG = sMSG.substring(1);
+			}
+		}
+		if(sMSG.indexOf('To All')==-1){
+			let iStart = sMSG.indexOf(':') + 1;
+			let tmpIN = sMSG.substring(iStart, sMSG.indexOf(' '));
+			let tmpOUT = sMSG.substring(sMSG.lastIndexOf(' ') + 1).trim();
+			this.log.debug('setBooleanRouting: IN:' + tmpIN + '; OUT:' + tmpOUT + ';');
+			this.setStateAsync('input_' + (tmpIN).toString().padStart(2, '0') + '_out_' + (tmpOUT).toString().padStart(2, '0'), { val: true, ack: bAck });
+
+			this.cleanupBooleanRouting(tmpIN, tmpOUT);
+		}
+	
 	}
 
 	//----Schaltet die uebrigen Zustaenden beim Boolschen Routing aus
@@ -844,8 +858,10 @@ class BtouchVideomatrix extends utils.Adapter {
 
 
 		} else if (sMSG.toLowerCase().startsWith('/')) {
-			//----Repsonse auf per GUI gesetztes Routing, Obacht bei der Reihenfolge.
-			//----Response z.B. /1V3.
+			//----Repsonse auf per GUI oder auch Hardware gesetztes Routing, Obacht bei der Reihenfolge.
+			//----Response z.B. /1V3. Weil wir ACK nicht uebergeben, behelfen wir uns mit bWaitingForResponse. Das ist schlecht
+			//
+			//----bWaitingForResponse == FALSE: Einkommende Daten kommen per Schalten an der Hardware
 			let iTrenner = sMSG.toLowerCase().indexOf('v');
 			let sEingang = sMSG.substring(1, iTrenner);
 			let sAusgang = sMSG.substring(iTrenner + 1, sMSG.indexOf('.'));
@@ -855,19 +871,10 @@ class BtouchVideomatrix extends utils.Adapter {
 				this.log.debug('parseMsg(): Aenderung an der Hardware: IN:' + sEingang + '; OUT:' + sAusgang + ';');
 			}
 
-			this.cleanupBooleanRouting(sEingang, sAusgang)
-			//this.setStateAsync('SelectMapping.output_' + (sAusgang).toString().padStart(2, '0') + '_in_from', { val: sEingang, ack: true });
-			/*
-			for (let i = 0; i < parentThis.MAXCHANNELS; i++) {
-				if (i + 1 != parseInt(sEingang)) {
-					this.log.debug('fixExclusiveRoutingStates(): Setzte Eingang ' + (i + 1).toString() + ' fuer Ausgang ' + sAusgang + ' auf FALSE');
-					this.setStateAsync('input_' + (i + 1).toString().padStart(2, '0') + '_out_' + (sAusgang).toString().padStart(2, '0'), { val: false, ack: true });
-					//this.setStateAsync('SelectMapping.input_' + (i + 1).toString().padStart(2, '0') + '_out_to', { val: sAusgang, ack: true });
-				}
-			}
-			*/
-			
+			//----Muss gar nicht gemacht, werden, weil wir ueber die GUI den Status ja bereits gesetzt haben
+			//this.setBooleanRouting(sMSG,false);
 
+			this.cleanupBooleanRouting(sEingang, sAusgang)
 		} else {
 			this.log.warn('VideoMatrix: parseMsg() Response unhandled:' + sMSG);
 		}
