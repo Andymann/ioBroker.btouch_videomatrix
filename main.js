@@ -793,6 +793,7 @@ class BtouchVideomatrix extends utils.Adapter {
 		}
 		
 		if (sMSG[sMSG.length-1] === "."){
+			this.log.debug('UKU!');
 			sMSG = sMSG.slice(0,-1);
 		}
     	
