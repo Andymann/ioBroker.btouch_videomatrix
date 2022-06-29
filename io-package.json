@@ -1,7 +1,7 @@
 {
   "common": {
     "name": "btouch_videomatrix",
-    "version": "0.9.1",
+    "version": "0.9.2",
     "news": {
       "0.0.1": {
         "de": "Erstveröffentlichung"
@@ -9,15 +9,18 @@
       "0.0.2": {
         "de": "Aus bTouch wird BTouch"
       },
-	  "0.0.3": {
-        "de": "Refactoring, Codebase an Audiomatrix b2008 angepasst"
-      },
-	  "0.9.": {
-        "de": "Steuerung per seriellem Port funktioniert. Eingaben am Panel der Matrix werden verarbeitet"
-      },
-	  "0.9.1": {
-        "de": "SerialPort Constructor upgedatet"
-      }
+      "0.0.3": {
+          "de": "Refactoring, Codebase an Audiomatrix b2008 angepasst"
+        },
+      "0.9.": {
+          "de": "Steuerung per seriellem Port funktioniert. Eingaben am Panel der Matrix werden verarbeitet"
+        },
+      "0.9.1": {
+          "de": "SerialPort Constructor upgedatet"
+        },
+      "0.9.2": {
+        "de": "Bugfixing fuer aktuellste JS-Adapter-Version (06/2022)"
+      } 
     },
     "title": "BTouch VideoMatrix",
     "titleLang": {

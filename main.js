@@ -297,7 +297,7 @@ class BtouchVideomatrix extends utils.Adapter {
 			}
 		}
 
-		this.log.info('readLabels(): sList: ' + sList_In + 'HERZ HERZ HERZ');
+		this.log.debug('readLabels(): sList: ' + sList_In + 'HERZ HERZ HERZ');
 
 
 		await this.setObjectAsync('Labels.List_Names_Input_Semicolon', {
@@ -491,13 +491,13 @@ class BtouchVideomatrix extends utils.Adapter {
 									//----Es kann passieren, dass man direkt NACH dem Senden eines Befehls an die Matrix und VOR der Antwort hier landet.
 									//----deswegen wird erstmal der MaxTryCounter heruntergesetzt und -sofern nichts kommt- bis zum naechsten Timeout gewartet.
 									//----Wenn iMaxTryCounter==0 ist, koennen wir von einem Problem ausgehen
-									parentThis.log.info('VideoMatrix: connectMatrix(): kleines Timeout. bWaitingForResponse==TRUE iMaxTryCounter==' + iMaxTryCounter.toString());
-									parentThis.log.info('VideoMatrix: connectMatrix(): kleines Timeout. lastCMD =' + lastCMD + '. MinorProblem = TRUE');
+									parentThis.log.warn('VideoMatrix: connectMatrix(): kleines Timeout. bWaitingForResponse==TRUE iMaxTryCounter==' + iMaxTryCounter.toString());
+									parentThis.log.warn('VideoMatrix: connectMatrix(): kleines Timeout. lastCMD =' + lastCMD + '. MinorProblem = TRUE');
 									iMaxTryCounter--;
 									parentThis.setState('minorProblem', true, true);
 								} else {
 									if (iMaxTimeoutCounter < 3) {
-										parentThis.log.info('VideoMatrix: connectMatrix() in_msg: kleines Timeout. bWaitingForResponse==TRUE iMaxTryCounter==0. Erneutes Senden von ' + lastCMD);
+										parentThis.log.warn('VideoMatrix: connectMatrix() in_msg: kleines Timeout. bWaitingForResponse==TRUE iMaxTryCounter==0. Erneutes Senden von ' + lastCMD);
 										iMaxTimeoutCounter++;
 										iMaxTryCounter = 3;
 										if (lastCMD !== undefined) {
@@ -507,9 +507,9 @@ class BtouchVideomatrix extends utils.Adapter {
 											}, 100);
 										}
 									} else {
-										parentThis.log.error('VideoMatrix: connectMatrix() in_msg: kleines Timeout. bWaitingForResponse==TRUE iMaxTryCounter==0. Erneutes Senden von ' + lastCMD + 'schlug mehrfach fehl');
+										parentThis.log.warn('VideoMatrix: connectMatrix() in_msg: kleines Timeout. bWaitingForResponse==TRUE iMaxTryCounter==0. Erneutes Senden von ' + lastCMD + 'schlug mehrfach fehl');
 										iMaxTimeoutCounter = 0;
-										parentThis.log.error('VideoMatrix: connectMatrix() in_msg: kleines Timeout. bWaitingForResponse==TRUE iMaxTryCounter==0');
+										parentThis.log.warn('VideoMatrix: connectMatrix() in_msg: kleines Timeout. bWaitingForResponse==TRUE iMaxTryCounter==0');
 										//parentThis.log.error('WIE reagieren wir hier drauf? Was ist, wenn ein Befehl nicht umgesetzt werden konnte?');
 										bWaitingForResponse = false;
 										lastCMD = '';
@@ -521,10 +521,10 @@ class BtouchVideomatrix extends utils.Adapter {
 							} else {
 								parentThis.setState('minorProblem', true, true);
 								if (connection == true) {
-									parentThis.log.info('VideoMatrix: connectMatrix(): kleines Timeout. bWaitingForResponse==TRUE, bQueryInProgress==TRUE. Abwarten. iMaxTryCounter==' + iMaxTryCounter.toString());
+									parentThis.log.warn('VideoMatrix: connectMatrix(): kleines Timeout. bWaitingForResponse==TRUE, bQueryInProgress==TRUE. Abwarten. iMaxTryCounter==' + iMaxTryCounter.toString());
 								} else {
 									//----Fuer den Fall, dass der Verbindungsversuch fehlschlaegt
-									parentThis.log.info('VideoMatrix: connectMatrix(): kleines Timeout. bWaitingForResponse==TRUE, bQueryInProgress==TRUE. Connection==FALSE. iMaxTryCounter==' + iMaxTryCounter.toString());
+									parentThis.log.warn('VideoMatrix: connectMatrix(): kleines Timeout. bWaitingForResponse==TRUE, bQueryInProgress==TRUE. Connection==FALSE. iMaxTryCounter==' + iMaxTryCounter.toString());
 									bWaitingForResponse = false;
 									iMaxTryCounter--;
 								}
@@ -606,7 +606,7 @@ class BtouchVideomatrix extends utils.Adapter {
 				}
 			}
 		} else if (this.mode == MODE_NETWORK) {
-			this.log.info('pingMatrix(): 5');
+			this.log.debug('pingMatrix(): 5');
 			// ---   ALL TO BE DONE
 			if ((bConnection == true)/*&&(bWaitingForResponse==false)*/ && (bWaitQueue == false)) {
 				if (arrCMD.length == 0) {
@@ -624,7 +624,7 @@ class BtouchVideomatrix extends utils.Adapter {
 				iMissedPingCounter++;
 
 				if (iMissedPingCounter > 10) {	//7,5 seconds
-					this.log.info('pingMatrix(): 10 mal No Connection. Forciere Reconnect');
+					this.log.warn('pingMatrix(): 10 mal No Connection. Erzwinge Reconnect');
 					parentThis.disconnectMatrix();
 					parentThis.initMatrix();
 				}
@@ -652,7 +652,7 @@ class BtouchVideomatrix extends utils.Adapter {
 			arrCMD.push(item);
 		});
 		*/
-		this.log.info('VideoMatrix: queryMatrix(). arrCMD.length hinterher=' + arrCMD.length.toString());
+		this.log.debug('VideoMatrix: queryMatrix(). arrCMD.length hinterher=' + arrCMD.length.toString());
 		//iMaxTryCounter = 3;
 	}
 
@@ -691,7 +691,7 @@ class BtouchVideomatrix extends utils.Adapter {
 		if ((matrix != null) && (bWaitQueue == false)) {
 			if (bWaitingForResponse == false) {
 				if (arrCMD.length > 0) {
-					this.log.info('processCMD: bWaitingForResponse==FALSE, arrCMD.length=' + arrCMD.length.toString());
+					this.log.debug('processCMD: bWaitingForResponse==FALSE, arrCMD.length=' + arrCMD.length.toString());
 					bWaitingForResponse = true;
 					let tmp = arrCMD.shift();
 					this.log.debug('processCMD: next CMD=' + tmp);
@@ -711,7 +711,7 @@ class BtouchVideomatrix extends utils.Adapter {
 							parentThis.disconnectMatrix();
 							parentThis.initMatrix();
 						} else {
-							parentThis.log.info('processCMD(): Irgendetwas kam an... es lebt.');
+							parentThis.log.debug('processCMD(): Irgendetwas kam an... es lebt.');
 						}
 					}, TIMEOUT);
 				} else {
@@ -747,7 +747,7 @@ class BtouchVideomatrix extends utils.Adapter {
 			} else {
 				// einkommende Daten ohne, dass auf eine Response gewartet wird entstehen, 
 				// wenn an der Oberfläche etwas geändert wird. bsp: '/1V3.'
-				this.log.info(': processIncoming() Serial: bWaitingForResponse==FALSE; in_msg:' + chunk);
+				this.log.debug(': processIncoming() Serial: bWaitingForResponse==FALSE; in_msg:' + chunk);
 				this.parseMSG(chunk);
 			}
 		} else if (parentThis.mode == MODE_NETWORK) {
@@ -756,7 +756,7 @@ class BtouchVideomatrix extends utils.Adapter {
 			//....if in_msg == complete....
 			if(in_msg.indexOf('\r\n') > -1) {
 				if (bWaitingForResponse == true) {
-					this.log.info('processIncoming() Mode_Network: Message complete:' + in_msg);
+					this.log.debug('processIncoming() Mode_Network: Message complete:' + in_msg);
 					this.parseMSG(in_msg);
 					bWaitingForResponse = false;
 					bConnection = true;
@@ -868,7 +868,7 @@ class BtouchVideomatrix extends utils.Adapter {
 			
 
 		} else {
-			this.log.info('VideoMatrix: parseMsg() Response unhandled:' + sMSG);
+			this.log.warn('VideoMatrix: parseMsg() Response unhandled:' + sMSG);
 		}
 	}
 
@@ -882,7 +882,7 @@ class BtouchVideomatrix extends utils.Adapter {
 			let sAusgang = id.substring(id.indexOf('_out_') + 5);
 
 			if (ack == false) {	//Aenderung per GUI
-				parentThis.log.info('matrixChanged(): Neues Routing via GUI: IN:' + sEingang + ', OUT:' + sAusgang + '.Wert:' + val.toString() + '.Ende');
+				parentThis.log.debug('matrixChanged(): Neues Routing via GUI: IN:' + sEingang + ', OUT:' + sAusgang + '.Wert:' + val.toString() + '.Ende');
 				let cmdRoute;
 				if (val == true) {
 					cmdRoute = sEingang + 'V' + sAusgang + '.';
@@ -914,13 +914,13 @@ class BtouchVideomatrix extends utils.Adapter {
 				let tmpIn = id.substring(iStart, id.indexOf('_out'));
 				let tmpCMD;
 				if (val == 0) {
-					parentThis.log.info('matrixChanged(): Eingang ' + tmpIn + 'AUSgeschaltet');
+					parentThis.log.debug('matrixChanged(): Eingang ' + tmpIn + 'AUSgeschaltet');
 					tmpCMD = tmpIn + '$.';
 				} else {
-					parentThis.log.info('matrixChanged(): Eingang ' + tmpIn + 'auf ' + val.toString());
+					parentThis.log.debug('matrixChanged(): Eingang ' + tmpIn + 'auf ' + val.toString());
 					tmpCMD = tmpIn + 'v' + val.toString() + '.';
 				}
-				parentThis.log.info('matrixChanged(): Command:' + tmpCMD);
+				parentThis.log.debug('matrixChanged(): Command:' + tmpCMD);
 				arrCMD.push(tmpCMD);
 
 			}
@@ -932,13 +932,13 @@ class BtouchVideomatrix extends utils.Adapter {
 				let tmpOut = id.substring(iStart, id.indexOf('_in'));
 				let tmpCMD;
 				if (val == 0) {
-					parentThis.log.info('matrixChanged(): Ausgang ' + tmpOut + 'AUSgeschaltet');
+					parentThis.log.debug('matrixChanged(): Ausgang ' + tmpOut + 'AUSgeschaltet');
 					tmpCMD = tmpOut + '$.';
 				} else {
-					parentThis.log.info('matrixChanged(): Eingang ' + val.toString() + ' auf ' + tmpOut);
+					parentThis.log.debug('matrixChanged(): Eingang ' + val.toString() + ' auf ' + tmpOut);
 					tmpCMD = val + 'v' + tmpOut + '.';
 				}
-				parentThis.log.info('matrixChanged(): Command:' + tmpCMD);
+				parentThis.log.debug('matrixChanged(): Command:' + tmpCMD);
 				arrCMD.push(tmpCMD);
 
 			}
@@ -994,11 +994,7 @@ class BtouchVideomatrix extends utils.Adapter {
 			this.mode = MODE_NONE;
 		}
 
-		if (this.mode == MODE_SERIAL) {
-			this.log.info("Modus Seriell:" + this.sSerialPortName);
-		} else if (this.mode == MODE_NETWORK) {
-			this.log.info("Modus Netzwerk");
-		}
+		
 
 		//this.createStates();
 
