@@ -796,7 +796,7 @@ class BtouchVideomatrix extends utils.Adapter {
 	cleanupBooleanRouting(sIN, sOUT){
 		for (let i = 0; i < parentThis.MAXCHANNELS; i++) {
 			if (i + 1 != parseInt(sIN)) {
-				this.log.debug('fsetBooleanRouting(): Setzte Eingang ' + (i + 1).toString() + ' fuer Ausgang ' + sOUT + ' auf FALSE');
+				this.log.debug('cleanBooleanRouting(): Setzte Eingang ' + (i + 1).toString() + ' fuer Ausgang ' + sOUT + ' auf FALSE');
 				this.setStateAsync('input_' + (i + 1).toString().padStart(2, '0') + '_out_' + (sOUT).toString().padStart(2, '0'), { val: false, ack: true });
 				//this.setStateAsync('SelectMapping.input_' + (i + 1).toString().padStart(2, '0') + '_out_to', { val: sAusgang, ack: true });
 			}
