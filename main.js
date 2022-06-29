@@ -786,8 +786,16 @@ class BtouchVideomatrix extends utils.Adapter {
 	//---Ein Eingang und ein Ausgang wurden verknuepft, das Setzen der States gehschieht hier
 	//----Sowohl intern, wenn ueber die GUI, als auch extern, wenn Daten einkommen
 	setBooleanRouting(sMSG, bAck){
+
+		sMSG = sMSG.toString().trim();
+
 		this.log.debug('setBooleanRouting():-' + sMSG + '- ' + bAck.toString());
 
+		sMSG = sMSG.toString().replace('/V:', '/');	// Von einer query
+		sMSG = sMSG.toString().replace(' -> ', 'V');// Von einer Query
+		sMSG = sMSG.toString().replace('.', '');// Von einer Query
+		
+		this.log.debug('setBooleanRouting():+' + sMSG + '+ ' + bAck.toString());
 		/*
 		sMSG = sMSG.toString().trim();
 		sMSG = sMSG.toString().replace('->', 'V');
