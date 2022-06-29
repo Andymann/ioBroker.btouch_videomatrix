@@ -799,7 +799,7 @@ class BtouchVideomatrix extends utils.Adapter {
 			}
 		}
 		if(sMSG.indexOf('To All')==-1){
-			debug.log('setBooleanRouting(): MAIN PART:' + sMSG);
+			this.log.debug('setBooleanRouting(): MAIN PART:' + sMSG);
 			let iStart = sMSG.indexOf(':') + 1;
 			let tmpIN = sMSG.substring(iStart, sMSG.indexOf(' '));
 			let tmpOUT = sMSG.substring(sMSG.lastIndexOf(' ') + 1).trim();
