@@ -812,7 +812,7 @@ class BtouchVideomatrix extends utils.Adapter {
 			this.log.debug('UKU!');
 			sMSG = sMSG.toString().slice(0, -1);
 		}
-		'/
+		*/
 		if(bAck==true){
 			//---Schalten an der Harwdware, / vorneweg, 
 			
