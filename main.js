@@ -59,7 +59,7 @@ let sList_values = '';
 let query = null;
 let in_msg = '';
 
-let bQueryComplete_Routing;
+//let bQueryComplete_Routing;
 let bWaitingForResponse = false;
 
 let arrStateQuery_Routing = [];
@@ -461,10 +461,10 @@ class BtouchVideomatrix extends utils.Adapter {
 							iMaxTryCounter = 3;
 							parentThis.processCMD();
 						} else {
-							parentThis.log.debug('VideoMatrix: connectMatrix().connection==false, bWaitingForResponse==false; nichts machen');
+							parentThis.log.debug('VideoMatrix: connectMatrix().bConnection==false, bWaitingForResponse==false; nichts machen');
 						}
 					} else {
-						if (bQueryDone == true) {
+						if (parentThis.mode_query == MODE_QUERY_FINISHED) {
 							if (arrCMD.length == 0) {
 								parentThis.log.debug('VideoMatrix: connectMatrix().connection==true, bQueryDone==TRUE, idle, pinging Matrix');
 								parentThis.pingMatrix();
@@ -472,7 +472,7 @@ class BtouchVideomatrix extends utils.Adapter {
 								parentThis.log.debug('VideoMatrix: connectMatrix().connection==true, bQueryDone==TRUE, arrCMD.length>0; idle, aber KEIN ping auf Matrix');
 							}
 						} else {
-							if (!bQueryInProgress) {
+							if (!parentThis.mode_query == MODE_QUERY_STARTED) {
 								parentThis.log.debug('VideoMatrix: connectMatrix().connection==true, bQueryDone==FALSE, idle, query Matrix');
 								parentThis.queryMatrix();
 							} else {
@@ -486,7 +486,7 @@ class BtouchVideomatrix extends utils.Adapter {
 					setTimeout(function () {
 						//parentThis.log.info('VideoMatrix: connectMatrix(): kleines Timeout');
 						if (bWaitingForResponse == true) {
-							if (bQueryInProgress == false) {
+							if (!this.mode_query == MODE_QUERY_STARTED) {
 								if (iMaxTryCounter > 0) {
 									//----Es kann passieren, dass man direkt NACH dem Senden eines Befehls an die Matrix und VOR der Antwort hier landet.
 									//----deswegen wird erstmal der MaxTryCounter heruntergesetzt und -sofern nichts kommt- bis zum naechsten Timeout gewartet.
