@@ -212,8 +212,8 @@ class BtouchVideomatrix extends utils.Adapter {
 			var tmpOut = await this.getStateAsync('Labels.output_' + (i + 1).toString().padStart(2, '0'));
 
 			//----Works.
-			this.log.debug('readLabels(): adding ' + tmpIn.val);
-			this.log.debug('readLabels(): adding ' + tmpOut.val);
+			//this.log.debug('readLabels(): adding ' + tmpIn.val);
+			//this.log.debug('readLabels(): adding ' + tmpOut.val);
 
 			inputNames[i + 1] = tmpIn.val;
 			arrInputNames.push(tmpIn.val);
@@ -791,45 +791,19 @@ class BtouchVideomatrix extends utils.Adapter {
 
 		this.log.debug('setBooleanRouting():-' + sMSG + '- ' + bAck.toString());
 
-		sMSG = sMSG.toString().replace('/V:', '/');	// Von einer query
+		sMSG = sMSG.toString().replace('/V:', '');	// Von einer query
 		sMSG = sMSG.toString().replace(' -> ', 'V');// Von einer Query
 		sMSG = sMSG.toString().replace('.', '');// Von einer Query
 		
 		this.log.debug('setBooleanRouting():+' + sMSG + '+ ' + bAck.toString());
-		/*
-		sMSG = sMSG.toString().trim();
-		sMSG = sMSG.toString().replace('->', 'V');
-		sMSG = sMSG.toString().replace('/', '');
-		sMSG = sMSG.toString().replace(' ', '');
-		sMSG = sMSG.toString().replace(' ', '');
-		sMSG = sMSG.toString().replace('.', '');
-		sMSG = sMSG.toString().replace(' ', '');
-		*/
 		
-		/*
-		//Repsonse:   /1V1.
-		if(sMSG.toString().startsWith('/')){
-			sMSG = sMSG.substring(1);
-		}
-		
-		if(sMSG.indexOf('.')>-1){
-			sMSG = sMSG.toString().slice(0, -1);
-		}
-		*/
-		
-		/*
-		if(sMSG.toString().includes(' -> ')){
-			//Routing Abfrage: Incoming: V:1 -> 2
-			sMSG = sMSG.replace('V:', '');
-			sMSG = sMSG.replace(' -> ','V');
-		}
-		sMSG = sMSG.toString().replace('/', '');
-
 		let iTrenner = sMSG.toLowerCase().indexOf('v');
-		let sEingang = sMSG.substring(1, iTrenner);
-		let sAusgang = sMSG.substring(iTrenner + 1, sMSG.indexOf('.'));
-		*/
+		let sEingang = sMSG.substring(0, iTrenner);
+		let sAusgang = sMSG.substring(iTrenner + 1);
 		
+		this.log.debug('setBooleanRouting(): IN:+' + sEingang + '+ OUT: +' + sAusgang + '+');
+
+
 		//if(sMSG.toString().endsWith('/')){
 		//	this.log.debug('UKU!');
 		//	sMSG = sMSG.toString().slice(0, -1);
