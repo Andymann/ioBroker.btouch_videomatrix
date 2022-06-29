@@ -793,6 +793,9 @@ class BtouchVideomatrix extends utils.Adapter {
 			if(sMSG.startsWith('/')){
 				sMSG = sMSG.substring(1);
 			}
+			if(sMSG.endsWith('.')){
+				sMSG = sMSG.substring(0, sMSG.length - 1);
+			}
 		}
 		if(sMSG.indexOf('To All')==-1){
 			let iStart = sMSG.indexOf(':') + 1;
@@ -874,7 +877,7 @@ class BtouchVideomatrix extends utils.Adapter {
 			this.setBooleanRouting(sMSG,false);
 			this.cleanupBooleanRouting(sEingang, sAusgang)
 
-			
+
 		} else {
 			this.log.warn('VideoMatrix: parseMsg() Response unhandled:' + sMSG);
 		}
