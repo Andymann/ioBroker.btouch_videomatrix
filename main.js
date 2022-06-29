@@ -785,7 +785,7 @@ class BtouchVideomatrix extends utils.Adapter {
 	//---Ein Eingang und ein Ausgang wurden verknuepft, das Setzen der States gehschieht hier
 	//----Sowohl intern, wenn ueber die GUI, als auch extern, wenn Daten einkommen
 	setBooleanRouting(sMSG, bAck){
-		this.log.debug('setBooleanRouting():' + sMSG + ' ' + bAck.toString());
+		this.log.debug('setBooleanRouting():-' + sMSG + '- ' + bAck.toString());
 
 		/*
 		sMSG = sMSG.toString().trim();
@@ -808,29 +808,29 @@ class BtouchVideomatrix extends utils.Adapter {
 		}
 		*/
 		
-		
+		/*
 		if(sMSG.toString().includes(' -> ')){
 			//Routing Abfrage: Incoming: V:1 -> 2
 			sMSG = sMSG.replace('V:', '');
 			sMSG = sMSG.replace(' -> ','V');
 		}
 		sMSG = sMSG.toString().replace('/', '');
-		
+
 		let iTrenner = sMSG.toLowerCase().indexOf('v');
 		let sEingang = sMSG.substring(1, iTrenner);
 		let sAusgang = sMSG.substring(iTrenner + 1, sMSG.indexOf('.'));
-		
-		/*
-		if(sMSG.toString().endsWith('/')){
-			this.log.debug('UKU!');
-			sMSG = sMSG.toString().slice(0, -1);
-		}
 		*/
-		if(bAck==true){
-			//---Schalten an der Harwdware, / vorneweg, 
-			
-		}
+		
+		//if(sMSG.toString().endsWith('/')){
+		//	this.log.debug('UKU!');
+		//	sMSG = sMSG.toString().slice(0, -1);
+		//}
+		
+		//if(bAck==true){
+			//---Schalten an der Harwdware, / vorneweg, 	
+		//}
 		//----Wenn an der Matrix ein Eingang 'to All' geschaltet wird, muessen wir verzweigen
+		/*
 		if(sMSG.indexOf('To All')==-1){
 			this.log.debug('setBooleanRouting(): MAIN PART:' + sMSG);
 			//let iStart = sMSG.substring(0, sMSG.indexOf('V')-1)
@@ -841,7 +841,7 @@ class BtouchVideomatrix extends utils.Adapter {
 
 			this.cleanupBooleanRouting(sEingang, sAusgang);
 		}
-	
+		*/
 	}
 
 	//----Schaltet die uebrigen Zustaenden beim Boolschen Routing aus
