@@ -791,7 +791,6 @@ class BtouchVideomatrix extends utils.Adapter {
 		sMSG = sMSG.toString().trim();
 		sMSG = sMSG.toString().replace('->', 'V');
 		sMSG = sMSG.toString().replace('/', '');
-		sMSG = sMSG.toString().replace('/', '');
 		sMSG = sMSG.toString().replace(' ', '');
 		sMSG = sMSG.toString().replace(' ', '');
 		sMSG = sMSG.toString().replace('.', '');
@@ -815,6 +814,8 @@ class BtouchVideomatrix extends utils.Adapter {
 			sMSG = sMSG.replace('V:', '');
 			sMSG = sMSG.replace(' -> ','V');
 		}
+		sMSG = sMSG.toString().replace('/', '');
+		
 		let iTrenner = sMSG.toLowerCase().indexOf('v');
 		let sEingang = sMSG.substring(1, iTrenner);
 		let sAusgang = sMSG.substring(iTrenner + 1, sMSG.indexOf('.'));
