@@ -787,9 +787,6 @@ class BtouchVideomatrix extends utils.Adapter {
 	setBooleanRouting(sMSG, bAck){
 		this.log.debug('setBooleanRouting():' + sMSG + ' ' + bAck.toString());
 
-		let iTrenner = sMSG.toLowerCase().indexOf('v');
-		let sEingang = sMSG.substring(1, iTrenner);
-		let sAusgang = sMSG.substring(iTrenner + 1, sMSG.indexOf('.'));
 		/*
 		sMSG = sMSG.toString().trim();
 		sMSG = sMSG.toString().replace('->', 'V');
@@ -800,7 +797,7 @@ class BtouchVideomatrix extends utils.Adapter {
 		sMSG = sMSG.toString().replace('.', '');
 		sMSG = sMSG.toString().replace(' ', '');
 		*/
-
+		
 		/*
 		//Repsonse:   /1V1.
 		if(sMSG.toString().startsWith('/')){
@@ -811,14 +808,17 @@ class BtouchVideomatrix extends utils.Adapter {
 			sMSG = sMSG.toString().slice(0, -1);
 		}
 		*/
-
-
+		
+		
 		if(sMSG.toString().includes(' -> ')){
 			//Routing Abfrage: Incoming: V:1 -> 2
 			sMSG = sMSG.replace('V:', '');
 			sMSG = sMSG.replace(' -> ','V');
 		}
-
+		let iTrenner = sMSG.toLowerCase().indexOf('v');
+		let sEingang = sMSG.substring(1, iTrenner);
+		let sAusgang = sMSG.substring(iTrenner + 1, sMSG.indexOf('.'));
+		
 		/*
 		if(sMSG.toString().endsWith('/')){
 			this.log.debug('UKU!');
