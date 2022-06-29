@@ -424,7 +424,7 @@ class BtouchVideomatrix extends utils.Adapter {
 	}
 
 	connectMatrix(cb) {
-		this.log.debug('connectMatrix()');
+		//this.log.debug('connectMatrix()');
 		let parser;
 		arrCMD = [];
 
@@ -635,7 +635,7 @@ class BtouchVideomatrix extends utils.Adapter {
 
 	//----Fragt die Werte vom Geraet ab.
 	queryMatrix(){
-		this.log.debug('queryMatrix(). arrCMD.length vorher=' + arrCMD.length.toString());
+		// this.log.debug('queryMatrix(). arrCMD.length vorher=' + arrCMD.length.toString());
 		parentThis.mode_query = MODE_QUERY_STARTED;
 		parentThis.arrStateQuery_Routing = [];
 		//parentThis.arrQuery = [];
@@ -652,7 +652,7 @@ class BtouchVideomatrix extends utils.Adapter {
 			arrCMD.push(item);
 		});
 		*/
-		this.log.debug('VideoMatrix: queryMatrix(). arrCMD.length hinterher=' + arrCMD.length.toString());
+		//this.log.debug('queryMatrix(): arrCMD.length hinterher=' + arrCMD.length.toString());
 		//iMaxTryCounter = 3;
 	}
 
