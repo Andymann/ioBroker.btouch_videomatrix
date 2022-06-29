@@ -725,7 +725,7 @@ class BtouchVideomatrix extends utils.Adapter {
 		}
 
 		//----Anzeige der Quelength auf der Oberflaeche
-		//        this.setStateAsync('queuelength', { val: arrCMD.length, ack: true });
+		this.setStateAsync('queuelength', { val: arrCMD.length, ack: true });
 		//
 
 	}
@@ -762,9 +762,9 @@ class BtouchVideomatrix extends utils.Adapter {
 					bConnection = true;
 					in_msg = '';
 				} else {
-					//----Hier landen wir auch, wenn an der Hardware das ROuting veraendert wurde
+					//----Hier landen wir auch, wenn an der Hardware das Routing veraendert wurde
 					this.log.debug(': processIncoming() Network: bWaitingForResponse==FALSE; in_msg:' + in_msg);
-					this.log.debug('dieser Teil muss entzerrt werden');
+					this.setBooleanRouting(in_msg, true);
 				}
 			}else{
 				//this.log.info('processIncoming() Mode_Network: Message not complete:' + in_msg);
@@ -778,6 +778,29 @@ class BtouchVideomatrix extends utils.Adapter {
 
 		//----Anzeige der Quelength auf der Oberflaeche
 		this.setStateAsync('queuelength', { val: arrCMD.length, ack: true });
+	}
+
+	//---Ein Eingang und ein Ausgang wurden verknuepft, das Setzen der States gehschieht hier
+	setBooleanRouting(sMSG, bAck){
+		this.log.debug('setBooleanRouting():' + sMSG + ' ' + bAck.toString());
+		let iStart = sMSG.indexOf(':') + 1;
+		let tmpIN = sMSG.substring(iStart, sMSG.indexOf(' '));
+		let tmpOUT = sMSG.substring(sMSG.lastIndexOf(' ') + 1).trim();
+		this.log.debug('setBooleanRouting: IN:' + tmpIN + '; OUT:' + tmpOUT + ';');
+		this.setStateAsync('input_' + (tmpIN).toString().padStart(2, '0') + '_out_' + (tmpOUT).toString().padStart(2, '0'), { val: true, ack: bAck });
+
+		this.cleanupBooleanRouting(tmpIN, tmpOUT);
+	}
+
+	//----Schaltet die uebrigen Zustaenden beim Boolschen Routing aus
+	cleanupBooleanRouting(sIN, sOUT){
+		for (let i = 0; i < parentThis.MAXCHANNELS; i++) {
+			if (i + 1 != parseInt(sIN)) {
+				this.log.debug('fsetBooleanRouting(): Setzte Eingang ' + (i + 1).toString() + ' fuer Ausgang ' + sOUT + ' auf FALSE');
+				this.setStateAsync('input_' + (i + 1).toString().padStart(2, '0') + '_out_' + (sOUT).toString().padStart(2, '0'), { val: false, ack: true });
+				//this.setStateAsync('SelectMapping.input_' + (i + 1).toString().padStart(2, '0') + '_out_to', { val: sAusgang, ack: true });
+			}
+		}
 	}
 
 	//----Data coming from hardware
@@ -812,28 +835,15 @@ class BtouchVideomatrix extends utils.Adapter {
 			}
 		} else if (sMSG.toLowerCase().startsWith('/v:')) {
 			//----Ein Ergebnis der Query
-			let iStart = sMSG.indexOf(':') + 1;
-			let tmpIN = sMSG.substring(iStart, sMSG.indexOf(' '));
-			let tmpOUT = sMSG.substring(sMSG.lastIndexOf(' ') + 1).trim();
-			this.log.debug('parseMsg(): Routing Query Answer: IN:' + tmpIN + '; OUT:' + tmpOUT + ';');
-			this.setStateAsync('input_' + (tmpIN).toString().padStart(2, '0') + '_out_' + (tmpOUT).toString().padStart(2, '0'), { val: true, ack: true });
+			this.setBooleanRouting(sMSG, true)
 			
 			//this.setStateAsync('SelectMapping.output_' + (tmpOUT).toString().padStart(2, '0') + '_in_from', { val: parseInt(tmpIN, 10), ack: true });
 			parentThis.arrStateQuery_Routing[parseInt(tmpOUT) - 1] = true;
 			parentThis.checkQueryDone();
 
-			for (let i = 0; i < parentThis.MAXCHANNELS; i++) {
-				if (i + 1 != parseInt(tmpIN)) {
-					this.log.debug('fixExclusiveRoutingStates(): Setzte Eingang ' + (i + 1).toString() + ' fuer Ausgang ' + tmpOUT + ' auf FALSE');
-
-					//  boolsches Routing
-					this.setStateAsync('input_' + (i + 1).toString().padStart(2, '0') + '_out_' + (tmpOUT).toString().padStart(2, '0'), { val: false, ack: true });
-					//this.setStateAsync('SelectMapping.input_' + (i + 1).toString().padStart(2, '0') + '_out_to', { val: sAusgang, ack: true });
-				}
-			}
 
 		} else if (sMSG.toLowerCase().startsWith('/')) {
-			//----Repsonse auf gesetztes Routing, Obacht bei der Reihenfolge.
+			//----Repsonse auf per GUI gesetztes Routing, Obacht bei der Reihenfolge.
 			//----Response z.B. /1V3.
 			let iTrenner = sMSG.toLowerCase().indexOf('v');
 			let sEingang = sMSG.substring(1, iTrenner);
@@ -844,18 +854,19 @@ class BtouchVideomatrix extends utils.Adapter {
 				this.log.debug('parseMsg(): Aenderung an der Hardware: IN:' + sEingang + '; OUT:' + sAusgang + ';');
 			}
 
+			this.cleanupBooleanRouting(sEingang, sAusgang)
 			//this.setStateAsync('SelectMapping.output_' + (sAusgang).toString().padStart(2, '0') + '_in_from', { val: sEingang, ack: true });
-		
+			/*
 			for (let i = 0; i < parentThis.MAXCHANNELS; i++) {
 				if (i + 1 != parseInt(sEingang)) {
 					this.log.debug('fixExclusiveRoutingStates(): Setzte Eingang ' + (i + 1).toString() + ' fuer Ausgang ' + sAusgang + ' auf FALSE');
-
-					//  boolsches Routing
 					this.setStateAsync('input_' + (i + 1).toString().padStart(2, '0') + '_out_' + (sAusgang).toString().padStart(2, '0'), { val: false, ack: true });
 					//this.setStateAsync('SelectMapping.input_' + (i + 1).toString().padStart(2, '0') + '_out_to', { val: sAusgang, ack: true });
 				}
 			}
+			*/
 			
+
 		} else {
 			this.log.info('VideoMatrix: parseMsg() Response unhandled:' + sMSG);
 		}
