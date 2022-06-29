@@ -794,6 +794,7 @@ class BtouchVideomatrix extends utils.Adapter {
 		sMSG = sMSG.toString().replace('/V:', '');	// Von einer query
 		sMSG = sMSG.toString().replace(' -> ', 'V');// Von einer Query
 		sMSG = sMSG.toString().replace('.', '');// Von einer Query
+		sMSG = sMSG.toString().replace('/',''); // Von vorne
 		
 		//this.log.debug('setBooleanRouting():+' + sMSG + '+ ' + bAck.toString());
 		
