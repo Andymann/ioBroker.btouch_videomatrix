@@ -787,14 +787,14 @@ class BtouchVideomatrix extends utils.Adapter {
 	setBooleanRouting(sMSG, bAck){
 		this.log.debug('setBooleanRouting():' + sMSG + ' ' + bAck.toString());
 
+		sMSG = sMSG.toString().trim();
+
 		//Repsonse:   /1V1.
 		if(sMSG.toString().startsWith('/')){
 			sMSG = sMSG.substring(1);
 		}
 		
 		if(sMSG.indexOf('.')>-1){
-			this.log.debug('UKU!');
-			sMSG = sMSG.toString().trim();
 			sMSG = sMSG.toString().slice(0, -1);
 		}
 		
@@ -802,6 +802,11 @@ class BtouchVideomatrix extends utils.Adapter {
 			//Routing Abfrage: Incoming: V:1 -> 2
 			sMSG = sMSG.replace('V:', '');
 			sMSG = sMSG.replace(' -> ','V');
+		}
+
+		if(sMSG.toString().endsWith('/')){
+			this.log.debug('UKU!');
+			sMSG = sMSG.toString().slice(0, -1);
 		}
 		if(bAck==true){
 			//---Schalten an der Harwdware, / vorneweg, 
