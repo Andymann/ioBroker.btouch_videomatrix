@@ -838,6 +838,7 @@ class BtouchVideomatrix extends utils.Adapter {
 			this.setBooleanRouting(sMSG, true)
 			
 			//this.setStateAsync('SelectMapping.output_' + (tmpOUT).toString().padStart(2, '0') + '_in_from', { val: parseInt(tmpIN, 10), ack: true });
+			let tmpOUT = sMSG.substring(sMSG.lastIndexOf(' ') + 1).trim();
 			parentThis.arrStateQuery_Routing[parseInt(tmpOUT) - 1] = true;
 			parentThis.checkQueryDone();
 
