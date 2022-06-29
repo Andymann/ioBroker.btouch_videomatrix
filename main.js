@@ -718,7 +718,7 @@ class BtouchVideomatrix extends utils.Adapter {
 					// this.log.debug('processCMD: bWaitingForResponse==FALSE, arrCMD ist leer. Kein Problem');
 				}
 			} else {
-				this.log.debug('AudioMatrix: processCMD: bWaitingForResponse==TRUE. Nichts machen');
+				//this.log.debug('AudioMatrix: processCMD: bWaitingForResponse==TRUE. Nichts machen');
 			}
 		} else {
 			this.log.debug('processCMD: bWaitQueue==TRUE, warten');
