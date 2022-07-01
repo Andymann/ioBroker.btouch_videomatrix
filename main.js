@@ -518,7 +518,8 @@ class BtouchVideomatrix extends utils.Adapter {
 										parentThis.lastCMD = '';
 										in_msg = '';
 										arrCMD = [];
-										parentThis.reconnect();
+										parentThis.disconnectMatrix();
+										parentThis.initMatrix();
 									}
 								}
 							} else {
