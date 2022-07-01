@@ -46,6 +46,7 @@ let cmdInterval;
 let sSerialPortName;
 let pingInterval;
 let iMaxTryCounter;
+let iMaxTimeoutCounter;
 
 let inputNames = {};
 let outputNames = {};
@@ -500,7 +501,7 @@ class BtouchVideomatrix extends utils.Adapter {
 								} else {
 									if (parentThis.iMaxTimeoutCounter < 3) {
 										parentThis.log.warn('VideoMatrix: connectMatrix() in_msg: kleines Timeout. bWaitingForResponse==TRUE iMaxTryCounter==0. Erneutes Senden von ' + parentThis.lastCMD);
-										iMaxTimeoutCounter++;
+										parenThis.iMaxTimeoutCounter++;
 										parentThis.iMaxTryCounter = 3;
 										if (parentThis.lastCMD !== undefined) {
 											setTimeout(function () {
@@ -510,7 +511,7 @@ class BtouchVideomatrix extends utils.Adapter {
 										}
 									} else {
 										parentThis.log.warn('VideoMatrix: connectMatrix() in_msg: kleines Timeout. bWaitingForResponse==TRUE iMaxTryCounter==0. Erneutes Senden von ' + parentThis.lastCMD + 'schlug mehrfach fehl');
-										iMaxTimeoutCounter = 0;
+										parenThis.iMaxTimeoutCounter = 0;
 										parentThis.log.warn('VideoMatrix: connectMatrix() in_msg: kleines Timeout. bWaitingForResponse==TRUE iMaxTryCounter==0');
 										//parentThis.log.error('WIE reagieren wir hier drauf? Was ist, wenn ein Befehl nicht umgesetzt werden konnte?');
 										bWaitingForResponse = false;
@@ -707,7 +708,7 @@ class BtouchVideomatrix extends utils.Adapter {
 						//----5 Sekunden keine Antwort und das Teil ist offline
 						if (bHasIncomingData == false) {
 							//----Nach x Milisekunden ist noch gar nichts angekommen....
-							parentThis.log.warn('processCMD(): KEINE EINKOMMENDEN DATEN NACH ' + TIMEOUT.toString() + ' Milisekunden. OFFLINE?');
+							parentThis.log.info('processCMD(): KEINE EINKOMMENDEN DATEN NACH ' + TIMEOUT.toString() + ' Milisekunden. OFFLINE?');
 							parentThis.bConnection = false;
 							//this.setState('info.connection', bConnection, true); //Green led in 'Instances'
 							parentThis.disconnectMatrix();
