@@ -494,27 +494,27 @@ class BtouchVideomatrix extends utils.Adapter {
 									//----deswegen wird erstmal der MaxTryCounter heruntergesetzt und -sofern nichts kommt- bis zum naechsten Timeout gewartet.
 									//----Wenn iMaxTryCounter==0 ist, koennen wir von einem Problem ausgehen
 									parentThis.log.warn('VideoMatrix: connectMatrix(): kleines Timeout. bWaitingForResponse==TRUE iMaxTryCounter==' + parentThis.iMaxTryCounter.toString());
-									parentThis.log.warn('VideoMatrix: connectMatrix(): kleines Timeout. lastCMD =' + lastCMD + '. MinorProblem = TRUE');
+									parentThis.log.warn('VideoMatrix: connectMatrix(): kleines Timeout. lastCMD =' + parentThis.lastCMD + '. MinorProblem = TRUE');
 									parentThis.iMaxTryCounter--;
 									parentThis.setState('minorProblem', true, true);
 								} else {
 									if (parentThis.iMaxTimeoutCounter < 3) {
-										parentThis.log.warn('VideoMatrix: connectMatrix() in_msg: kleines Timeout. bWaitingForResponse==TRUE iMaxTryCounter==0. Erneutes Senden von ' + lastCMD);
+										parentThis.log.warn('VideoMatrix: connectMatrix() in_msg: kleines Timeout. bWaitingForResponse==TRUE iMaxTryCounter==0. Erneutes Senden von ' + parentThis.lastCMD);
 										iMaxTimeoutCounter++;
 										parentThis.iMaxTryCounter = 3;
-										if (lastCMD !== undefined) {
+										if (parentThis.lastCMD !== undefined) {
 											setTimeout(function () {
 
-												matrix.write(lastCMD + '\n\r');
+												matrix.write(parentThis.lastCMD + '\n\r');
 											}, 100);
 										}
 									} else {
-										parentThis.log.warn('VideoMatrix: connectMatrix() in_msg: kleines Timeout. bWaitingForResponse==TRUE iMaxTryCounter==0. Erneutes Senden von ' + lastCMD + 'schlug mehrfach fehl');
+										parentThis.log.warn('VideoMatrix: connectMatrix() in_msg: kleines Timeout. bWaitingForResponse==TRUE iMaxTryCounter==0. Erneutes Senden von ' + parentThis.lastCMD + 'schlug mehrfach fehl');
 										iMaxTimeoutCounter = 0;
 										parentThis.log.warn('VideoMatrix: connectMatrix() in_msg: kleines Timeout. bWaitingForResponse==TRUE iMaxTryCounter==0');
 										//parentThis.log.error('WIE reagieren wir hier drauf? Was ist, wenn ein Befehl nicht umgesetzt werden konnte?');
 										bWaitingForResponse = false;
-										lastCMD = '';
+										parentThis.lastCMD = '';
 										in_msg = '';
 										arrCMD = [];
 										parentThis.reconnect();
