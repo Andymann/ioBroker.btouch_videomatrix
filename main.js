@@ -45,6 +45,7 @@ let arrCMD = [];
 let cmdInterval;
 let sSerialPortName;
 let pingInterval;
+let iMaxTryCounter;
 
 let inputNames = {};
 let outputNames = {};
@@ -459,7 +460,7 @@ class BtouchVideomatrix extends utils.Adapter {
 						if (bWaitingForResponse == false) {
 							parentThis.log.debug('VideoMatrix: connectMatrix().connection==false, sending CMDPING:' + cmdPing);
 							arrCMD.push(cmdPing);
-							iMaxTryCounter = 3;
+							parentThis.iMaxTryCounter = 3;
 							parentThis.processCMD();
 						} else {
 							parentThis.log.debug('VideoMatrix: connectMatrix().bConnection==false, bWaitingForResponse==false; nichts machen');
@@ -488,19 +489,19 @@ class BtouchVideomatrix extends utils.Adapter {
 						//parentThis.log.info('VideoMatrix: connectMatrix(): kleines Timeout');
 						if (bWaitingForResponse == true) {
 							if (!this.mode_query == MODE_QUERY_STARTED) {
-								if (iMaxTryCounter > 0) {
+								if (parentThis.iMaxTryCounter > 0) {
 									//----Es kann passieren, dass man direkt NACH dem Senden eines Befehls an die Matrix und VOR der Antwort hier landet.
 									//----deswegen wird erstmal der MaxTryCounter heruntergesetzt und -sofern nichts kommt- bis zum naechsten Timeout gewartet.
 									//----Wenn iMaxTryCounter==0 ist, koennen wir von einem Problem ausgehen
-									parentThis.log.warn('VideoMatrix: connectMatrix(): kleines Timeout. bWaitingForResponse==TRUE iMaxTryCounter==' + iMaxTryCounter.toString());
+									parentThis.log.warn('VideoMatrix: connectMatrix(): kleines Timeout. bWaitingForResponse==TRUE iMaxTryCounter==' + parentThis.iMaxTryCounter.toString());
 									parentThis.log.warn('VideoMatrix: connectMatrix(): kleines Timeout. lastCMD =' + lastCMD + '. MinorProblem = TRUE');
-									iMaxTryCounter--;
+									parentThis.iMaxTryCounter--;
 									parentThis.setState('minorProblem', true, true);
 								} else {
-									if (iMaxTimeoutCounter < 3) {
+									if (parentThis.iMaxTimeoutCounter < 3) {
 										parentThis.log.warn('VideoMatrix: connectMatrix() in_msg: kleines Timeout. bWaitingForResponse==TRUE iMaxTryCounter==0. Erneutes Senden von ' + lastCMD);
 										iMaxTimeoutCounter++;
-										iMaxTryCounter = 3;
+										parentThis.iMaxTryCounter = 3;
 										if (lastCMD !== undefined) {
 											setTimeout(function () {
 
@@ -522,12 +523,12 @@ class BtouchVideomatrix extends utils.Adapter {
 							} else {
 								parentThis.setState('minorProblem', true, true);
 								if (connection == true) {
-									parentThis.log.warn('VideoMatrix: connectMatrix(): kleines Timeout. bWaitingForResponse==TRUE, bQueryInProgress==TRUE. Abwarten. iMaxTryCounter==' + iMaxTryCounter.toString());
+									parentThis.log.warn('VideoMatrix: connectMatrix(): kleines Timeout. bWaitingForResponse==TRUE, bQueryInProgress==TRUE. Abwarten. iMaxTryCounter==' + parentThis.iMaxTryCounter.toString());
 								} else {
 									//----Fuer den Fall, dass der Verbindungsversuch fehlschlaegt
-									parentThis.log.warn('VideoMatrix: connectMatrix(): kleines Timeout. bWaitingForResponse==TRUE, bQueryInProgress==TRUE. Connection==FALSE. iMaxTryCounter==' + iMaxTryCounter.toString());
+									parentThis.log.warn('VideoMatrix: connectMatrix(): kleines Timeout. bWaitingForResponse==TRUE, bQueryInProgress==TRUE. Connection==FALSE. iMaxTryCounter==' + parentThis.iMaxTryCounter.toString());
 									bWaitingForResponse = false;
-									iMaxTryCounter--;
+									parentThis.iMaxTryCounter--;
 								}
 							}
 						} else {
