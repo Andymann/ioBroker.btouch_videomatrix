@@ -61,6 +61,7 @@ let sList_values = '';
 //-------
 let query = null;
 let in_msg = '';
+let lastCMD = '';
 
 //let bQueryComplete_Routing;
 let bWaitingForResponse = false;
@@ -505,12 +506,11 @@ class BtouchVideomatrix extends utils.Adapter {
 										parentThis.iMaxTryCounter = 3;
 										if (parentThis.lastCMD !== undefined) {
 											setTimeout(function () {
-
 												matrix.write(parentThis.lastCMD + '\n\r');
 											}, 100);
 										}
 									} else {
-										parentThis.log.warn('VideoMatrix: connectMatrix() in_msg: kleines Timeout. bWaitingForResponse==TRUE iMaxTryCounter==0. Erneutes Senden von ' + parentThis.lastCMD + 'schlug mehrfach fehl');
+										parentThis.log.warn('VideoMatrix: connectMatrix() in_msg: kleines Timeout. bWaitingForResponse==TRUE iMaxTryCounter==0. Erneutes Senden von ' + parentThis.lastCMD + ' schlug mehrfach fehl');
 										parentThis.iMaxTimeoutCounter = 0;
 										parentThis.log.warn('VideoMatrix: connectMatrix() in_msg: kleines Timeout. bWaitingForResponse==TRUE iMaxTryCounter==0');
 										//parentThis.log.error('WIE reagieren wir hier drauf? Was ist, wenn ein Befehl nicht umgesetzt werden konnte?');
@@ -523,7 +523,7 @@ class BtouchVideomatrix extends utils.Adapter {
 									}
 								}
 							} else {
-								parentThis.setState('minorProblem', true, true);
+								//parentThis.setState('minorProblem', true, true);
 								if (connection == true) {
 									parentThis.log.warn('VideoMatrix: connectMatrix(): kleines Timeout. bWaitingForResponse==TRUE, bQueryInProgress==TRUE. Abwarten. iMaxTryCounter==' + parentThis.iMaxTryCounter.toString());
 								} else {
@@ -697,10 +697,13 @@ class BtouchVideomatrix extends utils.Adapter {
 				if (arrCMD.length > 0) {
 					this.log.debug('processCMD: bWaitingForResponse==FALSE, arrCMD.length=' + arrCMD.length.toString());
 					bWaitingForResponse = true;
-					let tmp = arrCMD.shift();
-					this.log.debug('processCMD: next CMD=' + tmp);
+					//let tmp = arrCMD.shift();
+					//this.log.debug('processCMD: next CMD=' + tmp);
+					//matrix.write(tmp);
 					bHasIncomingData = false;
-					matrix.write(tmp);
+					let lastCMD = arrCMD.shift();
+					this.log.debug('processCMD: next CMD=' + lastCMD);
+					matrix.write(lastCMD);
 					matrix.write('\n');
 					if (query) {
 						clearTimeout(query);
