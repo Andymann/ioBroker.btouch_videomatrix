@@ -857,13 +857,15 @@ class BtouchVideomatrix extends utils.Adapter {
 		sMSG = sMSG.toString();
 		if (sMSG.toLowerCase().includes('hdmi')) {
 			//....something something.
-		} else if (sMSG.toLowerCase().endsWith('close.')) {
+		} else if (sMSG.toLowerCase().includes('close.')) {
 			// Ausgang wird ausgeschaltet
 			// z.B.: '/3 Close.'
 			let iStart = sMSG.indexOf('/') + 1;
 			let tmpOUT = sMSG.substring(iStart, sMSG.indexOf(' '));
 			parentThis.log.debug('parseMSG(): OFF:' + tmpOUT);
-			//  Derzeit kein Fix fuer exklusives Routing, weil sich an der Matrix selbst ein Ausgang nicht auf OFF schalten lässe
+
+
+
 		} else if (sMSG.toLowerCase().includes('all.')) {
 			// /1 to All. Das passiert vornehmlich an der Matrix
 			let iStart = sMSG.indexOf('/') + 1;
@@ -922,7 +924,7 @@ class BtouchVideomatrix extends utils.Adapter {
 			let sAusgang = id.substring(id.indexOf('_out_') + 5);
 
 			if (ack == false) {	//Aenderung per GUI
-				parentThis.log.debug('matrixChanged(): Neues Routing via GUI: IN:' + sEingang + ', OUT:' + sAusgang + '.Wert:' + val.toString() + '.Ende');
+				parentThis.log.debug('matrixChanged(): Neues Routing via GUI: IN:' + sEingang + ', OUT:' + sAusgang + '.Wert:' + val.toString());
 				let cmdRoute;
 				if (val == true) {
 					cmdRoute = sEingang + 'V' + sAusgang + '.';
