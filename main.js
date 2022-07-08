@@ -863,8 +863,9 @@ class BtouchVideomatrix extends utils.Adapter {
 			let iStart = sMSG.indexOf('/') + 1;
 			let tmpOUT = sMSG.substring(iStart, sMSG.indexOf(' '));
 			parentThis.log.debug('parseMSG(): OFF:' + tmpOUT);
-
-
+			for (let i = 0; i < parentThis.MAXCHANNELS; i++) {
+				this.setStateAsync('input_' + (i + 1).toString().padStart(2, '0') + '_out_' + (tmpOUT.padStart(2, '0'), { val: false, ack: true }));
+			}
 
 		} else if (sMSG.toLowerCase().includes('all.')) {
 			// /1 to All. Das passiert vornehmlich an der Matrix
