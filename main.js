@@ -123,6 +123,19 @@ class BtouchVideomatrix extends utils.Adapter {
 			native: {},
 		});
 
+		await this.setObjectAsync('info.connection', {
+			type: 'state',
+			common: {
+				name: 'True: Hardware is responding',
+				type: 'boolean',
+				role: 'indicator',
+				read: true,
+				write: false,
+			},
+			native: {},
+		});
+
+
 		// Kombinatinen von Ein- und Ausgang als bool
 		for (var i = 0; i < parentThis.MAXCHANNELS; i++) {
 			for (var j = 0; j < parentThis.MAXCHANNELS; j++) {
@@ -549,7 +562,7 @@ class BtouchVideomatrix extends utils.Adapter {
 				} else if (parentThis.mode == MODE_NETWORK) {
 					parentThis.processIncoming(chunk);
 				}
-	
+
 			}).on('timeout', function (e) {
 				//if (e.code == 'ENOTFOUND' || e.code == 'ECONNREFUSED' || e.code == 'ETIMEDOUT') {
 				//            matrix.destroy();
@@ -638,7 +651,7 @@ class BtouchVideomatrix extends utils.Adapter {
 	}
 
 	//----Fragt die Werte vom Geraet ab.
-	queryMatrix(){
+	queryMatrix() {
 		// this.log.debug('queryMatrix(). arrCMD.length vorher=' + arrCMD.length.toString());
 		parentThis.mode_query = MODE_QUERY_STARTED;
 		parentThis.arrStateQuery_Routing = [];
@@ -714,7 +727,7 @@ class BtouchVideomatrix extends utils.Adapter {
 							//----Nach x Milisekunden ist noch gar nichts angekommen....
 							parentThis.log.info('processCMD(): KEINE EINKOMMENDEN DATEN NACH ' + TIMEOUT.toString() + ' Milisekunden. OFFLINE?');
 							parentThis.bConnection = false;
-							//this.setState('info.connection', bConnection, true); //Green led in 'Instances'
+							this.setState('info.connection', bConnection, true); //Green led in 'Instances'
 							parentThis.disconnectMatrix();
 							parentThis.initMatrix();
 						} else {
@@ -761,12 +774,13 @@ class BtouchVideomatrix extends utils.Adapter {
 			//this.log.info('processIncoming() Mode_Network: TBD');
 			in_msg += chunk;
 			//....if in_msg == complete....
-			if(in_msg.indexOf('\r\n') > -1) {
+			if (in_msg.indexOf('\r\n') > -1) {
 				if (bWaitingForResponse == true) {
 					this.log.debug('processIncoming() Mode_Network: Message complete:' + in_msg);
 					this.parseMSG(in_msg);
 					bWaitingForResponse = false;
 					bConnection = true;
+					this.setState('info.connection', bConnection, true); //Green led in 'Instances'
 					in_msg = '';
 				} else {
 					//----Hier landen wir auch, wenn an der Hardware das Routing veraendert wurde
@@ -775,7 +789,7 @@ class BtouchVideomatrix extends utils.Adapter {
 					in_msg = '';
 					//this.setBooleanRouting(in_msg, true);
 				}
-			}else{
+			} else {
 				//this.log.info('processIncoming() Mode_Network: Message not complete:' + in_msg);
 			}
 		}
@@ -791,7 +805,7 @@ class BtouchVideomatrix extends utils.Adapter {
 
 	//---Ein Eingang und ein Ausgang wurden verknuepft, das Setzen der States gehschieht hier
 	//----Sowohl intern, wenn ueber die GUI, als auch extern, wenn Daten einkommen
-	setBooleanRouting(sMSG, bAck){
+	setBooleanRouting(sMSG, bAck) {
 
 		sMSG = sMSG.toString().trim();
 
@@ -800,30 +814,30 @@ class BtouchVideomatrix extends utils.Adapter {
 		sMSG = sMSG.toString().replace('/V:', '');	// Von einer query
 		sMSG = sMSG.toString().replace(' -> ', 'V');// Von einer Query
 		sMSG = sMSG.toString().replace('.', '');// Von einer Query
-		sMSG = sMSG.toString().replace('/',''); // Von vorne
-		
+		sMSG = sMSG.toString().replace('/', ''); // Von vorne
+
 		//this.log.debug('setBooleanRouting():+' + sMSG + '+ ' + bAck.toString());
-		
+
 		let iTrenner = sMSG.toLowerCase().indexOf('v');
 		let sEingang = sMSG.substring(0, iTrenner);
 		let sAusgang = sMSG.substring(iTrenner + 1);
-		
+
 		//this.log.debug('setBooleanRouting(): IN:+' + sEingang + '+ OUT: +' + sAusgang + '+');
 
 
 		//----Wenn an der Matrix ein Eingang 'to All' geschaltet wird, muessen wir verzweigen
-		
-		if(sMSG.indexOf('To All')==-1){
+
+		if (sMSG.indexOf('To All') == -1) {
 			this.log.debug('setBooleanRouting: IN:' + sEingang + '; OUT:' + sAusgang + ';');
 			this.setStateAsync('input_' + (sEingang).toString().padStart(2, '0') + '_out_' + (sAusgang).toString().padStart(2, '0'), { val: true, ack: bAck });
 
 			this.cleanupBooleanRouting(sEingang, sAusgang);
 		}
-		
+
 	}
 
 	//----Schaltet die uebrigen Zustaenden beim Boolschen Routing aus
-	cleanupBooleanRouting(sIN, sOUT){
+	cleanupBooleanRouting(sIN, sOUT) {
 		for (let i = 0; i < parentThis.MAXCHANNELS; i++) {
 			if (i + 1 != parseInt(sIN)) {
 				this.log.debug('cleanBooleanRouting(): Setzte Eingang ' + (i + 1).toString() + ' fuer Ausgang ' + sOUT + ' auf FALSE');
@@ -866,7 +880,7 @@ class BtouchVideomatrix extends utils.Adapter {
 		} else if (sMSG.toLowerCase().startsWith('/v:')) {
 			//----Ein Ergebnis der Query
 			this.setBooleanRouting(sMSG, true)
-			
+
 			//this.setStateAsync('SelectMapping.output_' + (tmpOUT).toString().padStart(2, '0') + '_in_from', { val: parseInt(tmpIN, 10), ack: true });
 			let tmpOUT = sMSG.substring(sMSG.lastIndexOf(' ') + 1).trim();
 			parentThis.arrStateQuery_Routing[parseInt(tmpOUT) - 1] = true;
@@ -889,7 +903,7 @@ class BtouchVideomatrix extends utils.Adapter {
 
 			//----OBACHT: setBooleanRouting erwartet das ACK-Flag als zweiten Paramter
 			//----bWaitingForResponse==FALSE -> ACK = TRUE
-			this.setBooleanRouting(sMSG,true);
+			this.setBooleanRouting(sMSG, true);
 			this.cleanupBooleanRouting(sEingang, sAusgang)
 
 
@@ -1020,7 +1034,7 @@ class BtouchVideomatrix extends utils.Adapter {
 			this.mode = MODE_NONE;
 		}
 
-		
+
 
 		//this.createStates();
 
