@@ -864,7 +864,7 @@ class BtouchVideomatrix extends utils.Adapter {
 			let tmpOUT = sMSG.substring(iStart, sMSG.indexOf(' '));
 			parentThis.log.debug('parseMSG(): OFF:' + tmpOUT);
 			for (let i = 0; i < parentThis.MAXCHANNELS; i++) {
-				this.setStateAsync('input_' + (i + 1).toString().padStart(2, '0') + '_out_' + (tmpOUT.padStart(2, '0'), { val: false, ack: true }));
+				this.setStateAsync('input_' + (i + 1).toString().padStart(2, '0') + '_out_' + (parseInt(tmpOUT, 10).padStart(2, '0').toString(), { val: false, ack: true }));
 			}
 
 		} else if (sMSG.toLowerCase().includes('all.')) {
