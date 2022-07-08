@@ -727,7 +727,7 @@ class BtouchVideomatrix extends utils.Adapter {
 							//----Nach x Milisekunden ist noch gar nichts angekommen....
 							parentThis.log.info('processCMD(): KEINE EINKOMMENDEN DATEN NACH ' + TIMEOUT.toString() + ' Milisekunden. OFFLINE?');
 							parentThis.bConnection = false;
-							this.setState('info.connection', bConnection, true); //Green led in 'Instances'
+							parentThis.setState('info.connection', bConnection, true); //Green led in 'Instances'
 							parentThis.disconnectMatrix();
 							parentThis.initMatrix();
 						} else {
@@ -780,7 +780,7 @@ class BtouchVideomatrix extends utils.Adapter {
 					this.parseMSG(in_msg);
 					bWaitingForResponse = false;
 					bConnection = true;
-					this.setState('info.connection', bConnection, true); //Green led in 'Instances'
+					parentThis.setState('info.connection', bConnection, true); //Green led in 'Instances'
 					in_msg = '';
 				} else {
 					//----Hier landen wir auch, wenn an der Hardware das Routing veraendert wurde
