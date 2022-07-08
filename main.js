@@ -861,10 +861,11 @@ class BtouchVideomatrix extends utils.Adapter {
 			// Ausgang wird ausgeschaltet
 			// z.B.: '/3 Close.'
 			let iStart = sMSG.indexOf('/') + 1;
-			let tmpOUT = sMSG.substring(iStart, sMSG.indexOf(' '));
+			const tmpOUT = sMSG.substring(iStart, sMSG.indexOf(' '));
 			parentThis.log.debug('parseMSG(): OFF:' + tmpOUT);
 			for (let i = 0; i < parentThis.MAXCHANNELS; i++) {
-				this.setStateAsync('input_' + (i + 1).toString().padStart(2, '0') + '_out_' + (this.tmpOUT.trim().padStart(2, '0'), { val: false, ack: true }));
+				//this.setStateAsync('input_' + (i + 1).toString().padStart(2, '0') + '_out_' + (tmpOUT.trim().padStart(2, '0'), { val: false, ack: true }));
+				this.log.info('input_' + (i + 1).toString().padStart(2, '0') + '_out_' + tmpOUT.trim().padStart(2, '0'));
 			}
 
 		} else if (sMSG.toLowerCase().includes('all.')) {
