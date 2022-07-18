@@ -591,7 +591,7 @@ class BtouchVideomatrix extends utils.Adapter {
 				parentThis.log.debug('VideoMatrix disconnected. TBD');
 				//            parentThis.reconnect();
 			}).on('end', function (e) {
-				parentThis.log.error('VideoMatrix ended');
+				parentThis.log.debug('VideoMatrix ended');
 				//parentThis.setState('info.connection', false, true);
 			});
 
